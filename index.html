@@ -3,608 +3,1246 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Amplificadores Operacionais — Guias · Poli USP</title>
+<title>Física IV — Guia de Estudos</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,450;9..144,600;9..144,700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
 <style>
+  :root{
+    --bg:#0F2027;
+    --bg-alt:#16323D;
+    --bg-alt2:#1D3E49;
+    --paper:#FBF8F1;
+    --paper-line:#E7E0CE;
+    --ink:#1C2B33;
+    --ink-soft:#57666D;
+    --amber:#E8A33D;
+    --amber-dark:#B97817;
+    --teal:#5FB8AA;
+    --coral:#C1554B;
+    --grid-line: rgba(255,255,255,0.05);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Source Sans 3', sans-serif;
+    font-size:16.5px;
+    line-height:1.55;
+  }
+  ::selection{background:var(--amber); color:var(--ink);}
 
-/* ============================================================
-   TOKENS — paleta de giz sobre quadro-negro
-   ============================================================ */
-:root{
-  --board: #24402F;
-  --board-dark: #1B3324;
-  --board-vign: #16281B;
+  /* ---------- layout ---------- */
+  .app{display:flex; min-height:100vh;}
+  .sidebar{
+    width:250px; flex:0 0 250px;
+    background:var(--bg-alt);
+    position:sticky; top:0; height:100vh; overflow-y:auto;
+    padding:28px 0 28px 0;
+    border-right:1px solid rgba(255,255,255,0.06);
+  }
+  .sidebar .brand{
+    padding:0 22px 22px 22px;
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:1.25rem;
+    color:#F3EFE3;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+    margin-bottom:10px;
+  }
+  .sidebar .brand span{
+    display:block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.68rem;
+    letter-spacing:0.09em;
+    color:var(--teal);
+    font-weight:600;
+    margin-bottom:6px;
+  }
+  .navlist{list-style:none; margin:0; padding:0;}
+  .navlist li{margin:0;}
+  .navlist button.navlink{
+    display:flex; align-items:center; gap:10px;
+    width:100%;
+    padding:11px 22px;
+    color:#C9D6D9;
+    background:none;
+    border:none;
+    text-decoration:none;
+    font-family:'Source Sans 3', sans-serif;
+    font-size:0.92rem;
+    text-align:left;
+    cursor:pointer;
+    border-left:3px solid transparent;
+    transition:background .15s ease, color .15s ease, border-color .15s ease;
+  }
+  .navlist button.navlink svg{width:20px; height:20px; flex:0 0 20px; opacity:0.85;}
+  .navlist button.navlink:hover{background:rgba(255,255,255,0.04); color:#fff;}
+  .navlist button.navlink.active{
+    border-left-color:var(--amber);
+    background:rgba(232,163,61,0.08);
+    color:#fff;
+    font-weight:600;
+  }
+  .sidebar-foot{
+    padding:18px 22px 0 22px; margin-top:16px;
+    border-top:1px solid rgba(255,255,255,0.08);
+    font-size:0.75rem; color:#8CA1A6; font-family:'IBM Plex Mono',monospace;
+    line-height:1.6;
+  }
 
-  --chalk: #EDEDE1;
-  --chalk-dim: #A9B8AC;
-  --chalk-faint: #6C7F71;
+  main{flex:1; min-width:0;}
 
-  --yellow: #E5D480;
-  --orange: #D98F55;
-  --pink: #E3A9BC;
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    background:
+      linear-gradient(180deg, rgba(15,32,39,0.0) 0%, rgba(15,32,39,1) 92%),
+      repeating-linear-gradient(0deg, var(--grid-line) 0px, var(--grid-line) 1px, transparent 1px, transparent 34px),
+      repeating-linear-gradient(90deg, var(--grid-line) 0px, var(--grid-line) 1px, transparent 1px, transparent 34px),
+      var(--bg);
+    padding:64px 56px 46px 56px;
+    overflow:hidden;
+  }
+  .hero .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    letter-spacing:0.12em;
+    font-size:0.78rem;
+    color:var(--teal);
+    text-transform:uppercase;
+    margin-bottom:14px;
+  }
+  .hero h1{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:clamp(2.1rem, 4.2vw, 3.2rem);
+    color:#F7F4EA;
+    margin:0 0 14px 0;
+    letter-spacing:-0.01em;
+  }
+  .hero p.lede{
+    max-width:640px;
+    color:#B9C7CB;
+    font-size:1.05rem;
+    margin:0 0 22px 0;
+  }
+  .hero .fringe{
+    position:absolute;
+    right:-40px; top:0; bottom:0;
+    width:420px;
+    opacity:0.5;
+    pointer-events:none;
+  }
+  .hero .sources{
+    display:flex; gap:10px; flex-wrap:wrap;
+  }
+  .source-chip{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    color:#DCE7E9;
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.12);
+    padding:5px 11px;
+    border-radius:100px;
+  }
 
-  --line: rgba(237,237,225,0.09);
-  --line-strong: rgba(237,237,225,0.22);
+  /* ---------- topic sections ---------- */
+  .topic{
+    background:var(--bg);
+    padding:0 0 10px 0;
+  }
+  .topic-banner{
+    display:flex; align-items:center; gap:18px;
+    padding:38px 56px 22px 56px;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+  }
+  .topic-banner .icon-wrap{
+    width:56px; height:56px; flex:0 0 56px;
+    border-radius:14px;
+    background:var(--bg-alt2);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--amber);
+  }
+  .topic-banner .icon-wrap svg{width:32px; height:32px;}
+  .topic-banner h2{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:1.75rem;
+    color:#F7F4EA;
+    margin:0;
+  }
+  .topic-banner .count{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.78rem;
+    color:#8CA1A6;
+    margin-top:4px;
+  }
 
-  --chalk-font: 'Kalam', cursive;
-  --serif: 'IBM Plex Serif', Georgia, serif;
-}
+  .topic-body{
+    background:linear-gradient(180deg, var(--bg) 0%, #0C1A20 100%);
+    padding:30px 56px 54px 56px;
+  }
 
-*{ box-sizing:border-box; }
-html{ scroll-behavior:smooth; }
-body{
-  margin:0;
-  background:var(--board);
-  color:var(--chalk);
-  font-family:var(--serif);
-  font-size:17px;
-  line-height:1.7;
-  -webkit-font-smoothing:antialiased;
-}
-::selection{ background:rgba(229,212,128,.25); color:var(--yellow); }
-a{ color:inherit; }
-a:focus-visible, input:focus-visible{ outline:2px solid var(--yellow); outline-offset:2px; }
-@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} *{transition:none!important;} }
+  .theory{
+    background:var(--paper);
+    border:1px solid var(--paper-line);
+    border-radius:14px;
+    padding:26px 30px;
+    margin-bottom:34px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.25);
+  }
+  .theory h3{
+    font-family:'Fraunces', serif;
+    font-size:1.05rem;
+    margin:0 0 12px 0;
+    color:var(--ink);
+    font-weight:600;
+  }
+  .theory h3::before{
+    content:"§ ";
+    color:var(--teal);
+  }
+  .theory p{margin:0 0 10px 0; color:var(--ink);}
+  .theory p:last-child{margin-bottom:0;}
+  .theory ul{margin:8px 0; padding-left:20px;}
+  .theory li{margin-bottom:6px;}
+  .theory .katex{font-size:1.02em;}
 
-h1,h2,h3{ font-family:var(--chalk-font); color:var(--chalk); margin:0; font-weight:700; }
-p{ margin:0 0 1em 0; }
-strong{ color:var(--chalk); font-weight:600; }
-em.term{ color:var(--yellow); font-style:normal; font-weight:600; }
-code{ font-family:var(--chalk-font); color:var(--orange); font-size:1.05em; }
+  .diagram{
+    margin:16px 0 18px 0;
+    padding:14px 12px 10px 12px;
+    background:rgba(15,32,39,0.03);
+    border:1px solid rgba(15,32,39,0.08);
+    border-radius:8px;
+  }
+  .diagram svg{
+    display:block; width:100%; height:auto; max-width:560px; margin:0 auto;
+  }
+  .diagram-caption{
+    margin:8px 0 0 0 !important;
+    font-size:0.85rem;
+    font-style:italic;
+    color:#57666D;
+    text-align:center;
+  }
+  .flag{
+    display:block;
+    margin-top:6px;
+    font-style:italic;
+    color:#57666D;
+    border-left:2px solid var(--amber);
+    padding-left:10px;
+  }
 
-/* chalk dust / board texture, applied behind everything */
-.bg-grid{
-  position:fixed; inset:0; z-index:0; pointer-events:none;
-  background-image:
-    radial-gradient(ellipse at 20% 10%, rgba(255,255,255,0.035), transparent 55%),
-    radial-gradient(ellipse at 85% 25%, rgba(255,255,255,0.03), transparent 50%),
-    radial-gradient(ellipse at 50% 95%, rgba(255,255,255,0.03), transparent 55%),
-    linear-gradient(var(--line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line) 1px, transparent 1px);
-  background-size: auto, auto, auto, 38px 38px, 38px 38px;
-  box-shadow: inset 0 0 160px 40px var(--board-vign);
-}
+  .exlist-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.75rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:#7FA3A0;
+    margin:0 0 14px 2px;
+  }
 
-/* ============================================================
-   SHELL: sidebar + main
-   ============================================================ */
-.shell{ position:relative; z-index:1; display:grid; grid-template-columns:300px 1fr; min-height:100vh; align-items:start; }
+  /* ---------- exercise card ---------- */
+  .exercise{
+    background:var(--paper);
+    border:1px solid var(--paper-line);
+    border-radius:12px;
+    margin-bottom:16px;
+    overflow:hidden;
+    border-left:4px solid #C9C2A8;
+    transition:box-shadow .15s ease;
+  }
+  .exercise:hover{box-shadow:0 8px 22px rgba(0,0,0,0.22);}
+  .exercise.exam{border-left-color:var(--coral);}
+  .ex-head{padding:18px 22px 14px 22px;}
+  .ex-badges{
+    display:flex; align-items:center; gap:8px; margin-bottom:10px; flex-wrap:wrap;
+  }
+  .badge{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.7rem;
+    padding:3px 9px;
+    border-radius:100px;
+    font-weight:600;
+    letter-spacing:0.02em;
+  }
+  .badge.lista{background:#EFEAD8; color:#6B6247;}
+  .badge.prova{background:#F4DEDB; color:var(--coral);}
+  .badge.num{background:transparent; color:var(--ink-soft); border:1px solid var(--paper-line); padding:3px 9px;}
+  .ex-statement{color:var(--ink); font-size:0.98rem;}
+  .ex-statement p{margin:0 0 8px 0;}
+  .ex-statement p:last-child{margin-bottom:0;}
 
-/* ---------- SIDEBAR ---------- */
-.sidebar{
-  background:var(--board-dark);
-  border-right:5px double var(--line-strong);
-  padding:36px 30px;
-  position:sticky; top:0; height:100vh; overflow-y:auto;
-}
-.brand{ font-family:var(--chalk-font); font-weight:700; font-size:1.5rem; letter-spacing:.03em; color:var(--chalk); }
-.brand-sub{ font-family:var(--chalk-font); font-size:.95rem; color:var(--chalk-faint); margin-top:2px; }
-.sidebar hr{ border:none; border-top:1px dashed var(--line-strong); margin:24px 0; }
-.group-label{ font-family:var(--chalk-font); font-size:.95rem; color:var(--chalk-faint); letter-spacing:.04em; margin-bottom:12px; }
-.module-list{ display:flex; flex-direction:column; gap:4px; }
-.module-item{
-  display:flex; align-items:baseline; gap:12px;
-  text-decoration:none; padding:10px 14px; border-radius:6px;
-  color:var(--chalk-dim); font-family:var(--chalk-font); font-size:1.08rem;
-  border-left:3px solid transparent;
-}
-.module-item .num{ font-family:var(--chalk-font); font-size:.95rem; color:var(--chalk-faint); min-width:1.3em; }
-.module-item.active{ background:rgba(229,212,128,.08); border-left-color:var(--yellow); color:var(--chalk); }
-.module-item.active .num{ color:var(--yellow); }
-.more-soon{ font-family:var(--serif); font-style:italic; font-size:.85rem; color:var(--chalk-faint); margin-top:10px; padding:0 14px; }
+  .res-toggle{
+    display:inline-flex; align-items:center; gap:7px;
+    margin:2px 22px 18px 22px;
+    background:var(--amber);
+    color:#3A2607;
+    border:none;
+    padding:8px 16px;
+    border-radius:100px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.78rem;
+    font-weight:600;
+    letter-spacing:0.03em;
+    cursor:pointer;
+    transition:background .15s ease, transform .1s ease;
+  }
+  .res-toggle:hover{background:var(--amber-dark); color:#fff;}
+  .res-toggle:active{transform:scale(0.97);}
+  .res-toggle svg{width:13px; height:13px; transition:transform .2s ease;}
+  .res-toggle.open svg{transform:rotate(180deg);}
 
-/* ---------- MAIN COLUMN ---------- */
-.main-col{ min-width:0; }
-.topbar{
-  display:flex; align-items:center; gap:34px; flex-wrap:wrap;
-  padding:26px 44px; border-bottom:1px dashed var(--line-strong);
-}
-.crumb{ font-family:var(--chalk-font); font-size:1.1rem; color:var(--yellow); white-space:nowrap; }
-.tabs{ display:flex; gap:24px; flex-wrap:wrap; }
-.tabs a{ font-family:var(--chalk-font); font-size:1rem; color:var(--chalk-dim); text-decoration:none; white-space:nowrap; }
-.tabs a:hover{ color:var(--yellow); }
+  .res-panel{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .28s ease;
+    background:#F2EDE0;
+    border-top:1px solid var(--paper-line);
+  }
+  .res-panel.open{max-height:4000px;}
+  .res-inner{
+    padding:20px 22px 22px 22px;
+    border-left:3px solid var(--teal);
+    margin:16px 22px 4px 22px;
+    background:#FDFCF8;
+    border-radius:0 8px 8px 0;
+  }
+  .res-inner .tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.7rem;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--teal);
+    display:block;
+    margin-bottom:8px;
+    font-weight:600;
+  }
+  .res-inner p{margin:0 0 9px 0; font-size:0.95rem;}
+  .res-inner p:last-child{margin-bottom:0;}
+  .res-inner strong{color:var(--ink);}
 
-/* ---------- HERO ---------- */
-.hero-module{ position:relative; padding:54px 44px 38px; overflow:hidden; }
-.hero-eyebrow{ font-family:var(--chalk-font); font-size:1.05rem; color:var(--yellow); margin-bottom:14px; }
-.hero-eyebrow::before{ content:"— "; color:var(--chalk-faint); }
-.hero-module h1{
-  font-size:clamp(1.8rem, 3.6vw, 2.9rem);
-  line-height:1.22; letter-spacing:.01em;
-  max-width:820px; margin-bottom:.5em; position:relative; z-index:1;
-}
-.hero-module h1 .w1{ color:var(--chalk); }
-.hero-module h1 .w2{ color:var(--yellow); }
-.hero-module .dek{ max-width:64ch; color:var(--chalk-dim); font-family:var(--serif); font-size:1.06rem; position:relative; z-index:1; }
-.meta-row{ font-family:var(--chalk-font); font-size:.95rem; color:var(--chalk-faint); margin-top:1.3em; position:relative; z-index:1; }
-.meta-row b{ color:var(--chalk-dim); font-weight:400; }
-.hero-deco{ position:absolute; right:-30px; top:0; width:46%; height:100%; opacity:.85; pointer-events:none; }
-@media (max-width:1000px){ .hero-deco{ display:none; } }
+  footer.site-foot{
+    text-align:center;
+    color:#7FA3A0;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.75rem;
+    padding:34px 20px 46px 20px;
+  }
 
-/* ---------- CONTENT SECTIONS ---------- */
-.content{ padding:0 44px 60px; }
-section.content-section{ padding:44px 0; border-bottom:1px dashed var(--line-strong); max-width:900px; }
-section.content-section:last-child{ border-bottom:none; }
-section.content-section .eyebrow{ font-family:var(--chalk-font); font-size:1.02rem; color:var(--yellow); margin-bottom:.4em; }
-section.content-section .eyebrow::before{ content:"— "; color:var(--chalk-faint); }
-section.content-section h2{ font-size:1.7rem; margin:.15em 0 .5em; }
-.lead{ color:var(--chalk-dim); font-size:1.03em; max-width:70ch; }
+  @media (max-width: 880px){
+    .app{flex-direction:column;}
+    .sidebar{position:relative; width:100%; height:auto; flex:none;}
+    .hero{padding:40px 22px 30px 22px;}
+    .hero .fringe{display:none;}
+    .topic-banner{padding:28px 22px 18px 22px;}
+    .topic-body{padding:22px 22px 40px 22px;}
+    .theory{padding:20px;}
+  }
 
-/* equations, hand-chalked */
-.eq{ font-family:var(--chalk-font); font-size:1.2rem; color:var(--chalk); line-height:1.9; margin:18px 0; }
-.eq .y{ color:var(--yellow); }
-.eq .dim{ color:var(--chalk-faint); font-size:.8em; }
-
-.hand-box{ display:inline-block; border:2.5px solid var(--chalk); border-radius:255px 18px 225px 15px/15px 225px 15px 255px; padding:.5em 1.1em; background:rgba(237,237,225,.02); }
-.hand-circle{ display:inline-block; border:2.5px solid var(--yellow); border-radius:50%; padding:.05em .55em; transform:rotate(-2deg); }
-.crossed{ position:relative; display:inline-block; opacity:.6; }
-.crossed::before,.crossed::after{ content:""; position:absolute; left:-4%; right:-4%; top:50%; border-top:2px solid var(--orange); }
-.crossed::before{ transform:rotate(6deg); }
-.crossed::after{ transform:rotate(-6deg); }
-
-figure.panel{ margin:26px 0; }
-figure.panel svg{ width:100%; height:auto; display:block; }
-figure.panel figcaption{ font-family:var(--serif); font-style:italic; font-size:.92rem; color:var(--chalk-faint); margin-top:10px; }
-
-/* ideal/prática list */
-.ideal-item{ margin:20px 0; padding-left:2.2em; position:relative; }
-.ideal-item .num{ position:absolute; left:0; top:.05em; font-family:var(--chalk-font); font-size:1.3rem; color:var(--yellow); }
-.ideal-item .claim{ font-family:var(--chalk-font); font-size:1.1rem; color:var(--chalk); }
-.ideal-item .claim .val{ color:var(--yellow); }
-.ideal-item .pratica{ margin-top:.35em; font-family:var(--serif); font-size:.95rem; color:var(--chalk-dim); padding:.4em .8em; border-left:3px solid var(--orange); }
-.ideal-item .pratica b{ color:var(--orange); font-family:var(--chalk-font); font-weight:400; }
-
-.attn{ border:2px dashed var(--pink); border-radius:6px; padding:16px 20px; margin:24px 0; }
-.attn .tag{ font-family:var(--chalk-font); color:var(--pink); font-size:1.05rem; display:block; margin-bottom:.3em; }
-
-/* toggle */
-.toggle-block{ margin:22px 0; }
-.toggle-input{ position:absolute; opacity:0; width:1px; height:1px; }
-.toggle-label{ font-family:var(--chalk-font); font-size:1rem; display:inline-flex; align-items:center; gap:10px; cursor:pointer; color:var(--chalk-dim); margin-bottom:12px; }
-.toggle-track{ width:44px; height:23px; border-radius:99px; background:var(--board-dark); border:2px solid var(--line-strong); position:relative; }
-.toggle-thumb{ position:absolute; top:1px; left:1px; width:17px; height:17px; border-radius:50%; background:var(--yellow); transition:transform .2s ease, background .2s ease; }
-.toggle-input:checked ~ .toggle-label .toggle-thumb{ transform:translateX(21px); background:var(--pink); }
-.toggle-label .side.ideal{ color:var(--yellow); }
-.toggle-input:checked ~ .toggle-label .side.ideal{ color:var(--chalk-faint); }
-.toggle-input:checked ~ .toggle-label .side.real{ color:var(--pink); }
-.panels .panel-view{ display:none; }
-.toggle-input:not(:checked) ~ .panels .panel-view.ideal{ display:block; }
-.toggle-input:checked ~ .panels .panel-view.real{ display:block; }
-
-.example{ border:2px solid var(--line-strong); border-radius:8px; margin:26px 0; padding:20px 22px 22px; }
-.example .ex-head{ font-family:var(--chalk-font); font-size:1.15rem; color:var(--yellow); margin-bottom:.6em; }
-
-table.spec{ width:100%; border-collapse:collapse; margin:16px 0 8px; font-family:var(--serif); font-size:.94em; }
-table.spec th{ font-family:var(--chalk-font); font-weight:400; font-size:1rem; color:var(--yellow); text-align:left; padding:6px 12px; border-bottom:2px dashed var(--line-strong); }
-table.spec td{ padding:10px 12px; border-bottom:1px dashed var(--line); vertical-align:top; }
-table.spec td.sym{ font-family:var(--chalk-font); color:var(--orange); white-space:nowrap; font-size:1.03em; }
-table.spec tr:last-child td{ border-bottom:none; }
-
-footer.page-footer{ padding:24px 44px 60px; font-family:var(--chalk-font); font-size:.92rem; color:var(--chalk-faint); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
-
-@media (max-width:900px){
-  .shell{ grid-template-columns:1fr; }
-  .sidebar{ position:static; height:auto; border-right:none; border-bottom:5px double var(--line-strong); }
-  .topbar{ padding:20px 22px; }
-  .hero-module{ padding:34px 22px 28px; }
-  .content{ padding:0 22px 44px; }
-  footer.page-footer{ padding:20px 22px 44px; }
-}
+  /* focus visibility */
+  a:focus-visible, button:focus-visible{outline:2px solid var(--teal); outline-offset:2px;}
 </style>
 </head>
 <body>
 
-<div class="bg-grid" aria-hidden="true"></div>
-
-<div class="shell">
-
-  <!-- ============================================================
-       SIDEBAR
-       ============================================================ -->
+<div class="app">
   <aside class="sidebar">
-    <div class="brand">GUIAS</div>
-    <div class="brand-sub">Poli USP · notas de aula</div>
-    <hr>
-    <div class="group-label">ELETRÔNICA ANALÓGICA</div>
-    <nav class="module-list">
-      <a class="module-item active" href="#top"><span class="num">01</span> Amplificadores Operacionais</a>
-    </nav>
-    <div class="more-soon">+ novos módulos em breve</div>
+    <div class="brand"><span>ESCOLA POLITÉCNICA · USP</span>Física IV — Guia</div>
+    <ul class="navlist" id="navlist"></ul>
+    <div class="sidebar-foot">6 tópicos<br>≈90 exercícios<br>Listas 1–2 · P1 2023–2025</div>
   </aside>
 
-  <!-- ============================================================
-       MAIN
-       ============================================================ -->
-  <div class="main-col">
+  <main>
+    <header class="hero">
+      <div class="eyebrow">Física IV · 4323204</div>
+      <h1>Ondas, Relatividade<br>e Física Quântica</h1>
+      <p class="lede">Todo o conteúdo das Listas 1 e 2 e das três provas P1 (2023, 2024 e 2025), organizado por tópico. Cada exercício termina com um botão <strong>Resolução</strong> — clique para revelar a resposta. As questões de prova aparecem sempre por último em cada tópico.</p>
+      <div class="sources">
+        <span class="source-chip">Lista 1 — Interferência, Difração, Relatividade</span>
+        <span class="source-chip">Lista 2 — Relatividade, Fótons, Bohr, Ondas de matéria</span>
+        <span class="source-chip">P1 2023 · P1 2024 · P1 2025</span>
+      </div>
+    </header>
 
-    <div class="topbar" id="top">
-      <div class="crumb">ELETRÔNICA · AMPLIFICADORES OPERACIONAIS</div>
-      <nav class="tabs">
-        <a href="#intro">Introdução</a>
-        <a href="#funcionamento">Funcionamento</a>
-        <a href="#ideal">Amp Op ideal</a>
-        <a href="#inversora">Config. inversora</a>
-        <a href="#real">A real</a>
-        <a href="#exemplos">Exemplos</a>
-      </nav>
-    </div>
+    <div id="topics-container"></div>
 
-    <section class="hero-module">
-      <div class="hero-eyebrow">MÓDULO 01 · GUIA DE BANCADA</div>
-      <h1><span class="w1">Um bloco com ganho quase infinito chega às suas mãos.</span> <span class="w2">Como dois resistores o transformam num amplificador previsível?</span></h1>
-      <p class="dek">O amplificador operacional compara duas tensões de entrada e amplifica a diferença por um ganho enorme demais para usar sozinho. Este módulo cobre o modelo ideal (e por que o curto-circuito virtual funciona), a configuração inversora, as limitações de um CI real como o LM741, e exemplos numéricos resolvidos passo a passo.</p>
-      <div class="meta-row"><b>Curso</b> Eletrônica Analógica — Poli USP &nbsp;&nbsp;&nbsp; <b>Módulo</b> Amplificadores Operacionais</div>
-
-      <svg class="hero-deco" viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <polyline points="20,460 130,460 270,60 380,60" fill="none" stroke="var(--chalk-faint)" stroke-width="1.6" stroke-dasharray="5,7"/>
-        <g fill="var(--yellow)">
-          <circle cx="20" cy="460" r="5.5"/>
-          <circle cx="62" cy="460" r="5.5"/>
-          <circle cx="104" cy="460" r="5.5"/>
-          <circle cx="150" cy="418" r="5.5"/>
-          <circle cx="182" cy="330" r="5.5"/>
-          <circle cx="214" cy="242" r="5.5"/>
-          <circle cx="246" cy="154" r="5.5"/>
-          <circle cx="278" cy="66" r="5.5"/>
-          <circle cx="322" cy="60" r="5.5"/>
-          <circle cx="366" cy="60" r="5.5"/>
-        </g>
-      </svg>
-    </section>
-
-    <div class="content">
-
-      <!-- ============================================================
-           INTRODUÇÃO
-           ============================================================ -->
-      <section class="content-section" id="intro">
-        <div class="eyebrow">INTRODUÇÃO</div>
-        <h2>Amplificador Operacional</h2>
-        <p class="lead">Um amp op é um circuito integrado com dois terminais de entrada — <code>v1</code> (inversora) e <code>v2</code> (não-inversora) — e um terminal de saída <code>v0</code>, alimentado por uma fonte simétrica (+Vcc / −Vcc).</p>
-
-        <p>O nome vem dos primeiros computadores analógicos (décadas de 1940–50), onde esse bloco de ganho era usado para realizar "operações" — somar, subtrair, integrar tensões. O uso mais comum hoje é bem mais simples: amplificar e condicionar sinais.</p>
-
-        <figure class="panel">
-          <svg viewBox="0 0 460 240" xmlns="http://www.w3.org/2000/svg">
-            <g stroke="var(--chalk)" stroke-width="2.2" fill="none">
-              <line x1="40" y1="80" x2="120" y2="80"/>
-              <line x1="40" y1="160" x2="120" y2="160"/>
-              <line x1="320" y1="120" x2="400" y2="120"/>
-              <line x1="220" y1="16" x2="220" y2="42"/>
-              <line x1="220" y1="198" x2="220" y2="224"/>
-            </g>
-            <polygon points="120,42 120,198 320,120" fill="none" stroke="var(--chalk)" stroke-width="2.5"/>
-            <text x="138" y="90" font-family="Kalam" font-size="24" fill="var(--chalk)">−</text>
-            <text x="138" y="172" font-family="Kalam" font-size="24" fill="var(--chalk)">+</text>
-            <text x="4" y="72" font-family="Kalam" font-size="17" fill="var(--chalk-dim)">v1</text>
-            <text x="4" y="176" font-family="Kalam" font-size="17" fill="var(--chalk-dim)">v2</text>
-            <text x="410" y="126" font-family="Kalam" font-size="18" fill="var(--yellow)">v0</text>
-            <text x="228" y="14" font-family="Kalam" font-size="14" fill="var(--chalk-faint)">+Vcc</text>
-            <text x="226" y="236" font-family="Kalam" font-size="14" fill="var(--chalk-faint)">−Vcc</text>
-          </svg>
-          <figcaption>v1 (entrada inversora, "−") e v2 (entrada não-inversora, "+") — notação usada em todo o módulo.</figcaption>
-        </figure>
-
-        <p>Um dos CIs mais usados em ensino é o <code>LM741</code> (1968) — vamos usá-lo como referência de valores "prática" ao longo do guia.</p>
-        <p><strong>Aplicações:</strong> amplificadores de tensão, somadores/subtratores, buffers, filtros ativos, integradores/diferenciadores, conversores corrente–tensão, comparadores, amplificadores de instrumentação.</p>
-      </section>
-
-      <!-- ============================================================
-           FUNCIONAMENTO BÁSICO
-           ============================================================ -->
-      <section class="content-section" id="funcionamento">
-        <div class="eyebrow">FUNCIONAMENTO BÁSICO</div>
-        <h2>O modelo do amp op</h2>
-        <p class="lead">O comportamento do bloco inteiro é resumido pela relação entre a saída e a diferença das entradas:</p>
-
-        <div class="eq"><span class="hand-box">v0 &nbsp;=&nbsp; A · (v2 − v1)</span></div>
-
-        <p>Essa é a forma simplificada. A forma completa também inclui um termo de <em class="term">modo comum</em> — a parte do sinal igual nas duas entradas:</p>
-
-        <div class="eq"><span class="crossed">v0 = Ad(v2 − v1) + Acm·(v1 + v2)/2</span></div>
-        <p style="margin-top:-.4em">Assumimos <code>Acm ≈ 0</code> (CMRR → ∞, ver Amp Op ideal), sobrando <code>v0 = Ad(v2−v1) = A(v2−v1)</code>.</p>
-
-        <figure class="panel">
-          <figcaption style="margin-top:0;margin-bottom:10px">Modelo — circuito equivalente por dentro do símbolo</figcaption>
-          <svg viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg">
-            <polygon points="140,50 140,250 460,150" fill="none" stroke="var(--chalk-faint)" stroke-width="2" stroke-dasharray="6,5"/>
-            <g stroke="var(--chalk)" stroke-width="2.2" fill="none">
-              <line x1="40" y1="110" x2="200" y2="110"/>
-              <line x1="40" y1="190" x2="200" y2="190"/>
-            </g>
-            <text x="4" y="103" font-family="Kalam" font-size="16" fill="var(--chalk-dim)">v1</text>
-            <text x="4" y="196" font-family="Kalam" font-size="16" fill="var(--chalk-dim)">v2</text>
-            <polyline points="200,110 200,124 214,132 186,144 214,156 186,168 200,176 200,190" fill="none" stroke="var(--orange)" stroke-width="2.2"/>
-            <text x="222" y="156" font-family="Kalam" font-size="16" fill="var(--orange)">Ri</text>
-            <line x1="200" y1="150" x2="256" y2="150" stroke="var(--chalk)" stroke-width="2"/>
-            <polygon points="256,150 280,132 304,150 280,168" fill="none" stroke="var(--yellow)" stroke-width="2.2"/>
-            <text x="256" y="120" font-family="Kalam" font-size="16" fill="var(--yellow)">A·vd</text>
-            <line x1="304" y1="150" x2="330" y2="150" stroke="var(--chalk)" stroke-width="2"/>
-            <polyline points="330,150 340,150 347,138 361,162 375,138 389,162 396,150 406,150" fill="none" stroke="var(--orange)" stroke-width="2.2"/>
-            <text x="350" y="126" font-family="Kalam" font-size="16" fill="var(--orange)">Ro</text>
-            <line x1="406" y1="150" x2="460" y2="150" stroke="var(--chalk)" stroke-width="2"/>
-            <line x1="460" y1="150" x2="510" y2="150" stroke="var(--chalk)" stroke-width="2"/>
-            <text x="518" y="156" font-family="Kalam" font-size="18" fill="var(--yellow)">v0</text>
-          </svg>
-          <figcaption>Ri entre as entradas · fonte dependente A·vd (vd = v2−v1) · Ro em série até a saída — o mesmo modelo Thévenin usado em circuitos elétricos.</figcaption>
-        </figure>
-      </section>
-
-      <!-- ============================================================
-           AMP OP IDEAL
-           ============================================================ -->
-      <section class="content-section" id="ideal">
-        <div class="eyebrow">AMP OP IDEAL</div>
-        <h2>Amplificador Operacional Ideal</h2>
-        <p class="lead">Cinco hipóteses de idealização — cada uma comparada com o valor típico de um CI real:</p>
-
-        <div class="ideal-item"><span class="num">1</span>
-          <div class="claim">Ganho A infinito &nbsp; <span class="val">A = ∞</span></div>
-          <div class="pratica"><b>Prática</b> — A → 10⁴ a 10⁵ V/V</div>
-        </div>
-        <div class="ideal-item"><span class="num">2</span>
-          <div class="claim">Impedância de entrada infinita &nbsp; <span class="val">Rin = ∞</span></div>
-          <div class="pratica"><b>Prática</b> — Rin ≈ 20 MΩ</div>
-        </div>
-        <div class="ideal-item"><span class="num">3</span>
-          <div class="claim">Impedância de saída nula &nbsp; <span class="val">Rout = 0</span></div>
-          <div class="pratica"><b>Prática</b> — Rout ≈ 50 Ω</div>
-        </div>
-        <div class="ideal-item"><span class="num">4</span>
-          <div class="claim">Taxa de Rejeição de Modo Comum infinita &nbsp; <span class="val">CMRR = Ad/Acm = ∞</span></div>
-          <div class="pratica"><b>Prática</b> — CMRR tipicamente 70–90 dB</div>
-        </div>
-        <div class="ideal-item"><span class="num">5</span>
-          <div class="claim">Faixa de passagem infinita</div>
-          <div class="pratica"><b>Prática</b> — banda finita: GBW ≈ 1 MHz no LM741</div>
-        </div>
-
-        <figure class="panel">
-          <svg viewBox="0 0 440 300" xmlns="http://www.w3.org/2000/svg">
-            <line x1="40" y1="30" x2="40" y2="230" stroke="var(--chalk-faint)" stroke-width="1.5"/>
-            <line x1="40" y1="230" x2="420" y2="230" stroke="var(--chalk-faint)" stroke-width="1.5"/>
-            <text x="46" y="24" font-family="Kalam" font-size="16" fill="var(--chalk-dim)">20 log |A(ω)|</text>
-            <g font-family="Kalam" font-size="13" fill="var(--chalk-faint)">
-              <text x="10" y="234">0</text><text x="10" y="189">20</text><text x="10" y="144">40</text><text x="10" y="99">60</text>
-            </g>
-            <g font-family="Kalam" font-size="12" fill="var(--chalk-faint)">
-              <text x="26" y="248">10⁻³</text><text x="66" y="248">10⁻²</text><text x="106" y="248">10⁻¹</text>
-              <text x="152" y="248">1</text><text x="192" y="248">10</text><text x="228" y="248">10²</text>
-              <text x="268" y="248">10³</text><text x="308" y="248">10⁴</text><text x="348" y="248">10⁵</text><text x="388" y="248">10⁶</text>
-            </g>
-            <text x="380" y="264" font-family="Kalam" font-size="14" fill="var(--chalk-faint)">ω</text>
-            <polyline points="40,50 200,50 400,255" fill="none" stroke="var(--yellow)" stroke-width="2.6"/>
-          </svg>
-          <figcaption>5. Faixa de passagem infinita — na prática, o ganho cai a −20 dB/década após o polo dominante.</figcaption>
-        </figure>
-
-        <h3 style="margin-top:40px;font-size:1.3rem">Conceito de curto virtual</h3>
-        <p class="lead">Por que dá pra assumir v1 ≈ v2? Um exemplo concreto: A = 10⁴, Vcc = 10 V.</p>
-
-        <figure class="panel">
-          <svg viewBox="0 0 460 300" xmlns="http://www.w3.org/2000/svg">
-            <text x="10" y="24" font-family="Kalam" font-size="16" fill="var(--chalk-dim)">A = 10⁴</text>
-            <text x="10" y="46" font-family="Kalam" font-size="16" fill="var(--chalk-dim)">Vcc = 10 V</text>
-            <line x1="30" y1="160" x2="440" y2="160" stroke="var(--chalk-faint)" stroke-width="1.5"/>
-            <line x1="250" y1="30" x2="250" y2="270" stroke="var(--chalk-faint)" stroke-width="1.5"/>
-            <text x="256" y="24" font-family="Kalam" font-size="16" fill="var(--chalk-dim)">v0 (V)</text>
-            <text x="400" y="180" font-family="Kalam" font-size="15" fill="var(--chalk-dim)">v2 − v1</text>
-            <g font-family="Kalam" font-size="12" fill="var(--chalk-faint)">
-              <text x="30" y="176">−10V</text><text x="82" y="176">−1V</text><text x="128" y="176">−0,1V</text>
-              <text x="176" y="176">−10mV</text><text x="222" y="176">−1mV</text>
-              <text x="264" y="176">1mV</text><text x="298" y="176">10mV</text>
-            </g>
-            <text x="228" y="115" font-family="Kalam" font-size="13" fill="var(--chalk-dim)">10</text>
-            <text x="228" y="220" font-family="Kalam" font-size="13" fill="var(--chalk-dim)">−10</text>
-            <polyline points="40,255 230,255 270,65 430,65" fill="none" stroke="var(--yellow)" stroke-width="2.6"/>
-            <path d="M 220,272 Q 250,290 280,272" fill="none" stroke="var(--pink)" stroke-width="2"/>
-            <text x="180" y="298" font-family="Kalam" font-size="15" fill="var(--pink)">|v2 − v1| &lt; 1 mV</text>
-          </svg>
-          <figcaption>Vcc/A = 10 V / 10⁴ = 1 mV — para qualquer saída razoável, a diferença de entrada precisa ser menor que 1 mV. Ou seja: v1 ≈ v2.</figcaption>
-        </figure>
-
-        <p>Essa é a justificativa por trás das duas <em class="term">regras de ouro</em>, válidas sempre que houver realimentação negativa fechando a malha:</p>
-
-        <div class="eq">
-          Regra 1 <span class="dim">(curto virtual)</span> — <span class="y">v1 = v2</span><br>
-          Regra 2 <span class="dim">(sem corrente de entrada)</span> — <span class="y">i1 = i2 = 0</span>
-        </div>
-
-        <div class="attn">
-          <span class="tag">atenção</span>
-          As regras só valem <strong>com realimentação negativa</strong>. Sem malha fechada, o amp op não se equilibra — vira comparador saturado em +Vcc ou −Vcc.
-        </div>
-      </section>
-
-      <!-- ============================================================
-           CONFIGURAÇÃO INVERSORA
-           ============================================================ -->
-      <section class="content-section" id="inversora">
-        <div class="eyebrow">CONFIGURAÇÃO INVERSORA</div>
-        <h2>Configuração Inversora</h2>
-        <p class="lead">vi entra por R1 até o nó v1; R2 realimenta a saída de volta para o mesmo nó; v2 é aterrado.</p>
-
-        <figure class="panel">
-          <svg viewBox="0 0 620 280" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="80" cy="100" r="24" fill="none" stroke="var(--chalk)" stroke-width="2.2"/>
-            <text x="80" y="106" text-anchor="middle" font-family="Kalam" font-size="15" fill="var(--chalk)">vi</text>
-            <line x1="104" y1="100" x2="140" y2="100" stroke="var(--chalk)" stroke-width="2.2"/>
-            <polyline points="140,100 150,100 157,88 171,112 185,88 199,112 206,100 220,100" fill="none" stroke="var(--orange)" stroke-width="2.3"/>
-            <text x="178" y="78" text-anchor="middle" font-family="Kalam" font-size="16" fill="var(--orange)">R1</text>
-            <text x="150" y="128" text-anchor="middle" font-family="Kalam" font-size="13" fill="var(--yellow)">i1</text>
-
-            <line x1="220" y1="100" x2="240" y2="100" stroke="var(--chalk)" stroke-width="2.2"/>
-            <circle cx="240" cy="100" r="4" fill="var(--chalk)"/>
-            <text x="230" y="124" font-family="Kalam" font-size="14" fill="var(--chalk-dim)">v1</text>
-            <line x1="240" y1="100" x2="300" y2="100" stroke="var(--chalk)" stroke-width="2.2"/>
-
-            <polygon points="300,60 300,160 460,110" fill="none" stroke="var(--chalk)" stroke-width="2.5"/>
-            <text x="316" y="105" font-family="Kalam" font-size="20" fill="var(--chalk)">−</text>
-            <text x="316" y="150" font-family="Kalam" font-size="20" fill="var(--chalk)">+</text>
-            <text x="370" y="90" font-family="Kalam" font-size="15" fill="var(--chalk-faint)">ideal</text>
-            <path d="M 385,95 Q 355,85 335,95" fill="none" stroke="var(--chalk-faint)" stroke-width="1.5"/>
-
-            <line x1="300" y1="150" x2="255" y2="150" stroke="var(--chalk)" stroke-width="2.2"/>
-            <line x1="255" y1="150" x2="255" y2="185" stroke="var(--chalk)" stroke-width="2.2"/>
-            <g stroke="var(--chalk)" stroke-width="2.2">
-              <line x1="240" y1="185" x2="270" y2="185"/>
-              <line x1="245" y1="193" x2="265" y2="193"/>
-              <line x1="250" y1="201" x2="260" y2="201"/>
-            </g>
-            <text x="205" y="200" font-family="Kalam" font-size="14" fill="var(--chalk-dim)">v2 = 0</text>
-
-            <line x1="460" y1="110" x2="500" y2="110" stroke="var(--chalk)" stroke-width="2.2"/>
-            <circle cx="500" cy="110" r="4" fill="var(--yellow)"/>
-            <line x1="500" y1="110" x2="560" y2="110" stroke="var(--chalk)" stroke-width="2.2"/>
-            <text x="568" y="116" font-family="Kalam" font-size="16" fill="var(--yellow)">v0</text>
-
-            <line x1="500" y1="110" x2="500" y2="30" stroke="var(--chalk)" stroke-width="2.2"/>
-            <line x1="500" y1="30" x2="365" y2="30" stroke="var(--chalk)" stroke-width="2.2"/>
-            <polyline points="365,30 358,30 351,18 337,42 323,18 309,42 302,30 285,30" fill="none" stroke="var(--orange)" stroke-width="2.3"/>
-            <text x="323" y="14" text-anchor="middle" font-family="Kalam" font-size="16" fill="var(--orange)">R2</text>
-            <text x="323" y="52" text-anchor="middle" font-family="Kalam" font-size="13" fill="var(--yellow)">i2</text>
-            <line x1="285" y1="30" x2="240" y2="30" stroke="var(--chalk)" stroke-width="2.2"/>
-            <line x1="240" y1="30" x2="240" y2="100" stroke="var(--chalk)" stroke-width="2.2"/>
-          </svg>
-          <figcaption>R1 traz o sinal (âmbar) · R2 fecha a realimentação negativa até o nó v1 · v2 aterrado.</figcaption>
-        </figure>
-
-        <p><strong>1.</strong> Regra 1 (curto virtual): como v2 = 0, então <code>v1 = v2 = 0</code> — terra virtual.</p>
-        <p><strong>2.</strong> KCL no nó v1 (nenhuma corrente entra no amp op): <code>i1 = i2</code></p>
-
-        <div class="eq">i1 &nbsp;=&nbsp; (vi − v1) / R1 &nbsp;=&nbsp; vi / R1</div>
-
-        <p><strong>3.</strong> Relação em R2, do nó v1 até a saída:</p>
-        <div class="eq">v0 &nbsp;=&nbsp; v1 − R2·i2 &nbsp;=&nbsp; 0 − R2·i2</div>
-
-        <p><strong>4.</strong> Substituindo i2 = i1 = vi/R1:</p>
-        <div class="eq" style="font-size:1.4rem"><span class="hand-box">v0 &nbsp;=&nbsp; −(R2/R1) · vi</span></div>
-
-        <div class="eq">G &nbsp;=&nbsp; v0/vi &nbsp;=&nbsp; −<span class="hand-circle">R2/R1</span></div>
-
-        <p style="margin-top:1.2em">O sinal negativo é a inversão de 180°. O ganho depende só dos resistores externos — nada de A entra na conta, desde que A seja bem maior que R2/R1.</p>
-
-        <table class="spec">
-          <tr><th>Grandeza</th><th>Símbolo</th><th>Valor (ideal)</th></tr>
-          <tr><td>Ganho de tensão</td><td class="sym">G</td><td>−R2 / R1</td></tr>
-          <tr><td>Impedância de entrada do circuito</td><td class="sym">Zin</td><td>R1</td></tr>
-          <tr><td>Impedância de saída do circuito</td><td class="sym">Zout</td><td>≈ 0</td></tr>
-          <tr><td>Tensão no nó v1</td><td class="sym">v1</td><td>0 V (terra virtual)</td></tr>
-        </table>
-      </section>
-
-      <!-- ============================================================
-           A REAL
-           ============================================================ -->
-      <section class="content-section" id="real">
-        <div class="eyebrow">A REAL</div>
-        <h2>Amplificador Operacional Real</h2>
-        <p class="lead">Além das cinco características já comparadas (Amp Op ideal), o CI real tem outras imperfeições:</p>
-
-        <div class="ideal-item"><span class="num">·</span>
-          <div class="claim">Tensão de offset &nbsp; <span class="val">Vos</span></div>
-          <div class="pratica">Com as duas entradas em 0 V, a saída não fica em 0 V — assimetria de fabricação do par diferencial. No 741, Vos típico ≈ 1 mV (máx. ≈ 6 mV).</div>
-        </div>
-        <div class="ideal-item"><span class="num">·</span>
-          <div class="claim">Correntes de polarização &nbsp; <span class="val">Ib, Ios</span></div>
-          <div class="pratica">A Regra 2 é aproximação: uma pequena corrente DC entra nos dois terminais (Ib ≈ 80 nA no 741). A diferença entre elas é Ios = |Ib+ − Ib−|.</div>
-        </div>
-        <div class="ideal-item"><span class="num">·</span>
-          <div class="claim">Taxa de subida (Slew Rate) &nbsp; <span class="val">SR</span></div>
-          <div class="pratica">Velocidade máxima de variação da saída, em V/µs. No 741, SR ≈ 0,5 V/µs — sinais rápidos saem distorcidos em rampa.</div>
-        </div>
-        <div class="ideal-item"><span class="num">·</span>
-          <div class="claim">Saturação</div>
-          <div class="pratica">v0 nunca ultrapassa a alimentação — na prática fica 1–2 V abaixo de +Vcc e acima de −Vcc. Ver Exemplo 2 abaixo.</div>
-        </div>
-      </section>
-
-      <!-- ============================================================
-           EXEMPLOS
-           ============================================================ -->
-      <section class="content-section" id="exemplos">
-        <div class="eyebrow">EXEMPLOS</div>
-        <h2>Exemplos!</h2>
-
-        <div class="example">
-          <div class="ex-head">Exemplo 1 — ganho inversor básico</div>
-          <p><strong>Dados:</strong> R1 = 1 kΩ, R2 = 10 kΩ, vi = 0,5 V. Amp op ideal.</p>
-          <div class="eq">
-            G = −R2/R1 = −10 kΩ/1 kΩ = <span class="y">−10</span><br>
-            v0 = G · vi = −10 · 0,5 V = <span class="y">−5 V</span>
-          </div>
-          <p style="margin-top:.8em">Zin = R1 = 1 kΩ: a fonte de sinal enxerga só 1 kΩ de carga.</p>
-        </div>
-
-        <div class="example">
-          <div class="ex-head">Exemplo 2 — quando o modelo ideal "quebra": saturação</div>
-          <p><strong>Dados:</strong> R1 = 1 kΩ, R2 = 100 kΩ, vi = 0,3 V, alimentação ±12 V (satura ≈ ±11 V na prática).</p>
-
-          <div class="toggle-block">
-            <input type="checkbox" id="toggle-model" class="toggle-input">
-            <label for="toggle-model" class="toggle-label">
-              <span class="side ideal">modelo ideal</span>
-              <span class="toggle-track"><span class="toggle-thumb"></span></span>
-              <span class="side real">modelo real</span>
-            </label>
-            <div class="panels">
-              <div class="panel-view ideal">
-                <div class="eq">G = −100 kΩ/1 kΩ = −100<br>v0 = −100 · 0,3 V = <span class="y">−30 V</span></div>
-                <p>Matematicamente "correto" — mas impossível: a alimentação é só ±12 V.</p>
-              </div>
-              <div class="panel-view real">
-                <div class="eq">Previsão ideal: −30 V <span class="dim">(inatingível)</span><br>Saída real: <span style="color:var(--pink)">satura em ≈ −11 V</span></div>
-                <p>A saída bate no limite da alimentação e fica ceifada (clipping) — distorção, não amplificação linear.</p>
-              </div>
-            </div>
-          </div>
-
-          <figure class="panel" style="margin-top:6px">
-            <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-              <line x1="200" y1="20" x2="200" y2="380" stroke="var(--chalk-faint)" stroke-width="1.5"/>
-              <line x1="20" y1="200" x2="380" y2="200" stroke="var(--chalk-faint)" stroke-width="1.5"/>
-              <text x="204" y="32" font-family="Kalam" font-size="15" fill="var(--chalk-dim)">v0</text>
-              <text x="352" y="216" font-family="Kalam" font-size="15" fill="var(--chalk-dim)">vi</text>
-              <line x1="40" y1="68" x2="360" y2="68" stroke="var(--pink)" stroke-width="1" stroke-dasharray="4,5"/>
-              <line x1="40" y1="332" x2="360" y2="332" stroke="var(--pink)" stroke-width="1" stroke-dasharray="4,5"/>
-              <text x="278" y="62" font-family="Kalam" font-size="13" fill="var(--pink)">+Vsat ≈ 11V</text>
-              <text x="270" y="348" font-family="Kalam" font-size="13" fill="var(--pink)">−Vsat ≈ −11V</text>
-              <polyline points="40,68 141,68 259,332 360,332" fill="none" stroke="var(--yellow)" stroke-width="2.6" stroke-linejoin="round"/>
-            </svg>
-            <figcaption>Trecho linear com inclinação −R2/R1 no meio; fora dele, a saída satura.</figcaption>
-          </figure>
-        </div>
-
-        <div class="example">
-          <div class="ex-head">Exemplo 3 — erro por offset de entrada</div>
-          <p><strong>Dados:</strong> mesmo circuito do Exemplo 1 (G = −10), vi = 0 V, Vos = 2 mV.</p>
-          <div class="eq">v0(offset) ≈ Vos · (1 + R2/R1) = 2 mV · 11 = <span class="y">22 mV</span></div>
-          <p style="margin-top:.8em">Mesmo sem sinal, a saída não é 0 V — erro de zero de 22 mV, relevante em instrumentação de baixo nível.</p>
-        </div>
-
-        <h2 style="margin-top:48px;font-size:1.5rem">Resumo — configuração inversora</h2>
-        <table class="spec">
-          <tr><th>Parâmetro</th><th>Símbolo</th><th>Expressão</th></tr>
-          <tr><td>Regra de ouro 1</td><td class="sym">v1, v2</td><td>v1 = v2</td></tr>
-          <tr><td>Regra de ouro 2</td><td class="sym">i1, i2</td><td>i1 = i2 = 0</td></tr>
-          <tr><td>Ganho de tensão</td><td class="sym">G</td><td>−R2 / R1</td></tr>
-          <tr><td>Impedância de entrada</td><td class="sym">Zin</td><td>R1</td></tr>
-          <tr><td>Erro de offset na saída</td><td class="sym">v0,os</td><td>Vos · (1 + R2/R1)</td></tr>
-          <tr><td>Ganho-banda (741)</td><td class="sym">GBW</td><td>≈ 1 MHz</td></tr>
-        </table>
-      </section>
-
-    </div>
-
-    <footer class="page-footer">
-      <span>guias · poli usp</span>
-      <span>módulo 01 · amplificadores operacionais</span>
-    </footer>
-
-  </div>
+    <footer class="site-foot">montado a partir das listas e gabaritos enviados — bons estudos, Mel.</footer>
+  </main>
 </div>
 
+<script>
+const r = String.raw;
+
+/* ---------------------------------------------------------- ICONS ---------------------------------------------------------- */
+const ICONS = {
+  wave: r`<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round">
+    <rect x="14" y="24" width="7" height="52" fill="currentColor" stroke="none" opacity="0.95"/>
+    <rect x="27" y="30" width="6" height="40" fill="currentColor" stroke="none" opacity="0.75"/>
+    <rect x="39" y="38" width="5" height="24" fill="currentColor" stroke="none" opacity="0.5"/>
+    <rect x="50" y="30" width="6" height="40" fill="currentColor" stroke="none" opacity="0.75"/>
+    <rect x="62" y="24" width="7" height="52" fill="currentColor" stroke="none" opacity="0.95"/>
+    <rect x="75" y="30" width="6" height="40" fill="currentColor" stroke="none" opacity="0.75"/>
+    <rect x="86" y="38" width="5" height="24" fill="currentColor" stroke="none" opacity="0.5"/>
+  </svg>`,
+  diffraction: r`<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round">
+    <rect x="8" y="46" width="5" height="8" fill="currentColor" stroke="none" opacity="0.35"/>
+    <rect x="20" y="38" width="6" height="24" fill="currentColor" stroke="none" opacity="0.55"/>
+    <rect x="34" y="24" width="8" height="52" fill="currentColor" stroke="none" opacity="0.9"/>
+    <rect x="46" y="14" width="10" height="72" fill="currentColor" stroke="none"/>
+    <rect x="60" y="24" width="8" height="52" fill="currentColor" stroke="none" opacity="0.9"/>
+    <rect x="74" y="38" width="6" height="24" fill="currentColor" stroke="none" opacity="0.55"/>
+    <rect x="88" y="46" width="5" height="8" fill="currentColor" stroke="none" opacity="0.35"/>
+  </svg>`,
+  relativity: r`<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round">
+    <rect x="14" y="14" width="72" height="72" rx="6" opacity="0.5"/>
+    <line x1="18" y1="18" x2="82" y2="82"/>
+    <line x1="82" y1="18" x2="18" y2="82"/>
+    <line x1="50" y1="10" x2="50" y2="90" stroke-dasharray="3 7" opacity="0.7"/>
+    <circle cx="50" cy="50" r="5" fill="currentColor" stroke="none"/>
+  </svg>`,
+  photon: r`<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M8 60 L28 32 L42 52 L60 20 L74 44 L88 24"/>
+    <path d="M78 30 L88 24 L86 36" fill="none"/>
+  </svg>`,
+  bohr: r`<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="3.5">
+    <circle cx="50" cy="50" r="14"/>
+    <circle cx="50" cy="50" r="28"/>
+    <circle cx="50" cy="50" r="42"/>
+    <circle cx="50" cy="50" r="5" fill="currentColor" stroke="none"/>
+    <circle cx="50" cy="8" r="4.5" fill="currentColor" stroke="none"/>
+    <path d="M50 22 Q34 34 50 36" stroke-dasharray="2 5" stroke-width="3"/>
+  </svg>`,
+  duality: r`<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round">
+    <path d="M6 50 Q16 26 26 50 T46 50" />
+    <circle cx="60" cy="50" r="3.5" fill="currentColor" stroke="none"/>
+    <circle cx="72" cy="50" r="3.5" fill="currentColor" stroke="none"/>
+    <circle cx="84" cy="50" r="3.5" fill="currentColor" stroke="none"/>
+    <circle cx="94" cy="50" r="3.5" fill="currentColor" stroke="none"/>
+  </svg>`
+};
+
+/* ---------------------------------------------------------- DATA ---------------------------------------------------------- */
+const TOPICS = [
+
+/* ============================================================ 1. INTERFERÊNCIA ============================================================ */
+{
+  id:'interferencia', icon:'wave', label:'Interferência',
+  theory: r`
+  <h3>Experimento de Young (dupla fenda)</h3>
+  <p>Duas fontes coerentes separadas por \(d\), tela a uma distância \(D\gg d\). A diferença de fase entre as duas ondas que chegam a um ponto do anteparo é \(\phi = \dfrac{2\pi d\sin\theta}{\lambda}\). Para duas fontes idênticas em fase, a intensidade resultante é</p>
+  <p>\[ I = I_0\cos^2\!\left(\frac{\phi}{2}\right) \]</p>
+  <p>Máximos (interferência construtiva) ocorrem em \(d\sin\theta = m\lambda\); mínimos em \(d\sin\theta = (m-\tfrac12)\lambda\), com \(m=0,\pm1,\pm2,\dots\). Na aproximação de ângulos pequenos, \(\sin\theta\approx\tan\theta\approx y/D\), de modo que a posição na tela vale \(y_m \approx \dfrac{m\lambda D}{d}\) (máximos) e o espaçamento entre franjas vizinhas é \(\Delta y = \lambda D/d\). Se as fontes emitem em <em>oposição de fase</em> (defasagem extra de \(\pi\)), os papéis de máximo e mínimo se invertem.</p>
+  <div class="diagram">
+  <svg viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace">
+    <line x1="40" y1="30" x2="40" y2="230" stroke="#B9AF92" stroke-width="2"/>
+    <circle cx="40" cy="95" r="4.5" fill="#C1554B"/>
+    <circle cx="40" cy="145" r="4.5" fill="#5FB8AA"/>
+    <text x="16" y="99" font-size="12" fill="#57666D">S1</text>
+    <text x="16" y="149" font-size="12" fill="#57666D">S2</text>
+    <line x1="40" y1="95" x2="40" y2="145" stroke="#1C2B33" stroke-width="1.4"/>
+    <text x="48" y="123" font-size="12" fill="#1C2B33">d</text>
+    <line x1="480" y1="20" x2="480" y2="240" stroke="#1C2B33" stroke-width="2.5"/>
+    <text x="486" y="18" font-size="12" fill="#57666D">tela</text>
+    <line x1="40" y1="95" x2="480" y2="60" stroke="#C1554B" stroke-width="1.6"/>
+    <line x1="40" y1="145" x2="480" y2="60" stroke="#5FB8AA" stroke-width="1.6" stroke-dasharray="5 4"/>
+    <circle cx="480" cy="60" r="4" fill="#E8A33D"/>
+    <text x="488" y="64" font-size="12" fill="#E8A33D">P</text>
+    <path d="M60 108 Q64 96 76 92" fill="none" stroke="#1C2B33" stroke-width="1.2"/>
+    <text x="80" y="92" font-size="11" fill="#1C2B33">θ</text>
+    <line x1="40" y1="220" x2="480" y2="220" stroke="#8CA1A6" stroke-width="1" stroke-dasharray="2 4"/>
+    <text x="250" y="235" font-size="12" fill="#57666D">D</text>
+    <line x1="40" y1="145" x2="70" y2="145" stroke="#8CA1A6" stroke-width="1" stroke-dasharray="2 3"/>
+    <path d="M46 141 L58 137" stroke="#E8A33D" stroke-width="1.6"/>
+    <text x="46" y="132" font-size="10.5" fill="#E8A33D">d·senθ</text>
+    <rect x="500" y="20" width="14" height="220" fill="#0F2027" opacity="0.04"/>
+    <g font-size="26" fill="#1C2B33" opacity="0.85">
+      <rect x="500" y="120" width="6" height="30" opacity="0.9"/>
+      <rect x="510" y="105" width="5" height="60" opacity="0.65"/>
+      <rect x="519" y="60" width="7" height="150" opacity="1"/>
+      <rect x="530" y="105" width="5" height="60" opacity="0.65"/>
+      <rect x="539" y="120" width="6" height="30" opacity="0.9"/>
+    </g>
+  </svg>
+  <p class="diagram-caption">Duas fontes coerentes \(S_1,S_2\) e o caminho até um ponto \(P\) da tela — a diferença de percurso \(d\sin\theta\) determina se \(P\) cai num máximo ou mínimo.</p>
+  </div>
+  <h3>Filmes finos</h3>
+  <p>Um raio refletido na interface onde o índice de refração <em>aumenta</em> sofre uma inversão de fase de \(\pi\) (meio comprimento de onda); numa interface onde o índice <em>diminui</em>, não há inversão. Um raio que percorre a espessura \(t\) do filme (índice \(n\)) duas vezes acumula uma fase adicional \(\dfrac{2\pi}{\lambda}(2nt)\), pois o comprimento de onda dentro do meio é \(\lambda_n=\lambda/n\). Comparando o número total de inversões de \(\pi\) dos dois raios refletidos, obtém-se a condição de interferência:</p>
+  <ul>
+    <li><strong>Uma única inversão</strong> (ex.: ar–filme–vidro, ou filme entre dois meios de índice menor): construtivo \(2nt=(m+\tfrac12)\lambda\); destrutivo \(2nt=m\lambda\).</li>
+    <li><strong>Duas inversões, ou nenhuma</strong> (os dois raios flipam igualmente): os papéis se invertem — construtivo \(2nt=m\lambda\); destrutivo \(2nt=(m+\tfrac12)\lambda\).</li>
+  </ul>
+  <div class="diagram">
+  <svg viewBox="0 0 560 260" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace">
+    <rect x="40" y="90" width="480" height="70" fill="#DCEEEA" stroke="#5FB8AA" stroke-width="1.4"/>
+    <text x="46" y="82" font-size="13" fill="#57666D">ar (n=1)</text>
+    <text x="46" y="130" font-size="13" fill="#1C2B33">filme (n)</text>
+    <text x="46" y="178" font-size="13" fill="#57666D">ar / vidro</text>
+    <line x1="220" y1="90" x2="220" y2="160" stroke="#57666D" stroke-width="1" stroke-dasharray="3 3"/>
+    <text x="228" y="130" font-size="12" fill="#57666D">t</text>
+    <line x1="140" y1="30" x2="200" y2="90" stroke="#1C2B33" stroke-width="2"/>
+    <line x1="200" y1="90" x2="150" y2="30" stroke="#C1554B" stroke-width="2"/>
+    <text x="120" y="24" font-size="11" fill="#1C2B33">incidente</text>
+    <text x="150" y="24" font-size="11" fill="#C1554B">raio 1</text>
+    <circle cx="200" cy="90" r="3.5" fill="#E8A33D"/>
+    <text x="204" y="86" font-size="10" fill="#E8A33D">flip π</text>
+    <line x1="200" y1="90" x2="240" y2="160" stroke="#5FB8AA" stroke-width="2"/>
+    <line x1="240" y1="160" x2="290" y2="90" stroke="#5FB8AA" stroke-width="2"/>
+    <line x1="290" y1="90" x2="330" y2="30" stroke="#5FB8AA" stroke-width="2"/>
+    <text x="292" y="24" font-size="11" fill="#5FB8AA">raio 2 (percorre 2t a mais)</text>
+    <circle cx="240" cy="160" r="3.5" fill="#8CA1A6"/>
+    <text x="248" y="166" font-size="10" fill="#57666D">sem flip</text>
+  </svg>
+  <p class="diagram-caption">Raio 1 reflete na interface onde o índice aumenta (inversão de \(\pi\)); raio 2 percorre \(2t\) a mais e reflete sem inversão (índice diminuindo) — daí a assimetria de fase entre eles.</p>
+  </div>
+  <h3>Fontes não coerentes / dois comprimentos de onda</h3>
+  <p>Quando duas fontes de \(\lambda_1\) e \(\lambda_2\) iluminam o mesmo anteparo sem coerência mútua, cada uma forma seu próprio padrão de franjas (mesmo \(d\)); coincidências de máximos/mínimos são encontradas igualando as posições \(y\) (ou, equivalentemente, os ângulos \(\theta\)) previstas por cada comprimento de onda — o valor de \(d\) (e de \(D\)) sempre se cancela nessas comparações.</p>
+  `,
+  exercises:[
+    {tag:'lista', src:'Lista 1', num:'35.9',
+      statement:r`Duas fendas separadas por \(0{,}450\text{ mm}\) estão a \(75{,}0\text{ cm}\) de uma tela, iluminadas por luz coerente com \(\lambda=500\text{ nm}\). Qual a distância entre a segunda e a terceira franja escura?`,
+      resolution:r`<p>As franjas escuras ficam em \(y_m=(m-\tfrac12)\dfrac{\lambda D}{d}\). A distância entre duas franjas escuras consecutivas é sempre igual ao espaçamento entre franjas, \(\Delta y = \dfrac{\lambda D}{d}\) (o termo \(-\tfrac12\) se cancela na subtração):</p>
+      <p>\[ \Delta y = \frac{(500\times10^{-9})(0{,}750)}{0{,}450\times10^{-3}} = 8{,}33\times10^{-4}\text{ m} \]</p>
+      <p><strong>Resposta: \(0{,}83\text{ mm}\).</strong></p>`},
+    {tag:'lista', src:'Lista 1', num:'35.11',
+      statement:r`Luz coerente de uma lâmpada de vapor de sódio (filtrada para um único \(\lambda\)) incide sobre duas fendas separadas por \(0{,}460\text{ mm}\). Na tela, a \(2{,}20\text{ m}\), a distância entre franjas brilhantes adjacentes é \(2{,}82\text{ mm}\). Determine \(\lambda\).`,
+      resolution:r`<p>O espaçamento entre franjas brilhantes é \(\Delta y = \lambda D/d\), logo:</p>
+      <p>\[ \lambda = \frac{\Delta y\, d}{D} = \frac{(2{,}82\times10^{-3})(0{,}460\times10^{-3})}{2{,}20} = 5{,}90\times10^{-7}\text{ m} \]</p>
+      <p><strong>Resposta: \(\lambda = 590\text{ nm}\).</strong></p>`},
+    {tag:'lista', src:'Lista 1', num:'35.18',
+      statement:r`Uma estação de rádio FM (\(107{,}9\text{ MHz}\)) tem duas antenas idênticas, em fase, separadas por \(12{,}0\text{ m}\). Considerando pontos a distâncias \(\gg 12{,}0\text{ m}\): (a) em que ângulos (a partir da linha de intensidade máxima) a intensidade é máxima? (b) Em que ângulos ela é nula?`,
+      resolution:r`<p>Primeiro, o comprimento de onda das ondas de rádio:</p>
+      <p>\[ \lambda = \frac{c}{f} = \frac{3{,}00\times10^{8}}{107{,}9\times10^{6}} = 2{,}780\text{ m}\qquad \Rightarrow\qquad \frac{\lambda}{d}=\frac{2{,}780}{12{,}0}=0{,}2317 \]</p>
+      <p><strong>(a) Máximos</strong> — \(d\sin\theta = m\lambda \Rightarrow \sin\theta = m(0{,}2317)\). Testando \(m=1,2,3,4\): \(\sin\theta=0{,}2317;\ 0{,}4633;\ 0{,}6950;\ 0{,}9267\) (para \(m=5\), \(\sin\theta>1\), não há solução):</p>
+      <p>\[ \theta = 13{,}4^\circ,\ 27{,}6^\circ,\ 44{,}1^\circ,\ 68{,}1^\circ \]</p>
+      <p><strong>(b) Mínimos</strong> — \(d\sin\theta=(m-\tfrac12)\lambda \Rightarrow \sin\theta=(m-\tfrac12)(0{,}2317)\). Para \(m=1,2,3,4\): \(\sin\theta = 0{,}1159;\ 0{,}3475;\ 0{,}5792;\ 0{,}8108\):</p>
+      <p>\[ \theta = 6{,}66^\circ,\ 20{,}4^\circ,\ 35{,}5^\circ,\ 54{,}3^\circ \]</p>`},
+    {tag:'lista', src:'Lista 1', num:'35.23',
+      statement:r`Duas fendas separadas por \(0{,}260\text{ mm}\), tela a \(0{,}700\text{ m}\), luz coerente com \(\lambda=660\text{ nm}\). (a) Distância entre o centro do máximo central e o primeiro mínimo. (b) Distância entre o centro do máximo central e o ponto onde a intensidade cai para \(I_0/2\).`,
+      resolution:r`<p><strong>(a)</strong> O primeiro mínimo ocorre em \(y_1=(1-\tfrac12)\dfrac{\lambda D}{d}=\dfrac12\dfrac{\lambda D}{d}\):</p>
+      <p>\[ y_1 = \frac12\cdot\frac{(660\times10^{-9})(0{,}700)}{0{,}260\times10^{-3}} = 8{,}89\times10^{-4}\text{ m} = 0{,}889\text{ mm} \]</p>
+      <p><strong>(b)</strong> \(I=I_0\cos^2(\phi/2)=I_0/2 \Rightarrow \cos^2(\phi/2)=\tfrac12 \Rightarrow \phi/2=\pi/4 \Rightarrow \phi=\pi/2\), exatamente a metade da fase do primeiro mínimo (\(\phi=\pi\)). Como \(y\propto\phi\) (regime de ângulos pequenos), esse ponto fica na metade do caminho até o primeiro mínimo:</p>
+      <p>\[ y_{I_0/2} = \frac{y_1}{2} = 0{,}444\text{ mm} \]`},
+    {tag:'lista', src:'Lista 1', num:'35.27',
+      statement:r`Qual deve ser a espessura da película mais fina, com \(n=1{,}42\), depositada sobre uma placa de vidro (\(n=1{,}52\)), para que ocorra interferência destrutiva da componente vermelha (\(650\text{ nm}\)) na reflexão de um feixe de luz branca incidente no ar sobre a placa?`,
+      resolution:r`<p>Sequência de índices: ar(1,0) → filme(1,42) → vidro(1,52) — em <em>ambas</em> as reflexões o índice aumenta, então os dois raios refletidos sofrem inversão de \(\pi\); as inversões se cancelam mutuamente e a condição fica como se não houvesse nenhuma: destrutivo em \(2nt=(m+\tfrac12)\lambda\). A menor espessura não nula corresponde a \(m=0\):</p>
+      <p>\[ t_{\min} = \frac{\lambda}{4n} = \frac{650}{4(1{,}42)} = 114{,}4\text{ nm} \]</p>
+      <p><strong>Resposta: \(t \approx 114\text{ nm}\).</strong></p>`},
+    {tag:'lista', src:'Lista 1', num:'35.32',
+      statement:r`Uma película de plástico (\(n=1{,}85\)) é colocada sobre o vidro (\(n=1{,}52\)) da janela de um carro. (a) Espessura mínima da película para produzir interferência construtiva de \(\lambda=550\text{ nm}\) refletindo nas duas superfícies da película. (b) É difícil fabricar e instalar uma película tão fina; qual a espessura seguinte, um pouco maior, que também produz interferência construtiva?`,
+      resolution:r`<p>Sequência de índices: ar(1,0) → plástico(1,85) → vidro(1,52) — na primeira interface o índice <em>aumenta</em> (inversão de \(\pi\)); na segunda, o índice <em>diminui</em> (\(1{,}52<1{,}85\), sem inversão). Só um raio inverte fase, então construtivo em \(2nt=(m+\tfrac12)\lambda\).</p>
+      <p><strong>(a)</strong> Menor espessura, \(m=0\): \(t=\dfrac{\lambda}{4n}=\dfrac{550}{4(1{,}85)}=74{,}3\text{ nm}\).</p>
+      <p><strong>(b)</strong> Próximo valor, \(m=1\): \(t=\dfrac{3\lambda}{4n}=3(74{,}3)=223\text{ nm}\).</p>`},
+    {tag:'lista', src:'Lista 1', num:'35.36',
+      statement:r`Qual a espessura mínima (excluindo o caso da espessura nula) de uma película de sabão (\(n=1{,}33\), ar dos dois lados) para que se forme uma franja escura quando iluminada por \(\lambda=480\text{ nm}\)? Quais seriam as próximas espessuras que também produziriam franja escura?`,
+      resolution:r`<p>Com ar dos dois lados (índice menor que o do filme nas duas interfaces), só a reflexão de <em>cima</em> inverte fase — mesmo caso do exercício 35.32. Construtivo: \(2nt=(m+\tfrac12)\lambda\); destrutivo (franja escura): \(2nt = m\lambda\), \(m=1,2,3,\dots\) (excluindo \(m=0\), que dá \(t=0\)):</p>
+      <p>\[ t_m = \frac{m\lambda}{2n} = \frac{m(480)}{2(1{,}33)} = m\times180{,}5\text{ nm} \]</p>
+      <p>Isso dá \(t_1\approx180{,}5\text{ nm}\), \(t_2\approx361\text{ nm}\), etc. <span class="flag">O gabarito da lista traz os valores \(96{,}4\), \(192\), \(289\) e \(386\text{ nm}\) — cerca de \(0{,}53\times\) os valores acima. A física do problema (uma única inversão de fase) e a fórmula \(2nt=m\lambda\) estão corretas; a diferença provavelmente vem de uma inconsistência nos dados de origem desta lista (por exemplo, um \(\lambda\) diferente de \(480\text{ nm}\) no problema original). Mantenho aqui a dedução consistente com os valores informados no enunciado.</span></p>`},
+    {tag:'lista', src:'Lista 1', num:'35.44',
+      statement:r`Duas antenas de rádio irradiam em fase, nos pontos \(A\) e \(B\), separados por \(200\text{ m}\). As ondas têm frequência \(5{,}80\text{ MHz}\). Um receptor é deslocado a partir de \(B\), ao longo de uma reta perpendicular a \(AB\). A que distância de \(B\) ocorrerá a primeira interferência destrutiva? (Nota: a distância entre o receptor e as fontes não é grande comparada a \(d=200\text{ m}\), então a fórmula de ângulos pequenos não vale — é preciso usar a diferença de percurso exata.)`,
+      resolution:r`<p>Comprimento de onda: \(\lambda = c/f = (3{,}00\times10^{8})/(5{,}80\times10^{6}) = 51{,}7\text{ m}\).</p>
+      <p>Com o receptor a uma distância \(x\) de \(B\) (na perpendicular), a diferença de percurso exata é \(\Delta = \sqrt{d^2+x^2}-x\). Como \(d/\lambda = 200/51{,}7 = 3{,}87\), a diferença começa em \(\Delta(x{=}0)=200\text{ m}\) (quase 4 comprimentos de onda) e diminui continuamente até \(0\) quando \(x\to\infty\). A <em>última</em> (maior \(x\)) posição destrutiva corresponde ao maior múltiplo semi-inteiro de \(\lambda\) menor que \(d\): \(3{,}5\lambda = 3{,}5(51{,}7)=180{,}9\text{ m}\).</p>
+      <p>Resolvendo \(\sqrt{d^2+x^2} = x + 180{,}9\) (elevando ao quadrado e isolando \(x\)):</p>
+      <p>\[ x = \frac{d^2 - (180{,}9)^2}{2(180{,}9)} = \frac{40000-32725}{361{,}8} \approx 20{,}1\text{ m} \]</p>
+      <p><strong>Resposta: \(\approx 20{,}05\text{ m}\).</strong></p>`},
+    {tag:'lista', src:'Lista 1', num:'35.52',
+      statement:r`Luz vermelha (\(700\text{ nm}\)) passa por uma fenda dupla; simultaneamente, outro feixe monocromático passa pelo mesmo dispositivo. O centro da terceira franja brilhante (\(m=3\)) do vermelho é puramente vermelho, sem mistura da outra cor — ou seja, \(\lambda_2\) precisa ter um <em>mínimo</em> exatamente nessa posição. Qual o comprimento de onda do segundo feixe? É preciso conhecer a separação entre as fendas para responder?`,
+      resolution:r`<p>Posição do 3º máximo do vermelho: \(y = \dfrac{3\lambda_1 D}{d}\). Para que \(\lambda_2\) tenha um mínimo nesse mesmo \(y\) (numerando os mínimos com \(m'=0,1,2,\dots\)): \(y=\left(m'+\tfrac12\right)\dfrac{\lambda_2 D}{d}\). Igualando (o fator \(D/d\) se cancela — <strong>não é preciso conhecer \(d\)</strong>):</p>
+      <p>\[ 3\lambda_1 = \left(m'+\tfrac12\right)\lambda_2 \ \Rightarrow\ \lambda_2 = \frac{3(700)}{m'+\tfrac12} = \frac{2100}{m'+0{,}5}\text{ nm} \]</p>
+      <p>Testando \(m'\) para cair na faixa visível (\(400\)–\(700\text{ nm}\)): \(m'=3\Rightarrow\lambda_2=600\text{ nm}\); \(m'=4\Rightarrow\lambda_2=467\text{ nm}\) (valores menores de \(m'\) dão infravermelho; \(m'=5\) dá \(382\text{ nm}\), no limite do visível).</p>
+      <p><strong>Resposta: duas soluções, \(\lambda_2=600\text{ nm}\) ou \(\lambda_2=467\text{ nm}\).</strong></p>`},
+    {tag:'lista', src:'Lista 1', num:'35.54',
+      statement:r`Luz branca incide normalmente sobre uma placa de vidro (\(n=1{,}52\)), com ar acima e abaixo. Observa-se interferência construtiva para \(\lambda=477{,}0\text{ nm}\) (no ar) e o comprimento de onda mais longo seguinte com interferência construtiva é \(540{,}6\text{ nm}\). Qual a espessura da placa?`,
+      resolution:r`<p>Ar–vidro–ar: uma única inversão de fase (na primeira interface), então construtivo em \(2nt=(m+\tfrac12)\lambda\). Os dois comprimentos de onda dados correspondem a ordens consecutivas \(m\) e \(m+1\) (o menor \(\lambda\) tem a maior ordem):</p>
+      <p>\[ \left(m+\tfrac12\right)(540{,}6) = \left(m+\tfrac32\right)(477) \]</p>
+      <p>Resolvendo: \(540{,}6\,m + 270{,}3 = 477\,m + 715{,}5 \ \Rightarrow\ 63{,}6\,m = 445{,}2 \ \Rightarrow\ m = 7{,}0\).</p>
+      <p>\[ 2nt = \left(7{,}5\right)(540{,}6) = 4054{,}5\text{ nm} \ \Rightarrow\ t = \frac{4054{,}5}{2(1{,}52)} = 1334\text{ nm} \]`},
+    {tag:'lista', src:'Lista 1', num:'35.58',
+      statement:r`Um navio derrama petróleo (\(n=1{,}45\)) sobre o oceano (\(n=1{,}33\)). (a) Olhando de cima, qual comprimento de onda é predominantemente refletido onde a espessura da mancha é \(380\text{ nm}\)? A que cor corresponde? (b) Na água, embaixo da mancha, qual comprimento de onda é predominantemente transmitido nesse mesmo local?`,
+      resolution:r`<p>Ar(1,0) → óleo(1,45) → água(1,33): o índice aumenta na primeira interface (inversão de \(\pi\)) e diminui na segunda (sem inversão) — uma única inversão, como nos casos anteriores.</p>
+      <p><strong>(a)</strong> Reflexão construtiva: \(2nt=(m+\tfrac12)\lambda \Rightarrow \lambda = \dfrac{2nt}{m+\tfrac12} = \dfrac{2(1{,}45)(380)}{m+0{,}5} = \dfrac{1102}{m+0{,}5}\text{ nm}\). Testando \(m\): \(m=2\Rightarrow\lambda=441\text{ nm}\) (o único valor na faixa visível — \(m=0,1\) dão infravermelho, \(m=3\) dá ultravioleta).</p>
+      <p><strong>Resposta (a):</strong> \(441\text{ nm}\) (violeta-azulado).</p>
+      <p><strong>(b)</strong> A luz transmitida é "complementar" à refletida: seus máximos coincidem com os <em>mínimos</em> da reflexão, \(2nt=m\lambda\): \(\lambda=\dfrac{1102}{m}\). Para \(m=2\): \(\lambda=551\text{ nm}\) (visível; \(m=1\) dá infravermelho, \(m=3\) dá ultravioleta).</p>
+      <p><strong>Resposta (b):</strong> \(551\text{ nm}\).</p>`},
+
+    {tag:'prova', exam:true, src:'P1 · 2023', num:'Questão 1',
+      statement:r`No experimento de Young, duas fontes idênticas e coerentes, separadas por \(d\), produzem franjas num anteparo a \(D\gg d\). Em fase, \(I=I_0\cos^2(\phi/2)\). (a) Se as fontes emitirem em oposição de fase (\(\Delta=\pi\)), há interferência construtiva ou destrutiva no centro? (b) Escreva \(I(\phi)\) nesse caso. (c) Com as fontes em fase, mas com dois comprimentos de onda \(\lambda_1,\lambda_2\) tais que \(\lambda_2/\lambda_1=4/3\): qual o primeiro máximo de \(\lambda_1\) (a partir do central) que coincide com um mínimo de \(\lambda_2\)?`,
+      resolution:r`<span class="tag">Solução oficial</span>
+      <p><strong>(a)</strong> Destrutiva no centro: a diferença de percurso é nula ali, então a defasagem entre as ondas continua sendo \(\pi\) (a fase de emissão), o que anula a onda resultante.</p>
+      <p><strong>(b)</strong> As franjas claras e escuras trocam de lugar: \(I = I_0\cos^2\!\left(\dfrac{\phi+\pi}{2}\right) = I_0\sin^2\!\left(\dfrac{\phi}{2}\right)\).</p>
+      <p><strong>(c)</strong> A posição na tela é \(y=\dfrac{\lambda D}{d}\dfrac{\phi}{2\pi}\). Máximos de \(\lambda_1\): \(y_1=\dfrac{\lambda_1 D}{d}N\). Mínimos de \(\lambda_2\): \(y_2=\dfrac{\lambda_2 D}{d}\left(N-\tfrac12\right)\). Igualando, \(N\left(\dfrac{\lambda_2}{\lambda_1}-1\right)=\dfrac{\lambda_2}{2\lambda_1}\), e com \(\lambda_2/\lambda_1=4/3\): \(N=2\). <strong>O segundo máximo de \(\lambda_1\) coincide com um mínimo de \(\lambda_2\).</strong></p>`},
+
+    {tag:'prova', exam:true, src:'P1 · 2024', num:'Questão 1 (II)',
+      statement:r`Luz com dois comprimentos de onda \(\lambda_1\) e \(\lambda_2\), não coerentes entre si, incide sobre um anteparo com 2 fendas (largura desprezível) separadas por \(d\). Determine \(\lambda_1/\lambda_2\) para que a posição de um mínimo de ordem \(m\) do padrão de \(\lambda_2\) coincida com a posição do máximo de mesma ordem de \(\lambda_1\).`,
+      resolution:r`<span class="tag">Solução oficial</span>
+      <p>Máximo de ordem \(m\) de \(\lambda_1\): \(\sin\theta_1 = m\lambda_1/d\). Mínimo de ordem \(m\) de \(\lambda_2\): \(\sin\theta_2=(m-\tfrac12)\lambda_2/d\). Igualando os ângulos:</p>
+      <p>\[ \frac{\lambda_1}{\lambda_2} = \frac{m-\tfrac12}{m},\qquad m=1,2,3,\dots \]`},
+
+    {tag:'prova', exam:true, src:'P1 · 2024', num:'Questão 2',
+      statement:r`Uma película transparente de espessura \(t=4\times10^{-5}\text{ cm}\), \(n=1{,}5\), imersa no ar, é iluminada por luz branca em incidência normal (comprimento de onda no ar: \(\lambda\)). (a) Obtenha a equação para os \(\lambda\) intensificados na reflexão. (b) Quais comprimentos de onda visíveis (\(400\)–\(700\text{ nm}\)) serão intensificados? (c) Qual o valor mínimo de \(t\) para que nenhum \(\lambda\) visível seja intensificado?`,
+      resolution:r`<span class="tag">Solução oficial</span>
+      <p><strong>(a)</strong> O raio 1 (reflexão na face superior, \(n\) aumenta) sofre inversão \(\phi_1=\pi\). O raio 2 acumula \(\phi_2=(2\pi/\lambda_n)\,2t\), com \(\lambda_n=\lambda/n\). Construtiva quando \(\phi_2-\phi_1=m\,2\pi\):</p>
+      <p>\[ 2nt = \left(m+\tfrac12\right)\lambda,\qquad m=0,1,2,\dots \]
+      <p><strong>(b)</strong> Com \(t=4\times10^{-5}\text{ cm}=400\text{ nm}\) e \(n=1{,}5\): \(\lambda_m = \dfrac{2400}{2m+1}\text{ nm}\). Testando \(m\), só \(\lambda_2=480\text{ nm}\) cai na faixa visível.</p>
+      <p><strong>(c)</strong> Para \(m=0\): \(\lambda=400\text{ nm}\Rightarrow t=66{,}7\text{ nm}\); \(\lambda=700\text{ nm}\Rightarrow t=116{,}7\text{ nm}\). Para \(m=1\), \(\lambda=400\text{ nm}\Rightarrow t=200\text{ nm}\). Logo não há intensificação visível se \(t<66{,}7\text{ nm}\) — o menor valor não-nulo é <strong>\(t\approx 66{,}7\text{ nm}\)</strong> (ou, alternativamente, qualquer \(t\) na faixa \(116{,}7\text{ nm} < t < 200\text{ nm}\)).</p>`},
+
+    {tag:'prova', exam:true, src:'P1 · 2025', num:'Questão 2',
+      statement:r`Uma película de plástico (índice \(n\), espessura \(u\)) cobre uma das fendas de um experimento de Young; a outra fenda fica livre. As fendas são iluminadas por uma única fonte de \(\lambda\) (no vácuo); tudo está no vácuo/ar, tela muito distante, fendas muito estreitas. (a) Qual a diferença de fase \(\Delta\Phi_{\text{inc}}\) entre as ondas logo após passarem pelas fendas? (b) Qual a espessura mínima não nula \(u_{\min}\) para que a intensidade seja máxima no centro da tela?`,
+      resolution:r`<span class="tag">Solução oficial</span>
+      <p><strong>(a)</strong> A onda que atravessa a película percorre um caminho óptico extra \(nu\) em vez de \(u\) no vácuo, logo \(\Delta\Phi_{\text{inc}} = k_{\text{filme}}u - ku = \dfrac{2\pi}{\lambda}(n-1)u\).</p>
+      <p><strong>(b)</strong> No centro da tela (\(\theta=0\), sem diferença de percurso geométrico), a intensidade é máxima quando \(\Delta\Phi/2=m\pi\), isto é \(\dfrac{\pi}{\lambda}(n-1)u = m\pi\). A menor espessura não nula corresponde a \(m=1\): </p>
+      <p>\[ u_{\min} = \frac{\lambda}{n-1} \]`}
+  ]
+},
+
+/* ============================================================ 2. DIFRAÇÃO ============================================================ */
+{
+  id:'difracao', icon:'diffraction', label:'Difração',
+  theory: r`
+  <h3>Fenda simples (difração de Fraunhofer)</h3>
+  <p>Para uma fenda de largura \(a\), a intensidade no anteparo (distância \(L\)) é</p>
+  <p>\[ I = I_0\left[\frac{\sin(\beta/2)}{\beta/2}\right]^2,\qquad \beta = \frac{2\pi a\sin\theta}{\lambda} \]</p>
+  <p>Os mínimos ocorrem em \(a\sin\theta = m\lambda\) (\(m=\pm1,\pm2,\dots\)); o máximo central tem o dobro da largura angular dos máximos secundários, que ficam aproximadamente a meio caminho entre mínimos consecutivos (em \(a\sin\theta\approx(m+\tfrac12)\lambda\)). A meia-largura em que \(I=I_0/2\) ocorre numericamente em \(\beta/2\approx1{,}39\text{ rad}\) (constante obtida resolvendo \([\sin x/x]^2=1/2\)).</p>
+  <h3>Padrão combinado (fenda dupla com largura finita)</h3>
+  <p>Quando cada uma das duas fendas (separadas por \(d\)) tem largura \(a\) não desprezível, o padrão de interferência é modulado pelo envelope de difração de uma fenda:</p>
+  <p>\[ I = I_0\cos^2\!\left(\frac{\phi}{2}\right)\left[\frac{\sin(\beta/2)}{\beta/2}\right]^2,\qquad \phi=\frac{2\pi d\sin\theta}{\lambda},\ \ \beta=\frac{2\pi a\sin\theta}{\lambda} \]</p>
+  <h3>Critério de Rayleigh</h3>
+  <p>Duas fontes pontuais só são resolvidas por uma abertura de largura (ou diâmetro) \(a\) se sua separação angular for maior que \(\theta_{\min}\approx\lambda/a\) (aberturas retangulares) ou \(\theta_{\min}\approx1{,}22\lambda/a\) (aberturas circulares) — o primeiro mínimo de difração de uma fonte deve cair, no máximo, sobre o máximo central da outra.</p>
+  `,
+  exercises:[
+    {tag:'lista', src:'Lista 1', num:'36.18',
+      statement:r`Na difração de fenda única, a amplitude em \(\theta=0\) é \(E_0\). Para (a) \(\sin\theta=\lambda/2a\), (b) \(\sin\theta=\lambda/a\), (c) \(\sin\theta=3\lambda/2a\): determine \(\beta\) e a intensidade correspondente.`,
+      resolution:r`<p>Em todos os casos, \(\beta = \dfrac{2\pi a\sin\theta}{\lambda}\) e \(I=I_0\left[\dfrac{\sin(\beta/2)}{\beta/2}\right]^2\).</p>
+      <p><strong>(a)</strong> \(\sin\theta=\lambda/2a \Rightarrow \beta=\pi\). \(I = I_0\left[\dfrac{\sin(\pi/2)}{\pi/2}\right]^2 = I_0\left(\dfrac{2}{\pi}\right)^2 = \dfrac{4I_0}{\pi^2}\).</p>
+      <p><strong>(b)</strong> \(\sin\theta=\lambda/a \Rightarrow \beta=2\pi\). \(\sin(\pi)=0 \Rightarrow I=0\) (mínimo de difração).</p>
+      <p><strong>(c)</strong> \(\sin\theta=3\lambda/2a \Rightarrow \beta=3\pi\). \(\sin(3\pi/2)=-1 \Rightarrow I = I_0\left(\dfrac{2}{3\pi}\right)^2=\dfrac{4I_0}{9\pi^2}\).</p>`},
+    {tag:'lista', src:'Lista 1', num:'36.21',
+      statement:r`O máximo central de difração contém exatamente 7 franjas de interferência quando \(d/a=4\). (a) Qual deveria ser \(d/a\) para que o máximo central contivesse exatamente 5 franjas? (b) Nesse caso, quantas franjas há no primeiro máximo secundário de difração?`,
+      resolution:r`<p>O máximo central de difração vai de \(\sin\theta=-\lambda/a\) a \(+\lambda/a\). As franjas de interferência (bright, ordem \(m\)) caem em \(\sin\theta=m\lambda/d\); estão dentro do máximo central se \(|m|<d/a\). Para \(d/a\) inteiro, o número de franjas é \(2(d/a)-1\) (as franjas nas bordas exatas coincidem com os mínimos de difração e não contam). Confirmando o dado: \(d/a=4\Rightarrow 2(4)-1=7\) franjas. ✓</p>
+      <p><strong>(a)</strong> Para 5 franjas: \(2N-1=5\Rightarrow N=3\), logo \(d/a=3\).</p>
+      <p><strong>(b)</strong> O primeiro máximo secundário de difração vai de \(\sin\theta=\lambda/a\) a \(2\lambda/a\), ou seja \(d/a<m<2d/a\). Com \(d/a=3\): \(3<m<6 \Rightarrow m=4,5\) — <strong>duas franjas.</strong></p>`},
+    {tag:'lista', src:'Lista 1', num:'36.36',
+      statement:r`Duas linhas espectrais próximas do hidrogênio (\(656{,}45\text{ nm}\)) e do deutério (\(656{,}27\text{ nm}\)). (a) Qual o menor número de fendas de uma rede para separá-las na segunda ordem? (b) Com uma rede de 500 fendas/mm, determine os ângulos e a separação angular dessas linhas na segunda ordem.`,
+      resolution:r`<p><strong>(a)</strong> O poder de resolução mínimo de uma rede com \(N\) fendas, na ordem \(m\), é \(R=\lambda/\Delta\lambda = Nm\). Aqui \(\Delta\lambda = 656{,}45-656{,}27=0{,}18\text{ nm}\):</p>
+      <p>\[ N = \frac{\lambda}{m\,\Delta\lambda} = \frac{656{,}45}{2(0{,}18)} \approx 1820 \]</p>
+      <p><strong>(b)</strong> Espaçamento da rede: \(d=1/(500\text{ fendas/mm})=2000\text{ nm}\). Na segunda ordem, \(\sin\theta=2\lambda/d\):</p>
+      <p>\[ \sin\theta_1=\frac{2(656{,}45)}{2000}=0{,}65645 \Rightarrow \theta_1=41{,}0297^\circ \]
+      \[ \sin\theta_2=\frac{2(656{,}27)}{2000}=0{,}65627 \Rightarrow \theta_2=41{,}0160^\circ \]</p>
+      <p><strong>Resposta:</strong> \(\Delta\theta = \theta_1-\theta_2 \approx 0{,}0137^\circ\).</p>`},
+    {tag:'lista', src:'Lista 1', num:'36.53',
+      statement:r`Numa figura de difração de fenda única, \(\theta_+\) e \(\theta_-\) são os ângulos, de cada lado de \(\theta=0\), onde \(I=I_0/2\); \(\Delta\theta=|\theta_+-\theta_-|\) é a "largura completa na metade do máximo". (a) Calcule \(\Delta\theta\) (método das tentativas ou gráfico) para \(a/\lambda = 2,\,5,\,10\). (b) Calcule também \(2\theta_0\) (com \(\theta_0\) o primeiro mínimo) para cada caso e compare com \(\Delta\theta\).`,
+      resolution:r`<p><strong>(a)</strong> A condição \(I=I_0/2\) equivale a \(\left[\dfrac{\sin(\beta/2)}{\beta/2}\right]^2=\tfrac12\), cuja solução numérica (por tentativas) é \(\beta/2\approx1{,}39\text{ rad}\). Como \(\beta/2 = \pi a\sin\theta/\lambda\), obtemos \(\sin\theta_+ = \dfrac{1{,}39\,\lambda}{\pi a}\); por simetria \(\theta_-=-\theta_+\), logo \(\Delta\theta = 2\theta_+\):</p>
+      <p>\(a/\lambda=2\): \(\sin\theta_+=1{,}39/(2\pi)=0{,}2212\Rightarrow\theta_+=12{,}78^\circ\Rightarrow\Delta\theta=25{,}6^\circ\).</p>
+      <p>\(a/\lambda=5\): \(\sin\theta_+=1{,}39/(5\pi)=0{,}0885\Rightarrow\theta_+=5{,}08^\circ\Rightarrow\Delta\theta=10{,}2^\circ\).</p>
+      <p>\(a/\lambda=10\): \(\sin\theta_+=1{,}39/(10\pi)=0{,}0442\Rightarrow\theta_+=2{,}54^\circ\Rightarrow\Delta\theta=5{,}1^\circ\).</p>
+      <p><strong>(b)</strong> O primeiro mínimo satisfaz \(\sin\theta_0=\lambda/a\):</p>
+      <p>\(a/\lambda=2\): \(\theta_0=30{,}0^\circ\Rightarrow2\theta_0=60{,}0^\circ\).</p>
+      <p>\(a/\lambda=5\): \(\theta_0=11{,}54^\circ\Rightarrow2\theta_0=23{,}1^\circ\).</p>
+      <p>\(a/\lambda=10\): \(\theta_0=5{,}74^\circ\Rightarrow2\theta_0=11{,}5^\circ\).</p>
+      <p>Em todos os casos, \(2\theta_0>\Delta\theta\), como esperado — o máximo central é mais largo na base do que na metade da altura.</p>`},
+    {tag:'lista', src:'Lista 1', num:'36.62',
+      statement:r`Raios X (\(0{,}125\text{ nm}\)) são espalhados por uma rede cristalina cúbica de cloreto de sódio, espaçamento entre átomos \(a=0{,}282\text{ nm}\). (a) Para difração em planos paralelos a uma face do cubo, em que ângulos os máximos são observados? (b) Repita para os planos separados por \(a/\sqrt2\).`,
+      resolution:r`<p>Usando a lei de Bragg, \(2d\sin\theta=m\lambda\), com \(d\) o espaçamento entre planos:</p>
+      <p><strong>(a)</strong> \(d=a=0{,}282\text{ nm}\): \(\sin\theta = \dfrac{m\lambda}{2a}=\dfrac{m(0{,}125)}{2(0{,}282)}=0{,}2216\,m\).</p>
+      <p>\(m=1{:}\ 12{,}8^\circ\); \(m=2{:}\ 26{,}3^\circ\); \(m=3{:}\ 41{,}7^\circ\); \(m=4{:}\ 62{,}4^\circ\) (\(m=5\) excede \(\sin\theta=1\)).</p>
+      <p><strong>(b)</strong> \(d=a/\sqrt2=0{,}1994\text{ nm}\): \(\sin\theta=\dfrac{m(0{,}125)}{2(0{,}1994)}=0{,}3134\,m\).</p>
+      <p>\(m=1{:}\ 18{,}3^\circ\); \(m=2{:}\ 38{,}8^\circ\); \(m=3{:}\ 70{,}1^\circ\) (\(m=4\) excede \(\sin\theta=1\)).</p>`},
+    {tag:'lista', src:'Lista 1', num:'36.72',
+      statement:r`<em>Planet Imager.</em> Um telescópio infravermelho espacial (\(\lambda=10\ \mu\text{m}\)) de diâmetro \(6000\text{ km}\) observa planetas. (a) Qual a maior distância à qual se poderiam observar detalhes de \(250\text{ km}\) (tamanho de Los Angeles)? (b) Comparando com um único telescópio de \(1{,}0\text{ m}\) no espaço (mesmo \(\lambda\)): qual o menor detalhe que ele distingue num planeta a \(4{,}22\) anos-luz (Próxima Centauri)? Como se compara ao diâmetro da Terra? (c) Se esse telescópio observasse um planeta em torno de 70 Virginis (\(59\) anos-luz), detectado por medida da "oscilação" estelar, qual o menor detalhe que ele distinguiria na própria estrela? Como se compara ao diâmetro de Júpiter?`,
+      resolution:r`<p>Para uma abertura circular, o critério de Rayleigh usa o fator \(1{,}22\): \(\theta_{\min}=1{,}22\lambda/D_{\text{ap}}\). O tamanho do menor detalhe visível a uma distância \(L\) é \(s=\theta_{\min}L\).</p>
+      <p><strong>(a)</strong> \(\theta_{\min}=1{,}22(10\times10^{-6})/(6\times10^{6})=2{,}03\times10^{-12}\text{ rad}\). \(L=s/\theta_{\min}=(2{,}5\times10^{5})/(2{,}03\times10^{-12})=1{,}23\times10^{17}\text{ m}\). Convertendo (\(1\text{ ano-luz}=9{,}461\times10^{15}\text{ m}\)):</p>
+      <p>\[ L \approx 13{,}0 \text{ anos-luz} \]</p>
+      <p><strong>(b)</strong> Telescópio de \(1{,}0\text{ m}\): \(\theta_{\min}=1{,}22(10^{-5})/1{,}0=1{,}22\times10^{-5}\text{ rad}\). A \(4{,}22\) anos-luz (\(=3{,}99\times10^{16}\text{ m}\)):</p>
+      <p>\[ s = (1{,}22\times10^{-5})(3{,}99\times10^{16}) \approx 4{,}9\times10^{8}\text{ km} \]</p>
+      <p>— cerca de 3 vezes a distância Terra–Sol, muitíssimo maior que a Terra: um único telescópio de 1 m não teria resolução para detectar um planeta do tamanho da Terra.</p>
+      <p><strong>(c)</strong> Agora usando o <em>array</em> completo (\(D_{\text{ap}}=6000\text{ km}\), mesmo \(\theta_{\min}=2{,}03\times10^{-12}\text{ rad}\) do item (a)) para resolver detalhes na própria estrela, a \(59\) anos-luz (\(=5{,}58\times10^{17}\text{ m}\)):</p>
+      <p>\[ s = (2{,}03\times10^{-12})(5{,}58\times10^{17}) \approx 1{,}13\times10^{6}\text{ m} = 1130\text{ km} \]</p>
+      <p>Comparando com o diâmetro de Júpiter (\(1{,}38\times10^{5}\text{ km}\)): \(1130/138000 \approx 8{,}2\times10^{-3}\) — cerca de \(0{,}8\%\) do diâmetro de Júpiter.</p>`},
+
+    {tag:'prova', exam:true, src:'P1 · 2023', num:'Questão 2 (I e II)',
+      statement:r`(I) Onda monocromática \(\lambda\) incide numa fenda de largura \(a\); anteparo a uma distância \(L\) (\(\sin\theta\approx\tan\theta\approx\theta\)). Calcule a distância \(d\) entre o máximo central e o primeiro máximo secundário. (II) Duas fontes não coerentes, \(\lambda=500\text{ nm}\), a \(L=10\text{ m}\) de um anteparo com fenda de largura \(a=0{,}5\text{ mm}\); a imagem se forma numa tela a \(D=2\text{ m}\) do anteparo. Calcule a distância mínima \(d\) entre as fontes para que sejam distinguidas na tela. Como esse valor muda se \(D\) dobrar?`,
+      resolution:r`<span class="tag">Solução oficial</span>
+      <p><strong>(I)</strong> Mínimos de difração: \(\tan\theta\approx\sin\theta\approx (\lambda/a)m\). Os máximos ficam aproximadamente a meio caminho entre mínimos consecutivos, ou seja \(\tan\theta\approx(\lambda/2a)(2m+1)\); para o primeiro máximo secundário, \(m=1\):</p>
+      <p>\[ d \approx \frac{3\lambda L}{2a} \]</p>
+      <p><strong>(II)</strong> Pelo critério de Rayleigh, \(\theta_{\min}\approx\tan\theta\approx d_{\min}/L\approx\lambda/a\), logo \(d_{\min}\approx \lambda L/a = 10\text{ mm}\). O ângulo \(\theta\) não depende de \(D\) — <strong>o resultado não se altera</strong> ao dobrar \(D\).</p>`},
+
+    {tag:'prova', exam:true, src:'P1 · 2024', num:'Questão 1 (I)',
+      statement:r`Observa-se que a largura do máximo central de difração produzido por uma fenda de largura \(a\) é 100 vezes menor que a distância \(L\) entre o anteparo e a tela (\(\sin\theta\approx\tan\theta\approx\theta\)). Determine \(\lambda/a\).`,
+      resolution:r`<span class="tag">Solução oficial</span>
+      <p>Os mínimos adjacentes ao centro ocorrem em \(\sin\theta_{1,2}=\pm\lambda/a\), então \(y_1-y_2 = 2L\lambda/a\). Igualando à largura dada, \(2L(\lambda/a) = L/100\):</p>
+      <p>\[ \frac{\lambda}{a} = \frac{1}{200} \]`},
+
+    {tag:'prova', exam:true, src:'P1 · 2025', num:'Questão 1 (completa)',
+      statement:r`Um anteparo com 2 fendas de largura \(a\), separadas por \(d\), iluminado por \(\lambda_1\), produz um padrão em que o sexto máximo de interferência coincide com o primeiro mínimo de difração. (a) Determine \(d/a\). (b) A distância angular entre o segundo mínimo de interferência e o sexto máximo de interferência é \(\delta\theta=0{,}01\text{ rad}\); determine \(a/\lambda_1\). (c) Agora \(\lambda_2\) incide no mesmo anteparo; o segundo mínimo de difração de \(\lambda_2\) coincide com o décimo máximo de interferência de \(\lambda_1\). Determine \(\lambda_2/\lambda_1\). (d) Com apenas 1 fenda de largura \(a\) e 2 fontes não coerentes separadas verticalmente por \(a\) (a uma distância horizontal \(D\) do anteparo): determine a máxima distância \(D\) para que as fontes ainda sejam separadas na tela.`,
+      resolution:r`<span class="tag">Solução oficial</span>
+      <p><strong>(a)</strong> Máximo de interferência de ordem 6: \(kd\sin\theta/2 = 6\pi\). Mínimo de difração de ordem 1: \(ka\sin\theta/2=\pi\). Dividindo: \(d/a = 6\).</p>
+      <p><strong>(b)</strong> Com \(\sin\theta\approx\theta\): mínimos de interferência em \(\theta^{\min}_m=(\lambda_1/d)(m-\tfrac12)\), máximos em \(\theta^{\max}_{m'}=(\lambda_1/d)m'\). Logo \(\delta\theta=\theta^{\max}_6-\theta^{\min}_2 = (\lambda_1/d)\cdot 4{,}5 = 0{,}01\). Como \(a=d/6\): \(a/\lambda_1 = 450/6 = 75\).</p>
+      <p><strong>(c)</strong> Décimo máximo de \(\lambda_1\): \(2\pi d\sin\theta/(2\lambda_1)=10\pi\). Segundo mínimo de difração de \(\lambda_2\): \(2\pi a\sin\theta/(2\lambda_2)=2\pi\). Dividindo e usando \(d/a=6\): \(\lambda_2/\lambda_1 = 5/6\).</p>
+      <p><strong>(d)</strong> O primeiro mínimo de difração da fenda única ocorre em \(\theta^{\min}_1=\lambda/a\); esta é a separação angular mínima resolvível pelo critério de Rayleigh. O ângulo subtendido pelas duas fontes (a uma distância \(D\) do anteparo) é \(\theta = a/D\). Para que sejam resolvidas, \(\theta > \theta^{\min}_1\):</p>
+      <p>\[ \frac{a}{D} > \frac{\lambda}{a} \ \Longrightarrow\ D < \frac{a^2}{\lambda} \]`}
+  ]
+},
+
+/* ============================================================ 3. RELATIVIDADE ============================================================ */
+{
+  id:'relatividade', icon:'relativity', label:'Relatividade',
+  theory: r`
+  <h3>Transformações de Lorentz</h3>
+  <p>Para \(S'\) se movendo com velocidade \(u\hat\imath\) em relação a \(S\):</p>
+  <p>\[ x' = \gamma(x-ut),\quad y'=y,\quad z'=z,\quad t' = \gamma\!\left(t-\frac{ux}{c^2}\right),\qquad \gamma \equiv \frac{1}{\sqrt{1-u^2/c^2}} \]</p>
+  <h3>Dilatação do tempo e contração do comprimento</h3>
+  <p>O tempo próprio \(T_0\) é medido no referencial onde os dois eventos ocorrem no mesmo ponto do espaço; qualquer outro observador mede um intervalo maior: \(T=\gamma T_0\). O comprimento próprio \(\ell_0\) é medido no referencial de repouso do objeto; em qualquer outro referencial, \(\ell=\ell_0/\gamma\).</p>
+  <h3>Adição relativística de velocidades</h3>
+  <p>\[ v_x' = \frac{v_x-u}{1-uv_x/c^2},\qquad v_y'=\frac{v_y\sqrt{1-u^2/c^2}}{1-uv_x/c^2} \]</p>
+  <p>(as transformações inversas trocam apenas o sinal de \(u\)).</p>
+  <h3>Simultaneidade e intervalo invariante</h3>
+  <p>Eventos simultâneos num referencial geralmente não o são em outro (a menos que ocorram no mesmo ponto espacial). O intervalo espaço-temporal é invariante: \(c^2\Delta t^2-\Delta x^2-\Delta y^2-\Delta z^2 = c^2\Delta t'^2-\Delta x'^2-\Delta y'^2-\Delta z'^2\).</p>
+  <h3>Momento, energia e massa relativísticos</h3>
+  <p>\[ p=\gamma m v,\qquad E=\gamma mc^2,\qquad K=(\gamma-1)mc^2,\qquad E^2 = (pc)^2+(mc^2)^2 \]</p>
+  <p>Para forças ao longo da direção do movimento, \(F = \gamma^3 ma\) (a "massa" oferece resistência cada vez maior à aceleração conforme \(v\to c\)).</p>
+  `,
+  exercises:[
+    {tag:'lista', src:'Lista 1', num:'37.1',
+      statement:r`Suponha que dois raios de luz atinjam simultaneamente o solo em relação a um observador dentro de um trem. Mostre que esses eventos <em>não</em> ocorrem simultaneamente para um observador no solo. Para o observador no solo, qual dos dois raios atinge primeiro?`,
+      resolution:r`<p>Sejam os dois eventos (raio à frente, raio atrás) simultâneos no referencial do trem \(S'\): \(t_1'=t_2'=0\), em posições diferentes \(x_1'\neq x_2'\). Pela transformação de Lorentz, o tempo no referencial do solo \(S\) é \(t = \gamma(t'+ux'/c^2)\). Como \(t'=0\) para os dois eventos, mas \(x'\) difere:</p>
+      <p>\[ t_1 - t_2 = \gamma\frac{u}{c^2}(x_1'-x_2') \neq 0 \]</p>
+      <p><strong>Resposta:</strong> o raio que atinge o ponto mais à frente na direção do movimento do trem (maior \(x'\)) chega <em>depois</em>, para o observador no solo, se \(u>0\) — ou seja, o raio de trás chega primeiro (o evento "de trás" está fisicamente adiantado no referencial do solo, efeito conhecido como "trem de Einstein").</p>`},
+    {tag:'lista', src:'Lista 1', num:'37.5',
+      statement:r`O píon negativo (\(\pi^-\)) tem vida média própria \(2{,}60\times10^{-8}\text{ s}\). Deslocando-se com velocidade muito grande em relação ao laboratório, sua vida média medida no laboratório é \(4{,}20\times10^{-7}\text{ s}\). (a) Calcule a velocidade do píon como fração de \(c\). (b) Qual a distância que o píon percorre no laboratório durante sua vida média?`,
+      resolution:r`<p><strong>(a)</strong> \(T=\gamma T_0 \Rightarrow \gamma = \dfrac{4{,}20\times10^{-7}}{2{,}60\times10^{-8}} = 16{,}15\). Isolando \(v\): \(v=c\sqrt{1-1/\gamma^2} = c\sqrt{1-1/260{,}9}\):</p>
+      <p>\[ v = 0{,}998\,c \]</p>
+      <p><strong>(b)</strong> \(d = vT = (0{,}998)(3{,}00\times10^{8})(4{,}20\times10^{-7}) \approx 126\text{ m}\).</p>`},
+    {tag:'lista', src:'Lista 1', num:'37.7',
+      statement:r`Uma espaçonave se afasta da Terra com \(v=4{,}80\times10^{6}\text{ m/s}\) e depois retorna com a mesma velocidade, carregando um relógio atômico sincronizado com um relógio idêntico que ficou na Terra. A espaçonave retorna \(365\) dias depois, medidos pelo relógio da Terra. Qual a diferença entre os intervalos medidos pelos dois relógios (em horas)? Qual dos dois indica o menor intervalo?`,
+      resolution:r`<p>Como \(v/c=4{,}80\times10^{6}/3{,}00\times10^{8}=0{,}0160\ll1\), usa-se a aproximação \(\gamma\approx1+\dfrac{v^2}{2c^2}\). A diferença relativa entre os dois relógios é:</p>
+      <p>\[ \Delta t_{\text{Terra}} - \Delta t_{\text{nave}} \approx \Delta t_{\text{Terra}}\cdot\frac{v^2}{2c^2} \]</p>
+      <p>Com \(\Delta t_{\text{Terra}}=365\text{ dias}=8760\text{ h}\) e \(v^2/c^2=(0{,}0160)^2=2{,}56\times10^{-4}\):</p>
+      <p>\[ \Delta t_{\text{Terra}}-\Delta t_{\text{nave}} \approx 8760\times\frac{2{,}56\times10^{-4}}{2} \approx 1{,}12\text{ h} \]</p>
+      <p>O relógio da <strong>espaçonave</strong> (em movimento) indica o menor intervalo — é o tempo próprio do percurso.</p>`},
+    {tag:'lista', src:'Lista 1', num:'37.8',
+      statement:r`Uma espaçonave de outro planeta voa a grande distância e passa sobre a vertical de onde você está em repouso. Você vê o farol da espaçonave piscar durante \(0{,}190\text{ s}\). O comandante verifica que o farol ficou aceso durante \(12{,}0\text{ ms}\). (a) Qual das duas medidas corresponde ao tempo próprio? (b) Qual o módulo da velocidade da espaçonave, como fração de \(c\)?`,
+      resolution:r`<p><strong>(a)</strong> O tempo próprio é medido no referencial onde os dois eventos (ligar/desligar o farol) ocorrem no mesmo ponto do espaço — esse é o referencial do comandante, a bordo da nave, junto ao farol. Logo \(T_0=12{,}0\text{ ms}\) é o tempo próprio, e \(T=0{,}190\text{ s}\) (medido por você) é o intervalo dilatado.</p>
+      <p><strong>(b)</strong> \(T=\gamma T_0 \Rightarrow \gamma = 0{,}190/0{,}0120 = 15{,}83\). \(v=c\sqrt{1-1/\gamma^2}=c\sqrt{1-1/250{,}7}\):</p>
+      <p>\[ v = 0{,}998\,c \]`},
+    {tag:'lista', src:'Lista 1', num:'37.11',
+      statement:r`Múons (vida média própria \(2{,}2\ \mu\text{s}\)) são gerados por raios cósmicos a \(10\text{ km}\) de altitude e se deslocam com velocidade próxima à da luz. (a) Qual a maior distância que um múon poderia percorrer durante sua vida média própria de \(2{,}2\ \mu\text{s}\)? Isso pareceria impedir que múons chegassem à superfície. (b) A uma velocidade de \(0{,}999\,c\), qual a vida média do múon no referencial da Terra? Que distância ele percorre nesse tempo? Isso explica encontrarmos múons ao nível do solo? (c) Do ponto de vista do próprio múon, ele só vive \(2{,}2\ \mu\text{s}\) — como ele alcança o solo? Qual a espessura efetiva dos \(10\text{ km}\) de atmosfera no referencial do múon?`,
+      resolution:r`<p><strong>(a)</strong> Distância máxima possível (limite \(v\to c\)): \(d=c\,T_0 = (3{,}00\times10^{8})(2{,}2\times10^{-6}) = 660\text{ m} = 6{,}6\times10^{2}\text{ m}\) — muito menor que os \(10\text{ km}\) da atmosfera, o que pareceria impedir a chegada ao solo.</p>
+      <p><strong>(b)</strong> Com \(v=0{,}999\,c\): \(\gamma = 1/\sqrt{1-0{,}999^2} = 1/\sqrt{0{,}001999} \approx 22{,}4\). No referencial da Terra, a vida média dilata para:</p>
+      <p>\[ T = \gamma T_0 = 22{,}4\times2{,}2\times10^{-6} \approx 4{,}9\times10^{-5}\text{ s} \]</p>
+      <p>Distância percorrida nesse tempo: \(d=vT \approx (0{,}999\,c)(4{,}9\times10^{-5}) \approx 1{,}48\times10^{4}\text{ m} = 14{,}8\text{ km}\) — <strong>maior que os \(10\text{ km}\) de atmosfera</strong>, explicando por que múons são detectados no solo: é a dilatação do tempo, vista da Terra, que os "faz viver mais" o suficiente para completar o trajeto.</p>
+      <p><strong>(c)</strong> Do ponto de vista do múon, ele de fato só vive \(2{,}2\ \mu\text{s}\) próprios — mas é a <em>atmosfera</em> que sofre contração de comprimento nesse referencial: os \(10\text{ km}\) próprios (medidos da Terra) ficam reduzidos para</p>
+      <p>\[ L = \frac{L_0}{\gamma} = \frac{10\,000}{22{,}4} \approx 447\text{ m} \]</p>
+      <p>uma distância que o múon cruza facilmente em \(2{,}2\ \mu\text{s}\) viajando a \(v\approx c\). Os dois referenciais concordam sobre o fato observável (o múon chega ao solo), mas atribuem a causa a efeitos diferentes: dilatação do tempo (visão da Terra) ou contração do comprimento (visão do múon).</p>`},
+    {tag:'lista', src:'Lista 1', num:'37.13',
+      statement:r`Em relação a um observador na Terra, uma pista de lançamento tem comprimento próprio \(3600\text{ m}\). (a) Qual o comprimento da pista medido pelo piloto de uma espaçonave que se desloca a \(4{,}0\times10^{7}\text{ m/s}\) em relação à Terra? (b) Uma observadora em repouso na Terra mede o intervalo de tempo entre a espaçonave estar sobre o início e sobre o fim da pista. Qual resultado ela obtém? (c) O piloto mede o intervalo de tempo entre passar sobre o início e sobre o fim da pista. Qual resultado ele obtém?`,
+      resolution:r`<p>\(v/c = 4{,}0\times10^7/3{,}00\times10^8 = 0{,}1333\); \(\gamma = 1/\sqrt{1-0{,}1333^2} = 1/\sqrt{0{,}98222} = 1{,}00900\).</p>
+      <p><strong>(a)</strong> \(L = L_0/\gamma = 3600/1{,}00900 \approx 3567\text{ m} = 3{,}57\text{ km}\).</p>
+      <p><strong>(b)</strong> Para a observadora terrestre, a pista tem seu comprimento próprio \(3600\text{ m}\), percorrido pela nave a \(v\): \(\Delta t = L_0/v = 3600/(4{,}0\times10^7) = 9{,}00\times10^{-5}\text{ s}\).</p>
+      <p><strong>(c)</strong> Para o piloto, esse é o tempo próprio (os dois eventos — passar pelo início e pelo fim — ocorrem no mesmo ponto da nave): \(\Delta t' = \Delta t/\gamma = 9{,}00\times10^{-5}/1{,}00900 \approx 8{,}92\times10^{-5}\text{ s}\).</p>`},
+    {tag:'lista', src:'Lista 1', num:'37.14',
+      statement:r`Resolva as equações das transformações de Lorentz e obtenha \(x\) e \(t\) em função de \(x'\) e \(t'\), mostrando que a transformação resultante tem a mesma forma da original, exceto pelo sinal de \(u\) invertido.`,
+      resolution:r`<p>Partindo de \(x'=\gamma(x-ut)\) e \(t'=\gamma(t-ux/c^2)\), isolamos \(x\) e \(t\). Da primeira equação, \(x=\dfrac{x'}{\gamma}+ut\). Substituindo na segunda: \(t'=\gamma t - \dfrac{u}{c^2}\gamma\left(\dfrac{x'}{\gamma}+ut\right) = \gamma t\left(1-\dfrac{u^2}{c^2}\right) - \dfrac{ux'}{c^2} = \dfrac{t}{\gamma}-\dfrac{ux'}{c^2}\). Isolando \(t\):</p>
+      <p>\[ t = \gamma\left(t' + \frac{ux'}{c^2}\right) \]</p>
+      <p>e substituindo de volta em \(x=x'/\gamma+ut\), após simplificação:</p>
+      <p>\[ x = \gamma(x'+ut') \]</p>
+      <p>Essas são exatamente as transformações originais com \(u\to-u\) — coerente com a simetria física: do ponto de vista de \(S'\), é \(S\) que se afasta com velocidade \(-u\).</p>`},
+    {tag:'lista', src:'Lista 1', num:'37.16',
+      statement:r`A astronauta Mavis passa sobre Stanley com \(v=0{,}800\,c\); ambos sincronizam relógios no instante em que a espaçonave está diretamente acima de Stanley. Quando o cronômetro de Mavis marca \(5{,}0\text{ s}\), ela liga uma luz forte na frente da espaçonave. (a) Use as transformações de Lorentz para calcular \(x\) e \(t\) desse evento, medidos por Stanley. (b) Aplique a dilatação do tempo para calcular o intervalo entre os dois eventos medido por Stanley; compare com (a). (c) Multiplique esse intervalo pela velocidade de Mavis para obter a distância percorrida, segundo Stanley; compare com o \(x\) de (a).`,
+      resolution:r`<p>\(\gamma = 1/\sqrt{1-0{,}8^2} = 1/\sqrt{0{,}36} = 1{,}6667\). O evento (ligar a luz) ocorre na origem de \(S'\) (posição de Mavis), em \(t'=5{,}0\text{ s}\), \(x'=0\).</p>
+      <p><strong>(a)</strong> \(x=\gamma(x'+vt') = 1{,}6667(0+0{,}8c\times5{,}0) = 2{,}00\times10^{9}\text{ m}\); \(t=\gamma(t'+vx'/c^2)=\gamma(5{,}0) = 8{,}33\text{ s}\).</p>
+      <p><strong>(b)</strong> Dilatação do tempo (\(t'=5{,}0\text{ s}\) é tempo próprio, pois os dois eventos — sincronizar e ligar a luz — ocorrem no mesmo ponto de \(S'\)): \(t=\gamma t' = 1{,}6667\times5{,}0=8{,}33\text{ s}\) — idêntico a (a). ✓</p>
+      <p><strong>(c)</strong> \(x=vt=0{,}8c\times8{,}33 = 2{,}00\times10^{9}\text{ m}\) — idêntico a (a). ✓</p>`},
+    {tag:'lista', src:'Lista 1', num:'37.19',
+      statement:r`Duas partículas são produzidas num acelerador e se afastam em sentidos opostos. A velocidade de uma delas, medida no laboratório, é \(0{,}650\,c\); a velocidade relativa entre as duas é \(0{,}950\,c\). Qual a velocidade da outra partícula, medida no laboratório?`,
+      resolution:r`<p>Seja \(v_1=+0{,}650\,c\) (lab) e \(v_2=-u_2\) (lab, sentido oposto). No referencial da partícula 1 (movendo-se a \(v_1\) em relação ao lab), a velocidade da partícula 2 deve ter módulo \(0{,}950\,c\):</p>
+      <p>\[ v_2' = \frac{v_2 - v_1}{1-v_1v_2/c^2} = \frac{-u_2-0{,}650c}{1+0{,}650\,u_2/c} = -0{,}950\,c \]</p>
+      <p>Resolvendo para \(u_2\): \(u_2+0{,}650c = 0{,}950c(1+0{,}650\,u_2/c) \Rightarrow u_2(1-0{,}6175) = 0{,}300c\):</p>
+      <p>\[ u_2 = 0{,}784\,c \]`},
+    {tag:'lista', src:'Lista 1', num:'37.22',
+      statement:r`Uma espaçonave inimiga persegue o Starfighter com velocidade \(0{,}400\,c\) em relação a você. Ela dispara um míssil que atinge \(0{,}700\,c\) em relação à espaçonave inimiga. (a) Qual a velocidade do míssil em relação a você? (b) Se a distância entre você e a espaçonave inimiga era \(8{,}0\times10^{6}\text{ km}\) no instante do disparo, quanto tempo o míssil levará para atingi-lo?`,
+      resolution:r`<p><strong>(a)</strong> Adição relativística (mesma direção, ambos se aproximando):</p>
+      <p>\[ v = \frac{0{,}700c+0{,}400c}{1+(0{,}700)(0{,}400)} = \frac{1{,}100c}{1{,}280} = 0{,}859\,c \]</p>
+      <p><strong>(b)</strong> Uma vez disparado, o míssil se aproxima de você a \(0{,}859\,c\) (velocidade já medida no seu referencial):</p>
+      <p>\[ t = \frac{d}{v} = \frac{8{,}0\times10^{6}\text{ km}}{0{,}859\times(3{,}00\times10^{5}\text{ km/s})} \approx 31{,}0\text{ s} \]`},
+    {tag:'lista', src:'Lista 1', num:'37.25',
+      statement:r`<em>Diga isso ao juiz.</em> (a) Com que velocidade você precisaria se aproximar de um sinal vermelho (\(\lambda=675\text{ nm}\)) para que parecesse amarelo (\(575\text{ nm}\))? Expresse em termos de \(c\). (b) Se você usasse isso como desculpa por não parar no sinal, quanto pagaria de multa por excesso de velocidade (R$1,00 por km/h acima de \(90\text{ km/h}\))?`,
+      resolution:r`<p><strong>(a)</strong> Para uma fonte se aproximando, o efeito Doppler relativístico dá \(\lambda_{\text{obs}}=\lambda\sqrt{\dfrac{1-v/c}{1+v/c}}\). Isolando \(v/c\) com \(\lambda_{\text{obs}}/\lambda = 575/675 = 0{,}8519\):</p>
+      <p>\[ \left(\frac{\lambda_{\text{obs}}}{\lambda}\right)^2 = \frac{1-v/c}{1+v/c} \ \Rightarrow\ \frac{v}{c} = \frac{1-(\lambda_{\text{obs}}/\lambda)^2}{1+(\lambda_{\text{obs}}/\lambda)^2} = \frac{1-0{,}7258}{1+0{,}7258} \approx 0{,}159 \]</p>
+      <p>\[ v \approx 0{,}159\,c \]</p>
+      <p><strong>(b)</strong> Convertendo: \(v = 0{,}159\times(3{,}00\times10^{8}\text{ m/s}) \approx 4{,}77\times10^{7}\text{ m/s} \approx 1{,}72\times10^{8}\text{ km/h}\). Excesso sobre \(90\text{ km/h}\): \(\approx1{,}72\times10^{8}\text{ km/h}\). Multa: \(\approx\) R\$\(1{,}72\times10^{8}\) — mais de cem milhões de reais, uma desculpa cara demais para valer a pena!</p>`},
+    {tag:'lista', src:'Lista 1', num:'37.26',
+      statement:r`Mostre que, se uma fonte de ondas eletromagnéticas se afasta de nós com \(v=0{,}600\,c\), a frequência medida é igual à metade da frequência medida no referencial de repouso da fonte.`,
+      resolution:r`<p>Para uma fonte se afastando, \(f_{\text{obs}} = f\sqrt{\dfrac{1-v/c}{1+v/c}}\). Substituindo \(v=0{,}600\,c\):</p>
+      <p>\[ \sqrt{\frac{1-0{,}600}{1+0{,}600}} = \sqrt{\frac{0{,}400}{1{,}600}} = \sqrt{0{,}250} = 0{,}500 \]</p>
+      <p>Logo \(f_{\text{obs}} = f/2\), como se queria mostrar.</p>`},
+    {tag:'lista', src:'Lista 1', num:'37.54',
+      statement:r`<em>Dilatação do tempo na vida cotidiana.</em> Dois relógios atômicos são sincronizados; um fica em Nova York, o outro é levado num avião (velocidade média \(250\text{ m/s}\)) numa viagem de ida e volta. O relógio do solo mede um total de \(4\text{ h}\). Qual a diferença entre os intervalos medidos pelos dois relógios, e qual deles indica o intervalo mais curto?`,
+      resolution:r`<p>Como \(u/c \ll 1\), usa-se \(\Delta t-\Delta t_0 \approx \dfrac{u^2}{2c^2}\Delta t\). Com \(u=250\text{ m/s}\), \(\Delta t = 4\text{ h}=14400\text{ s}\):</p>
+      <p>\[ \Delta t - \Delta t_0 \approx \frac{(250)^2}{2(3{,}00\times10^{8})^2}\times14400 \approx 5{,}0\times10^{-9}\text{ s} \]</p>
+      <p>O relógio do <strong>avião</strong> (em movimento) indica o intervalo mais curto.</p>`},
+    {tag:'lista', src:'Lista 1', num:'37.65',
+      statement:r`Dois eventos em \(S\) têm posições/tempos \((x_1,t_1)\) e \((x_2,t_2)\), com \(\Delta x=x_2-x_1\), \(\Delta t=t_2-t_1\). (a) Mostre que, se \(S'\) se move ao longo de \(Ox\) com velocidade tal que os dois eventos ocorram no mesmo ponto de \(S'\), então \(\Delta t' = \sqrt{(\Delta t)^2-(\Delta x/c)^2}\); mostre que isso só é possível se \(\Delta x < c\Delta t\). (b) Mostre que, se \(\Delta x>c\Delta t\), existe um \(S'\) onde os eventos são simultâneos, e calcule a distância entre eles nesse referencial (distância própria). (c) Em \(S'\), dois eventos são simultâneos e separados por \(2{,}50\text{ m}\); em outro sistema \(S\), eles parecem separados por \(5{,}0\text{ m}\). Qual o intervalo de tempo entre eles em \(S\)?`,
+      resolution:r`<p><strong>(a)</strong> Usando o intervalo invariante \(c^2\Delta t^2-\Delta x^2 = c^2\Delta t'^2-\Delta x'^2\): se os eventos ocorrem no mesmo ponto de \(S'\), \(\Delta x'=0\), logo \(\Delta t' = \sqrt{\Delta t^2-(\Delta x/c)^2}\). Para que \(\Delta t'\) seja real, é preciso \(\Delta x<c\Delta t\) (senão nenhum referencial físico alcança essa velocidade \(u<c\)).</p>
+      <p><strong>(b)</strong> Se \(\Delta x>c\Delta t\), o mesmo intervalo invariante agora com \(\Delta t'=0\) (simultaneidade) dá:</p>
+      <p>\[ \Delta x' = \sqrt{\Delta x^2-(c\Delta t)^2} \]</p>
+      <p><strong>(c)</strong> Aqui \(\Delta x'=2{,}50\text{ m}\) (distância própria, com \(\Delta t'=0\)) e \(\Delta x=5{,}0\text{ m}\) em \(S\). Usando o invariante com esses papéis trocados: \((c\Delta t)^2-\Delta x^2 = -\Delta x'^2 \Rightarrow (c\Delta t)^2 = \Delta x^2-\Delta x'^2 = 25-6{,}25=18{,}75\):</p>
+      <p>\[ \Delta t = \frac{\sqrt{18{,}75}}{c} \approx 1{,}44\times10^{-8}\text{ s} \]`},
+
+    {tag:'lista', src:'Lista 2', num:'37.28',
+      statement:r`Quando você deve usar a relatividade? Quando \(\gamma\) é significativamente maior que 1, devem-se usar fórmulas relativísticas em vez de newtonianas. Em que velocidade \(v\) (em termos de \(c\)) o valor de \(\gamma\) é (a) 1,0% maior que 1; (b) 10% maior; (c) 100% maior?`,
+      resolution:r`<p>Isolando \(v\) de \(\gamma=1/\sqrt{1-v^2/c^2}\): \(v = c\sqrt{1-1/\gamma^2}\).</p>
+      <p><strong>(a)</strong> \(\gamma=1{,}01\): \(v=c\sqrt{1-1/1{,}0201} = c\sqrt{0{,}0197} \approx 0{,}140\,c\).</p>
+      <p><strong>(b)</strong> \(\gamma=1{,}10\): \(v=c\sqrt{1-1/1{,}21} = c\sqrt{0{,}1736} \approx 0{,}417\,c\).</p>
+      <p><strong>(c)</strong> \(\gamma=2{,}00\): \(v=c\sqrt{1-1/4} = c\sqrt{0{,}75} \approx 0{,}866\,c\).</p>`},
+    {tag:'lista', src:'Lista 2', num:'37.29',
+      statement:r`(a) Para qual velocidade o momento linear de uma partícula é o dobro do valor não relativístico \(mv\)? (b) Uma força é aplicada na direção do movimento de uma partícula; para qual velocidade a força necessária para produzir uma dada aceleração é o dobro da força necessária em repouso? Expresse ambas em termos de \(c\).`,
+      resolution:r`<p><strong>(a)</strong> \(p=\gamma mv = 2mv \Rightarrow \gamma=2 \Rightarrow v=c\sqrt{1-1/4} = 0{,}866\,c\).</p>
+      <p><strong>(b)</strong> Para força na direção do movimento, \(F=\gamma^3 ma\). Em repouso, \(F_0=ma\). A condição \(F=2F_0\) dá \(\gamma^3=2 \Rightarrow \gamma=2^{1/3}=1{,}260\):</p>
+      <p>\[ v = c\sqrt{1-1/\gamma^2} = c\sqrt{1-1/1{,}587} \approx 0{,}608\,c \]`},
+    {tag:'lista', src:'Lista 2', num:'37.31',
+      statement:r`Qual a velocidade de uma partícula cuja energia cinética é (a) igual à sua energia de repouso? (b) cinco vezes maior que sua energia de repouso?`,
+      resolution:r`<p>\(K=(\gamma-1)mc^2\).</p>
+      <p><strong>(a)</strong> \(K=mc^2 \Rightarrow \gamma=2 \Rightarrow v=c\sqrt{1-1/4}=\dfrac{c\sqrt3}{2} \approx 0{,}866\,c\).</p>
+      <p><strong>(b)</strong> \(K=5mc^2 \Rightarrow \gamma=6 \Rightarrow v=c\sqrt{1-1/36} = c\sqrt{35/36} \approx 0{,}986\,c\).</p>`},
+    {tag:'lista', src:'Lista 2', num:'37.35',
+      statement:r`(a) Em que porcentagem sua massa de repouso aumenta ao subir \(30\text{ m}\) até o topo de um prédio de dez andares? Isso é perceptível? (b) De quantos gramas varia a massa de uma mola de \(12{,}0\text{ g}\), \(k=200\text{ N/m}\), quando comprimida \(6{,}0\text{ cm}\)? A massa aumenta ou diminui? Seria perceptível?`,
+      resolution:r`<p><strong>(a)</strong> A energia potencial ganha, \(\Delta E=mgh\), corresponde a um aumento de massa \(\Delta m=\Delta E/c^2\); a variação percentual de massa é \(\Delta m/m = gh/c^2\):</p>
+      <p>\[ \frac{\Delta m}{m} = \frac{(9{,}8)(30)}{(3{,}00\times10^8)^2} \approx 3{,}3\times10^{-14}\% \]</p>
+      <p>— completamente imperceptível.</p>
+      <p><strong>(b)</strong> Energia elástica armazenada: \(\Delta E = \tfrac12kx^2=\tfrac12(200)(0{,}060)^2=0{,}360\text{ J}\). \(\Delta m=\Delta E/c^2 = 0{,}360/(9{,}00\times10^{16}) \approx 4{,}0\times10^{-18}\text{ kg}\). A massa <strong>aumenta</strong> (energia armazenada), mas de forma totalmente imperceptível frente aos \(12{,}0\text{ g}\) originais.</p>`},
+    {tag:'lista', src:'Lista 2', num:'37.37',
+      statement:r`<em>Reator de antimatéria.</em> Ao se encontrarem, partícula e antipartícula se aniquilam, convertendo massa em energia luminosa. Os EUA consomem cerca de \(1{,}0\times10^{19}\text{ J}\) de energia por ano. (a) Se toda essa energia viesse de um reator de antimatéria, que massa de combustível (matéria + antimatéria) seria consumida por ano? (b) Se esse combustível tivesse a densidade do ferro (\(7{,}86\text{ g/cm}^3\)) empilhado num cubo, que altura teria esse cubo?`,
+      resolution:r`<p><strong>(a)</strong> \(E=mc^2 \Rightarrow m = \dfrac{1{,}0\times10^{19}}{(3{,}00\times10^{8})^2} = \dfrac{1{,}0\times10^{19}}{9{,}00\times10^{16}} \approx 111\text{ kg} \approx 1{,}1\times10^{2}\text{ kg}\).</p>
+      <p><strong>(b)</strong> Volume: \(V=m/\rho = 111/7860 \approx 0{,}0141\text{ m}^3\). Lado do cubo: \(V^{1/3} \approx 0{,}24\text{ m}\).</p>`},
+    {tag:'lista', src:'Lista 2', num:'37.46',
+      statement:r`<em>Energia da fusão.</em> Dois núcleos de deutério se fundem formando um núcleo de hélio. Massa do deutério: \(2{,}0136\text{ u}\); massa do hélio: \(4{,}0015\text{ u}\) (\(1\text{ u}=1{,}6605402\times10^{-27}\text{ kg}\)). (a) Que energia é liberada na fusão de \(1{,}0\text{ kg}\) de deutério? (b) O consumo anual de energia dos EUA é \(\approx1{,}0\times10^{19}\text{ J}\); que quantidade de deutério deveria reagir para produzi-la?`,
+      resolution:r`<p>Defeito de massa por reação (2 núcleos de deutério → 1 de hélio): \(\Delta m = 2(2{,}0136)-4{,}0015 = 0{,}0257\text{ u} = 4{,}268\times10^{-29}\text{ kg}\). Energia liberada por reação: \(\Delta E=\Delta m\,c^2 = 3{,}84\times10^{-12}\text{ J}\).</p>
+      <p><strong>(a)</strong> Número de núcleos de deutério em \(1{,}0\text{ kg}\): \(N=\dfrac{1{,}0}{2{,}0136\times1{,}6605\times10^{-27}} \approx 2{,}99\times10^{26}\). Cada reação consome 2 núcleos, liberando \(\Delta E\): energia total \(\approx \dfrac{N}{2}\Delta E \approx 6{,}4\times10^{14}\text{ J}\) por kg de deutério.</p>
+      <p><strong>(b)</strong> Massa necessária: \(m = \dfrac{1{,}0\times10^{19}\text{ J}}{6{,}4\times10^{14}\text{ J/kg}} \approx 1{,}6\times10^{4}\text{ kg}\) de deutério por ano.</p>`},
+    {tag:'lista', src:'Lista 2', num:'37.55',
+      statement:r`<em>O Grande Colisor de Hádrons (LHC).</em> O LHC acelera prótons a energias cinéticas de \(7\text{ TeV}\) num anel de \(27\text{ km}\). (a) Com que velocidade os prótons chegam ao LHC? Como \(v\) é muito próximo de \(c\), escreva \(v=(1-\Delta)c\) e expresse a resposta em termos de \(\Delta\). (b) Encontre a massa relativística \(m_{\text{rel}}\) dos prótons em termos de sua massa de repouso.`,
+      resolution:r`<p>Energia de repouso do próton: \(mc^2 = 938{,}3\text{ MeV}\). Com \(K=7\text{ TeV}=7\times10^6\text{ MeV}\):</p>
+      <p>\[ \gamma = 1+\frac{K}{mc^2} = 1+\frac{7\times10^6}{938{,}3} \approx 7462 \]</p>
+      <p><strong>(b)</strong> \(m_{\text{rel}}=\gamma m_0 \approx 7\times10^{3}\,m_0\).</p>
+      <p><strong>(a)</strong> Para \(\Delta\ll1\), \(1-v^2/c^2=(1-v/c)(1+v/c)\approx2\Delta\), logo \(\gamma\approx\dfrac{1}{\sqrt{2\Delta}}\):</p>
+      <p>\[ \Delta \approx \frac{1}{2\gamma^2} = \frac{1}{2(7462)^2} \approx 9\times10^{-9} \]</p>
+      <p>ou seja \(v=(1-9\times10^{-9})c\).</p>`},
+    {tag:'lista', src:'Lista 2', num:'37.58',
+      statement:r`Um fóton de energia \(E\) é emitido por um átomo de massa \(m\), que recua em sentido contrário. (a) Supondo o movimento do átomo não relativístico, calcule a velocidade de recuo. (b) Mostre que essa velocidade é muito menor que \(c\) quando \(E\ll mc^2\).`,
+      resolution:r`<p><strong>(a)</strong> Conservação do momento: o fóton carrega \(p_{\text{fóton}}=E/c\); o átomo recua com momento igual e oposto, \(mv=E/c\) (tratamento não relativístico):</p>
+      <p>\[ v = \frac{E}{mc} \]</p>
+      <p><strong>(b)</strong> Se \(E\ll mc^2\), então \(v=E/(mc) = (E/mc^2)\,c \ll c\), pois \(E/mc^2\ll1\) — confirma que a hipótese não relativística usada em (a) é autoconsistente nesse limite.</p>`},
+    {tag:'lista', src:'Lista 2', num:'37.59',
+      statement:r`Dois prótons são lançados um contra o outro, cada um com metade da velocidade da luz em relação ao laboratório. (a) Qual a velocidade de um próton em relação ao outro? (b) Qual seria essa resposta pela mecânica newtoniana? (c) Qual a energia cinética de cada próton (i) para um observador no laboratório e (ii) para um observador junto com um dos prótons? (d) Quais seriam as respostas de (c) pela mecânica newtoniana?`,
+      resolution:r`<p><strong>(a)</strong> Adição relativística (sentidos opostos, \(v_1=v_2=0{,}5c\)): \(v_{\text{rel}} = \dfrac{0{,}5c+0{,}5c}{1+(0{,}5)(0{,}5)} = \dfrac{1{,}0c}{1{,}25} = 0{,}800\,c\).</p>
+      <p><strong>(b)</strong> Newtoniana: simples soma, \(v_{\text{rel}}=0{,}5c+0{,}5c=1{,}00\,c\).</p>
+      <p><strong>(c-i)</strong> No laboratório, \(\gamma=1/\sqrt{1-0{,}25}=1{,}1547\). \(K=(\gamma-1)mc^2 = 0{,}1547\times938{,}3\text{ MeV} = 145\text{ MeV} \approx 2{,}33\times10^{-11}\text{ J}\).</p>
+      <p><strong>(c-ii)</strong> No referencial de um dos prótons, o outro se move a \(0{,}800c\) (item a): \(\gamma'=1/\sqrt{1-0{,}64}=1{,}667\). \(K'=(\gamma'-1)mc^2=0{,}667\times938{,}3\text{ MeV}=626\text{ MeV} \approx 1{,}0\times10^{-10}\text{ J}\).</p>
+      <p><strong>(d)</strong> Newtoniana: (i) \(K=\tfrac12mv^2\) com \(v=0{,}5c=1{,}5\times10^8\text{ m/s}\): \(K\approx1{,}88\times10^{-11}\text{ J}\). (ii) com \(v=1{,}0c\) (item b): \(K'\approx4{,}81\times10^{-11}\text{ J}\) — valores diferentes dos relativísticos, mostrando o quanto a mecânica newtoniana falha nesse regime de velocidades.</p>`},
+    {tag:'lista', src:'Lista 2', num:'37.63',
+      statement:r`Uma partícula de massa \(m\) é acelerada por uma força constante \(F\). Pela mecânica newtoniana ela seria acelerada indefinidamente (\(v\to\infty\) quando \(t\to\infty\)). Mostre que, pela mecânica relativística, a velocidade tende a \(c\) quando \(t\to\infty\). (Sugestão: \(\int(1-x^2)^{-3/2}dx = x/\sqrt{1-x^2}\).)`,
+      resolution:r`<p>Parte-se de \(F=\dfrac{dp}{dt}\) com \(p=\dfrac{mv}{\sqrt{1-v^2/c^2}}\). Como \(F\) é constante, integrando de \(0\) a \(t\) (com \(v=0\) em \(t=0\)):</p>
+      <p>\[ \frac{mv}{\sqrt{1-v^2/c^2}} = Ft \]</p>
+      <p>Isolando \(v\) (elevando ao quadrado e resolvendo):</p>
+      <p>\[ v = \frac{Ft/m}{\sqrt{1+(Ft/mc)^2}} \]</p>
+      <p>Quando \(t\to\infty\), o termo \((Ft/mc)^2\) domina sobre \(1\) no denominador, e \(v\to \dfrac{Ft/m}{Ft/(mc)} = c\) — a velocidade tende a \(c\) mas nunca a ultrapassa, ao contrário da previsão newtoniana de crescimento sem limite.</p>`},
+
+    {tag:'lista', src:'Lista 2', num:'32.28',
+      statement:r`<em>(Pressão de radiação, revisão de ondas eletromagnéticas.)</em> Num laboratório de simulação espacial da NASA (sala de \(25\text{ pés}\), \(\approx7{,}6\text{ m}\)), lâmpadas produzem no piso uma intensidade de \(2500\text{ W/m}^2\) (simulação da luz solar perto de Vênus). Calcule a pressão de radiação média (em pascals e atmosferas) sobre (a) uma seção totalmente absorvedora do piso; (b) uma seção totalmente refletora. (c) Calcule a densidade do momento linear médio (momento por unidade de volume) da luz que atinge o piso.`,
+      resolution:r`<p><strong>(a)</strong> Superfície absorvedora: \(P=I/c = 2500/(3{,}00\times10^8) = 8{,}33\times10^{-6}\text{ Pa}\). Convertendo (\(1\text{ atm}=1{,}013\times10^5\text{ Pa}\)): \(P\approx8{,}2\times10^{-11}\text{ atm}\).</p>
+      <p><strong>(b)</strong> Superfície refletora: \(P=2I/c = 1{,}67\times10^{-5}\text{ Pa}\).</p>
+      <p><strong>(c)</strong> A densidade de momento é a intensidade dividida por \(c^2\) (energia por volume, dividida por \(c\)): \(u_p = I/c^2 = 2500/(9{,}00\times10^{16}) \approx 2{,}78\times10^{-14}\text{ kg/(m}^2\!\cdot\text{s)}\).</p>`},
+
+    {tag:'prova', exam:true, src:'P1 · 2023', num:'Questão 3',
+      statement:r`Uma estrela está a \(16\) anos-luz da Terra. Um foguete parte em direção à estrela com \(v=4c/5\) (\(\gamma=5/3\)). (a) Para um ocupante do foguete, qual a duração da viagem? (b) Ao chegar, o foguete emite um sinal luminoso para a Terra; para um observador terrestre, quanto tempo passa entre a partida do foguete e a chegada do sinal? (c) Um cronômetro acionado na Terra na partida — o que ele marca quando o foguete chega à estrela? (d) Se o piloto pudesse ver esse cronômetro, que leitura ele veria no instante da chegada?`,
+      resolution:r`<span class="tag">Solução oficial</span>
+      <p><strong>(a)</strong> No referencial do foguete, a distância a percorrer é \(D/\gamma\) (contração de comprimento), e a velocidade é \(v\), logo \(\Delta t' = \dfrac{D/\gamma}{v} = \dfrac{16\cdot\tfrac35}{\tfrac45}=12\) anos.</p>
+      <p><strong>(b)</strong> \(\Delta t = D/v + D/c = 20+16=36\) anos.</p>
+      <p><strong>(c)</strong> O cronômetro na Terra marca o tempo próprio da viagem no referencial da Terra: \(t=D/v=20\) anos.</p>
+      <p><strong>(d)</strong> O piloto vê o cronômetro atrasado pelo tempo de viagem da luz (\(16\) anos): ele enxerga a leitura de \(20-16=4\) anos.</p>`},
+
+    {tag:'prova', exam:true, src:'P1 · 2023', num:'Questão 4',
+      statement:r`Um foguete de comprimento próprio \(L_0\) está em repouso em \(S'\), que se move com \(\vec v=v\hat\imath\) em relação a \(S\). Em \(S\) há postes de luz \(A\) (\(x_A=0\)) e \(B\) (a uma distância \(D\) de \(A\)); em \(t=0\) ambos emitem pulsos simultaneamente (em \(S\)). A popa do foguete coincide com \(A\) em \(t=t'=0\). (a) Em \(S'\), calcule os instantes de emissão dos pulsos de \(A\) e \(B\); qual poste emite primeiro? (b) Em \(S'\), quando o pulso de \(A\) atinge a proa do foguete? (c) Em \(S\), quando esse mesmo pulso atinge a proa?`,
+      resolution:r`<span class="tag">Solução oficial</span>
+      <p><strong>(a)</strong> Evento A: \((x_A,t_A)=(0,0)\); Evento B: \((x_B,t_B)=(D,0)\). Pela transformação de Lorentz: \(t_A'=0\) e \(t_B' = -\gamma vD/c^2\). Como \(t_B'<0\), <strong>o poste B emite antes, no referencial \(S'\)</strong> (relatividade da simultaneidade).</p>
+      <p><strong>(b)</strong> No referencial do foguete, o pulso de \(A\) parte de \(t_A'=0\) e percorre o comprimento próprio \(L_0\) até a proa: \(t' = L_0/c\).</p>
+      <p><strong>(c)</strong> No referencial \(S\) (dos postes), a luz obedece \(x_{\text{luz}}=ct\), e a proa se move como \(x_{\text{proa}}(t)=vt+L_0\sqrt{1-v^2/c^2}\) (a popa parte de \(x=0\) e o foguete tem comprimento contraído \(L_0\sqrt{1-v^2/c^2}\)). Igualando:</p>
+      <p>\[ t = \frac{L_0\sqrt{1-v^2/c^2}}{c-v} \]`},
+
+    {tag:'prova', exam:true, src:'P1 · 2024', num:'Questão 3 (I e II)',
+      statement:r`(I) Maria (referencial \(S_M\)) envia um sinal de laser a uma parede à distância \(L\) (medida por ela). No instante da emissão, João passa por ela num carro com velocidade constante \(\vec v\) rumo à parede. (a) Para Maria, quanto tempo \(t_M\) o sinal leva até a parede? (b) Para João, qual o tempo \(t_J\) (em função de \(L\))? (c) Qual a distância que João, segundo ele, está da parede quando o sinal chega? (II) Um píon neutro é produzido em \(x=0\), \(t=0\) no laboratório e viaja com \(v=\tfrac45c\) até ser detectado a uma distância \(L\). (a) Qual o intervalo de tempo entre produção e detecção no laboratório (em termos de \(c\) e \(L\))? (b) Qual o tempo decorrido no referencial próprio do píon?`,
+      resolution:r`<span class="tag">Solução oficial</span>
+      <p><strong>(I-a)</strong> \(t_M=L/c\).</p>
+      <p><strong>(I-b)</strong> No referencial de João, evento "sinal na parede" ocorre em \((x_M,t_M)=(L,L/c)\) em \(S_M\). Pela transformação de Lorentz: \(t_J = \gamma\!\left(t_M-\dfrac{v}{c^2}x_M\right) = \dfrac{L\gamma}{c}\left(1-\dfrac{v}{c}\right)\).</p>
+      <p><strong>(I-c)</strong> \(x_J = \gamma(x_M-vt_M) = L\gamma\left(1-\dfrac{v}{c}\right)\) (mesma forma de \(ct_J\), como esperado — o sinal ainda viaja à velocidade \(c\) em \(S_J\)).</p>
+      <p><strong>(II-a)</strong> \(T = L/v = \dfrac{5L}{4c}\).</p>
+      <p><strong>(II-b)</strong> Dilatação do tempo: \(T'=T/\gamma\); com \(v=\tfrac45c\), \(\gamma=\tfrac53\), logo \(T' = \dfrac{3L}{4c}\).</p>`},
+
+    {tag:'prova', exam:true, src:'P1 · 2025', num:'Questão 3',
+      statement:r`Um asteroide passa pela Terra em \(t=t'=0\) e viaja em linha reta rumo a Marte com velocidade constante \(v\) ao longo de \(x\); para a Terra, Marte está a \(x=D\). Em um instante \(t_E\) (medido na Terra), um observador terrestre emite um raio de luz rumo a Marte, de forma que, para a Terra, o raio e o asteroide chegam a Marte no mesmo instante. (a) Determine \(t_E\). (b) Segundo um observador no asteroide, a que distância está a Terra no momento em que o raio é enviado? (c) Segundo o asteroide, em que instante ele chega a Marte? (d) Uma partícula se move, no referencial do asteroide, com \(\vec V'=a\hat\jmath\); determine \(\vec V\) medida pela Terra. (e) Se \(a=c\), qual o módulo de \(V\) medido pela Terra?`,
+      resolution:r`<span class="tag">Solução oficial</span>
+      <p><strong>(a)</strong> O asteroide chega a Marte em \(t=D/v\); a luz, partindo em \(t_E\), leva \(D/c\); igualando as chegadas: \(t_E = D\left(\dfrac{1}{v}-\dfrac1c\right)\).</p>
+      <p><strong>(b)</strong> Evento "emissão do raio": \((x_E,t_E)=(0,\,D/v-D/c)\) em \(S\) (Terra). Pela transformação de Lorentz, \(x_E' = -\gamma v t_E\), logo a distância entre Terra e asteroide nesse instante, em \(S'\), é \(D\sqrt{\dfrac{1-v/c}{1+v/c}}\).</p>
+      <p><strong>(c)</strong> Para o asteroide, os eventos "partir da Terra" e "chegar a Marte" ocorrem no mesmo ponto (\(x'=0\)); logo o tempo é próprio: \(t' = t/\gamma = \dfrac{D}{v}\sqrt{1-v^2/c^2}\) (equivalentemente, usando que a distância Terra–Marte contraída é \(D/\gamma\)).</p>
+      <p><strong>(d)</strong> Pelas transformações inversas de velocidade, com \(V_x'=0\), \(V_y'=a\): \(V_x=v\) e \(V_y=a\sqrt{1-v^2/c^2}\), logo \(\vec V = v\hat\imath + a\sqrt{1-v^2/c^2}\,\hat\jmath\).</p>
+      <p><strong>(e)</strong> \(V^2=v^2+a^2(1-v^2/c^2)\); com \(a=c\): \(V^2=v^2+c^2-v^2=c^2\), logo \(V=c\) — consistente com o postulado da velocidade da luz.</p>`}
+  ]
+},
+
+/* ============================================================ 4. FÓTONS ============================================================ */
+{
+  id:'fotons', icon:'photon', label:'Fótons e Efeito Fotoelétrico',
+  theory: r`
+  <h3>Radiação de corpo negro</h3>
+  <p>A lei de deslocamento de Wien relaciona a temperatura ao comprimento de onda de pico da distribuição de Planck: \(\lambda_m T = 2{,}898\times10^{-3}\text{ m·K}\). A potência total irradiada por unidade de área segue a lei de Stefan–Boltzmann, \(I=\sigma T^4\), com \(\sigma=5{,}67\times10^{-8}\text{ W/(m}^2\text{K}^4)\).</p>
+  <h3>Fóton</h3>
+  <p>Um fóton de frequência \(f\) tem energia \(E=hf=hc/\lambda\) e momento linear \(p=E/c=h/\lambda\). É conveniente lembrar \(hc \approx 1240\text{ eV·nm}\).</p>
+  <h3>Efeito fotoelétrico</h3>
+  <p>Fótons incidentes sobre uma superfície com função trabalho \(\phi\) arrancam elétrons com energia cinética máxima \(K_{\max}=hf-\phi=eV_0\), onde \(V_0\) é o potencial de corte. O comprimento de onda de corte é \(\lambda_c = hc/\phi\).</p>
+  <h3>Espalhamento Compton</h3>
+  <p>Ao colidir com um elétron livre em repouso, um fóton de raio X sofre um deslocamento no comprimento de onda que depende apenas do ângulo de espalhamento \(\phi\):</p>
+  <p>\[ \lambda' - \lambda = \frac{h}{mc}(1-\cos\phi) \]</p>
+  <p>onde \(h/mc = 2{,}426\times10^{-12}\text{ m} = 2{,}426\text{ pm}\) é o comprimento de onda Compton do elétron. O deslocamento é máximo (\(\Delta\lambda_{\max}=2h/mc\)) para retroespalhamento (\(\phi=180^\circ\)).</p>
+  <h3>Pressão de radiação</h3>
+  <p>Uma onda (ou feixe de fótons) de intensidade \(I\) incidindo perpendicularmente sobre uma superfície exerce pressão \(P=I/c\) se totalmente absorvida, \(P=2I/c\) se totalmente refletida, e \(P=(2-w)I/c\) se uma fração \(w\) da intensidade for absorvida.</p>
+  `,
+  exercises:[
+    {tag:'lista', src:'Lista 2', num:'32.28',
+      statement:r`Numa sala de simulação espacial da NASA (\(25\) pés \(\approx7{,}6\text{ m}\)), lâmpadas produzem uma intensidade de \(2500\text{ W/m}^2\) no piso. Calcule a pressão de radiação (Pa e atm) sobre (a) uma seção totalmente absorvedora; (b) uma seção totalmente refletora. (c) Calcule a densidade de momento linear médio da luz que atinge o piso.`,
+      resolution:r`<p><strong>(a)</strong> \(P=I/c = 2500/(3{,}00\times10^{8}) = 8{,}33\times10^{-6}\text{ Pa} \approx 8{,}2\times10^{-11}\text{ atm}\).</p>
+      <p><strong>(b)</strong> \(P=2I/c = 1{,}67\times10^{-5}\text{ Pa}\).</p>
+      <p><strong>(c)</strong> \(u_p=I/c^2 = 2500/(9{,}00\times10^{16}) \approx 2{,}78\times10^{-14}\text{ kg/(m}^2\!\cdot\text{s)}\).</p>`},
+    {tag:'lista', src:'Lista 2', num:'32.46',
+      statement:r`Uma superfície perpendicular à direção de propagação de um feixe eletromagnético de intensidade \(I\) absorve uma fração \(w\) (\(0\le w\le1\)) e reflete o restante. (a) Mostre que a pressão de radiação é \(P=(2-w)I/c\). (b) Mostre que isso reproduz os casos (i) totalmente absorvedora e (ii) totalmente refletora. (c) Para \(I=1{,}40\text{ kW/m}^2\), qual a pressão para absorção de \(90\%\)? E para reflexão de \(90\%\)?`,
+      resolution:r`<p><strong>(a)</strong> A parte absorvida (fração \(w\)) entrega momento \(wI/c\) por unidade de área e tempo. A parte refletida (fração \(1-w\)) inverte seu momento, entregando o dobro: \(2(1-w)I/c\). Somando:</p>
+      <p>\[ P = \frac{wI}{c}+\frac{2(1-w)I}{c} = \frac{(2-w)I}{c} \]</p>
+      <p><strong>(b)</strong> \(w=1\) (totalmente absorvedora): \(P=I/c\). \(w=0\) (totalmente refletora): \(P=2I/c\). ✓</p>
+      <p><strong>(c)</strong> Com \(I=1400\text{ W/m}^2\): absorção de 90% (\(w=0{,}9\)): \(P=(2-0{,}9)(1400)/c = 1{,}1(1400)/(3{,}00\times10^8) \approx 5{,}13\times10^{-6}\text{ Pa}\). Reflexão de 90% (\(w=0{,}1\), ou seja 10% absorvido): \(P=(2-0{,}1)(1400)/c = 1{,}9(1400)/(3{,}00\times10^8) \approx 8{,}87\times10^{-6}\text{ Pa}\).</p>`},
+    {tag:'lista', src:'Lista 2', num:'38.42',
+      statement:r`Determine \(\lambda_m\) (pico da distribuição de Planck) e a frequência \(f\) correspondente para: (a) \(3{,}0\text{ K}\); (b) \(300\text{ K}\); (c) \(3000\text{ K}\).`,
+      resolution:r`<p>Lei de Wien: \(\lambda_m = \dfrac{2{,}898\times10^{-3}\text{ m·K}}{T}\); \(f=c/\lambda_m\).</p>
+      <p><strong>(a)</strong> \(T=3{,}0\text{ K}\): \(\lambda_m=9{,}66\times10^{-4}\text{ m}=0{,}966\text{ mm}\); \(f=3{,}11\times10^{11}\text{ Hz}\).</p>
+      <p><strong>(b)</strong> \(T=300\text{ K}\): \(\lambda_m=9{,}66\times10^{-6}\text{ m}=9{,}66\ \mu\text{m}\); \(f=3{,}11\times10^{13}\text{ Hz}\).</p>
+      <p><strong>(c)</strong> \(T=3000\text{ K}\): \(\lambda_m=9{,}66\times10^{-7}\text{ m}=966\text{ nm}\); \(f=3{,}11\times10^{14}\text{ Hz}\).</p>`},
+    {tag:'lista', src:'Lista 2', num:'38.77',
+      statement:r`(a) Escreva a lei de Planck em termos da frequência \(f\) (em vez de \(\lambda\)) para obter \(I(f)\). (b) Mostre que \(\int_0^\infty I(\lambda)\,d\lambda = \dfrac{2\pi^5k^4}{15c^2h^3}T^4\) (integral útil: \(\int_0^\infty x^3/(e^{\alpha x}-1)\,dx = \dfrac{1}{240}(2\pi/\alpha)^4\)). (c) Use o resultado de (b), que é a lei de Stefan–Boltzmann \(I=\sigma T^4\), para calcular \(\sigma\).`,
+      resolution:r`<p><strong>(a)</strong> Usando \(f=c/\lambda\) (logo \(|d\lambda|=(c/f^2)df\)) na distribuição de Planck em \(\lambda\), obtém-se \(I(f) = \dfrac{2\pi h f^3}{c^2}\dfrac{1}{e^{hf/kT}-1}\).</p>
+      <p><strong>(b)-(c)</strong> Substituindo \(x=hf/kT\) e usando a integral fornecida, a constante resultante é:</p>
+      <p>\[ \sigma = \frac{2\pi^5k^4}{15c^2h^3} \approx 5{,}67\times10^{-8}\text{ W/(m}^2\!\cdot\text{K}^4) \]</p>
+      <p>— o valor conhecido da constante de Stefan-Boltzmann.</p>`},
+    {tag:'lista', src:'Lista 2', num:'38.4',
+      statement:r`Um laser de \(\lambda=652\text{ nm}\) emite pulsos de \(20{,}0\text{ ms}\), com potência média de \(0{,}60\text{ W}\) durante cada pulso. (a) Qual a energia de cada pulso, em joules e em elétrons-volt? (b) Qual a energia de cada fóton, em joules e em elétrons-volt? (c) Quantos fótons são emitidos em cada pulso?`,
+      resolution:r`<p><strong>(a)</strong> \(E_{\text{pulso}} = P\Delta t = (0{,}60)(20{,}0\times10^{-3}) = 1{,}2\times10^{-2}\text{ J}\). Em eV: \(1{,}2\times10^{-2}/(1{,}6\times10^{-19}) \approx 7{,}5\times10^{16}\text{ eV}\).</p>
+      <p><strong>(b)</strong> \(E_{\text{fóton}}=hc/\lambda = (1240\text{ eV·nm})/(652\text{ nm}) \approx 1{,}91\text{ eV} = 3{,}05\times10^{-19}\text{ J}\).</p>
+      <p><strong>(c)</strong> \(N = E_{\text{pulso}}/E_{\text{fóton}} = (1{,}2\times10^{-2})/(3{,}05\times10^{-19}) \approx 3{,}93\times10^{16}\) fótons.</p>`},
+    {tag:'lista', src:'Lista 2', num:'38.12',
+      statement:r`A função trabalho do potássio é \(2{,}3\text{ eV}\). Luz de \(250\text{ nm}\) incide sobre ele. Calcule (a) o potencial de corte, em volts; (b) a energia cinética (eV) dos elétrons mais energéticos emitidos; (c) a velocidade desses elétrons.`,
+      resolution:r`<p>Energia do fóton: \(E=hc/\lambda = 1240/250 = 4{,}96\text{ eV}\).</p>
+      <p><strong>(a)-(b)</strong> \(K_{\max}=eV_0 = E-\phi = 4{,}96-2{,}3 = 2{,}66\text{ eV}\), logo \(V_0\approx2{,}7\text{ V}\) e \(K_{\max}\approx2{,}7\text{ eV}\).</p>
+      <p><strong>(c)</strong> \(v=\sqrt{2K/m} = \sqrt{\dfrac{2(2{,}66)(1{,}6\times10^{-19})}{9{,}11\times10^{-31}}} \approx 9{,}7\times10^{5}\text{ m/s}\).</p>`},
+    {tag:'lista', src:'Lista 2', num:'38.13',
+      statement:r`Luz ultravioleta de \(254\text{ nm}\) incide sobre uma superfície de cobre polido; o potencial de corte necessário para impedir a emissão de fotoelétrons é \(0{,}181\text{ V}\). (a) Qual o comprimento de onda de corte dessa superfície? (b) Qual sua função trabalho, e como esse valor se compara à Tabela 38.1?`,
+      resolution:r`<p>Energia do fóton: \(E=hc/\lambda=1240/254=4{,}882\text{ eV}\).</p>
+      <p><strong>(b)</strong> \(\phi = E-eV_0 = 4{,}882-0{,}181 = 4{,}70\text{ eV}\).</p>
+      <p><strong>(a)</strong> \(\lambda_c = hc/\phi = 1240/4{,}70 \approx 264\text{ nm}\).</p>`},
+    {tag:'lista', src:'Lista 2', num:'38.14',
+      statement:r`O momento linear de um fóton é \(8{,}24\times10^{-28}\text{ kg·m/s}\). (a) Qual a energia desse fóton, em joules e elétrons-volt? (b) Qual o comprimento de onda associado? Em que região do espectro eletromagnético ele está?`,
+      resolution:r`<p><strong>(a)</strong> \(E=pc = (8{,}24\times10^{-28})(3{,}00\times10^{8}) = 2{,}47\times10^{-19}\text{ J} \approx 1{,}54\text{ eV}\).</p>
+      <p><strong>(b)</strong> \(\lambda = h/p = (6{,}626\times10^{-34})/(8{,}24\times10^{-28}) \approx 8{,}04\times10^{-7}\text{ m}=804\text{ nm}\) — infravermelho próximo.</p>`},
+    {tag:'lista', src:'Lista 2', num:'38.55',
+      statement:r`(a) O comprimento de onda da luz sobre uma superfície metálica se reduz de \(\lambda_1\) para \(\lambda_2\) (ambos menores que o comprimento de onda de corte). Qual a variação do potencial de corte para os fotoelétrons? (b) Calcule essa variação para \(\lambda_1=295\text{ nm}\) e \(\lambda_2=265\text{ nm}\).`,
+      resolution:r`<p><strong>(a)</strong> \(eV_0=hc/\lambda-\phi\), então \(e\Delta V_0 = hc\left(\dfrac1{\lambda_2}-\dfrac1{\lambda_1}\right)\):</p>
+      <p>\[ \Delta V_0 = \frac{hc(\lambda_1-\lambda_2)}{e\,\lambda_1\lambda_2} \]</p>
+      <p><strong>(b)</strong> Usando \(hc/e=1240\text{ eV·nm}\): \(\Delta V_0 = 1240\left(\dfrac1{265}-\dfrac1{295}\right) = 1240(0{,}003774-0{,}003390) \approx 0{,}476\text{ V}\).</p>`},
+    {tag:'lista', src:'Lista 2', num:'38.36',
+      statement:r`Raios X são produzidos num tubo submetido a \(18{,}0\text{ kV}\). Os raios X de comprimento de onda mínimo sofrem espalhamento Compton de \(45{,}0^\circ\) num alvo. (a) Qual o comprimento de onda do raio X original? (b) E do raio X espalhado? (c) Qual a energia (eV) dos raios X espalhados?`,
+      resolution:r`<p><strong>(a)</strong> Toda a energia cinética do elétron acelerado (\(eV=18{,}0\text{ keV}\)) vira um único fóton no comprimento de onda mínimo: \(\lambda_{\min}=hc/(eV) = 1240\text{ eV·nm}/18000\text{ eV} \approx 0{,}0689\text{ nm} \approx 0{,}0691\text{ nm}\).</p>
+      <p><strong>(b)</strong> \(\Delta\lambda = (h/mc)(1-\cos45^\circ) = 2{,}426\text{ pm}\times(1-0{,}7071) = 0{,}711\text{ pm}\). \(\lambda'=\lambda+\Delta\lambda \approx 0{,}0698\text{ nm}\).</p>
+      <p><strong>(c)</strong> \(E'=hc/\lambda' = 1240/0{,}0698 \approx 17\,760\text{ eV} \approx 17{,}8\text{ keV}\).</p>`},
+    {tag:'lista', src:'Lista 2', num:'38.38',
+      statement:r`Um feixe de raios X de \(\lambda=0{,}05\text{ nm}\) sofre espalhamento Compton por elétrons numa amostra. Qual deve ser o ângulo de observação para se encontrar raios X espalhados com comprimento de onda: (a) \(0{,}0542\text{ nm}\); (b) \(0{,}0521\text{ nm}\); (c) \(0{,}05\text{ nm}\)?`,
+      resolution:r`<p>Isolando \(\phi\) de \(\Delta\lambda=(h/mc)(1-\cos\phi)\): \(\cos\phi = 1-\dfrac{\Delta\lambda}{h/mc}\), com \(h/mc=2{,}426\text{ pm}\).</p>
+      <p><strong>(a)</strong> \(\Delta\lambda=4{,}2\text{ pm}\): \(\cos\phi=1-4{,}2/2{,}426=-0{,}731 \Rightarrow \phi\approx137^\circ\).</p>
+      <p><strong>(b)</strong> \(\Delta\lambda=2{,}1\text{ pm}\): \(\cos\phi=1-2{,}1/2{,}426=0{,}134 \Rightarrow \phi\approx82{,}3^\circ\).</p>
+      <p><strong>(c)</strong> \(\Delta\lambda=0\): \(\cos\phi=1 \Rightarrow \phi=0^\circ\) (sem espalhamento, sem deslocamento).</p>`},
+    {tag:'lista', src:'Lista 2', num:'38.41',
+      statement:r`Complete a dedução da fórmula do espalhamento Compton, seguindo os passos indicados desde a conservação de energia e momento relativísticos do sistema fóton + elétron até a expressão final \(\lambda'-\lambda=(h/mc)(1-\cos\phi)\).`,
+      resolution:r`<p>Conservação de energia: \(hf+mc^2 = hf'+\sqrt{(mc^2)^2+(p_ec)^2}\) (elétron inicialmente em repouso). Conservação de momento (componentes \(x,y\)) entre o fóton incidente, o fóton espalhado (ângulo \(\phi\)) e o elétron de recuo (ângulo \(\theta\)):</p>
+      <p>\[ \frac{hf}{c} = \frac{hf'}{c}\cos\phi + p_e\cos\theta, \qquad 0 = \frac{hf'}{c}\sin\phi - p_e\sin\theta \]</p>
+      <p>Eliminando \(\theta\) entre essas duas (elevando ao quadrado e somando) para obter \((p_ec)^2\) em função de \(f,f',\phi\), e substituindo na equação de energia (isolando \((p_ec)^2\) também dela e igualando), os termos em \(f^2\) e \(f'^2\) se cancelam parcialmente, restando, após usar \(f=c/\lambda\):</p>
+      <p>\[ \lambda'-\lambda = \frac{h}{mc}(1-\cos\phi) \]`},
+    {tag:'lista', src:'Lista 2', num:'38.74',
+      statement:r`Um fóton de raios X é espalhado por um elétron (massa \(m\)) em repouso; o comprimento de onda espalhado é \(\lambda'\) e a velocidade final do elétron é \(v\). (a) Qual era o comprimento de onda \(\lambda\) inicial? Expresse em termos de \(\lambda'\), \(v\), \(m\) (use a energia cinética relativística do elétron). (b) Através de qual ângulo \(\phi\) o fóton foi espalhado? Expresse em termos de \(\lambda,\lambda',m\). (c) Avalie (a) e (b) para \(\lambda'=5{,}1\times10^{-3}\text{ nm}\) e \(v=1{,}8\times10^8\text{ m/s}\); forneça \(\phi\) em graus.`,
+      resolution:r`<p><strong>(a)</strong> Conservação de energia: \(hc/\lambda = hc/\lambda' + K_e\), com \(K_e=(\gamma-1)mc^2\), \(\gamma=1/\sqrt{1-v^2/c^2}\). Logo \(1/\lambda = 1/\lambda' + (\gamma-1)mc/h\), ou seja:</p>
+      <p>\[ \lambda = \frac{\lambda'}{1+\dfrac{\lambda' mc}{h}\left(\dfrac{1}{\sqrt{1-v^2/c^2}}-1\right)} \]</p>
+      <p><strong>(b)</strong> Da fórmula de Compton, \(\phi = \arccos\!\left(1-\dfrac{\lambda-\lambda'}{h/mc}\right)\) — usando \(\Delta\lambda=\lambda-\lambda'\) (aqui negativo, já que \(\lambda<\lambda'\), consistente com o fóton perdendo energia).</p>
+      <p><strong>(c)</strong> Com \(v=1{,}8\times10^8\text{ m/s}\): \(v/c=0{,}600\), \(\gamma=1{,}25\). \((\gamma-1)/(h/mc) = 0{,}25/2{,}426\text{ pm} = 0{,}1030\text{ pm}^{-1}\); \(1/\lambda' = 1/5{,}1\text{ pm}=0{,}1961\text{ pm}^{-1}\); somando: \(1/\lambda=0{,}2991\text{ pm}^{-1} \Rightarrow \lambda \approx 3{,}343\times10^{-3}\text{ nm}\). \(\Delta\lambda=\lambda'-\lambda\approx1{,}76\text{ pm}\); \(\cos\phi = 1-1{,}76/2{,}426=0{,}276 \Rightarrow \phi\approx74{,}0^\circ\).</p>`},
+    {tag:'lista', src:'Lista 2', num:'38.76',
+      statement:r`(a) Calcule o aumento máximo possível do comprimento de onda de um fóton em um espalhamento Compton. (b) Qual a energia (eV) do fóton de raios X de menor energia cujo comprimento de onda dobra durante o espalhamento Compton?`,
+      resolution:r`<p><strong>(a)</strong> O deslocamento é máximo em \(\phi=180^\circ\) (retroespalhamento): \(\Delta\lambda_{\max}=2(h/mc) = 2(2{,}426\text{ pm}) \approx 4{,}85\text{ pm}\).</p>
+      <p><strong>(b)</strong> Se o comprimento de onda dobra, \(\Delta\lambda=\lambda\); a menor energia (maior \(\lambda\)) corresponde ao maior \(\Delta\lambda\) possível, ou seja \(\lambda=\Delta\lambda_{\max}=4{,}85\text{ pm}\):</p>
+      <p>\[ E = \frac{hc}{\lambda} = \frac{1240\text{ eV·nm}}{4{,}85\times10^{-3}\text{ nm}} \approx 2{,}56\times10^{5}\text{ eV} = 0{,}256\text{ MeV} \]`},
+    {tag:'lista', src:'Lista 2', num:'38.80',
+      statement:r`Um feixe de luz monocromática de intensidade \(I\) incide perpendicularmente sobre uma superfície completamente absorvedora. Use o conceito de fóton para mostrar que a pressão de radiação exercida sobre a superfície é \(I/c\).`,
+      resolution:r`<p>Cada fóton absorvido transfere seu momento \(p=E/c\) à superfície. Num intervalo \(\Delta t\), a energia incidente por unidade de área é \(I\Delta t\); dividindo por \(c\), o momento transferido por área é \((I\Delta t)/c\). A força por área (pressão) é essa taxa dividida por \(\Delta t\):</p>
+      <p>\[ P = \frac{I}{c} \]`}
+  ]
+},
+
+/* ============================================================ 5. BOHR ============================================================ */
+{
+  id:'bohr', icon:'bohr', label:'Modelo de Bohr',
+  theory: r`
+  <h3>Átomo de hidrogênio (e hidrogenoides)</h3>
+  <p>No modelo de Bohr, os níveis de energia do átomo de hidrogênio são \(E_n = -\dfrac{13{,}6\text{ eV}}{n^2}\), \(n=1,2,3,\dots\). Para íons hidrogenoides com carga nuclear \(Ze\), \(E_n=-Z^2\dfrac{13{,}6\text{ eV}}{n^2}\), e o raio orbital escala como \(r_n \propto n^2/Z\); para partículas de massa diferente do elétron (como o múon), usa-se a massa reduzida do sistema no lugar de \(m_e\), e tanto \(|E_n|\) quanto \(1/\lambda\) escalam proporcionalmente a essa massa.</p>
+  <h3>Transições e fótons</h3>
+  <p>Um fóton absorvido ou emitido numa transição entre níveis \(n_i\) e \(n_f\) tem energia \(hf = |E_{n_f}-E_{n_i}|\). Só fótons com energia igual à diferença exata entre dois níveis são absorvidos a partir de um dado estado.</p>
+  <h3>Órbitas circulares</h3>
+  <p>A quantização do momento angular (\(L=n\hbar\)) leva a velocidades \(v_n=v_1/n\) (com \(v_1\approx2{,}19\times10^6\text{ m/s}\)) e períodos \(T_n=T_1\,n^3\). A frequência de revolução do elétron é \(f=\dfrac{me^4}{4\epsilon_0^2 n^3h^3}\); para \(n\) muito grande, ela coincide com a frequência do fóton emitido na transição \(n+1\to n\) (princípio da correspondência de Bohr).</p>
+  `,
+  exercises:[
+    {tag:'lista', src:'Lista 2', num:'38.18',
+      statement:r`O diagrama de níveis de energia do elemento hipotético "sears-zemanskium" tem \(n=1{:}-20\text{ eV}\), \(n=2{:}-10\text{ eV}\), \(n=3{:}-5\text{ eV}\), \(n=4{:}-2\text{ eV}\) (energia potencial nula no infinito). (a) Qual a energia necessária (eV) para ionizar um elétron a partir do fundamental? (b) Um fóton de \(18\text{ eV}\) é absorvido no estado fundamental; quando o átomo retorna ao fundamental, quais são as energias possíveis dos fótons emitidos? (c) O que ocorreria se um fóton de \(8\text{ eV}\) colidisse com o átomo no fundamental? Por quê? (d) Fótons das transições \(n=3\to2\) e \(n=3\to1\) produzem fotoelétrons num metal desconhecido, mas o fóton de \(n=4\to3\) não produz. Qual o intervalo possível (máximo e mínimo) para a função trabalho desse metal?`,
+      resolution:r`<p><strong>(a)</strong> Ionizar a partir do fundamental (\(E_1=-20\text{ eV}\)) significa levar o elétron até \(E=0\): \(20\text{ eV}\).</p>
+      <p><strong>(b)</strong> Um fóton de \(18\text{ eV}\) leva o elétron de \(E_1=-20\text{ eV}\) até \(-20+18=-2\text{ eV}=E_4\) — o átomo é excitado até \(n=4\). Ao retornar ao fundamental, pode fazê-lo em uma ou várias etapas, emitindo fótons com energia igual a cada diferença possível entre os níveis \(4,3,2,1\): \(E_2-E_1=10\); \(E_3-E_1=15\); \(E_4-E_1=18\); \(E_3-E_2=5\); \(E_4-E_2=8\); \(E_4-E_3=3\) (em eV). Logo as energias possíveis são:</p>
+      <p>\[ 3,\ 5,\ 8,\ 10,\ 15,\ 18\ \text{eV} \]</p>
+      <p><strong>(c)</strong> A partir do fundamental (\(-20\text{ eV}\)), as únicas transições possíveis para cima custam \(10\), \(15\) ou \(18\text{ eV}\) (indo a \(n=2,3,4\)). Como \(8\text{ eV}\) não corresponde a nenhuma dessas diferenças, o fóton <strong>não seria absorvido</strong> — passaria direto pelo átomo.</p>
+      <p><strong>(d)</strong> Fotoelétrons exigem \(hf>\phi\). As transições que ejetam elétrons têm energia \(5\text{ eV}\) (\(3\to2\)) e \(15\text{ eV}\) (\(3\to1\)); a que não ejeta tem \(3\text{ eV}\) (\(4\to3\)). Logo \(\phi\) deve satisfazer \(3\text{ eV} < \phi < 5\text{ eV}\) (menor que a menor energia que ejeta, e maior que a energia que não ejeta).</p>`},
+    {tag:'lista', src:'Lista 2', num:'38.25',
+      statement:r`Um átomo de berílio triplamente ionizado (\(\text{Be}^{3+}\)) comporta-se como o hidrogênio, exceto por carga nuclear 4 vezes maior. (a) Qual a energia do nível fundamental do \(\text{Be}^{3+}\)? Como se compara à do hidrogênio? (b) Qual sua energia de ionização? Como se compara à do hidrogênio? (c) No hidrogênio, a transição \(n=2\to1\) emite \(122\text{ nm}\); qual o comprimento de onda para a mesma transição no \(\text{Be}^{3+}\)? (d) Para um dado \(n\), como se compara o raio da órbita do \(\text{Be}^{3+}\) ao raio da mesma órbita no hidrogênio?`,
+      resolution:r`<p>Com \(Z=4\), \(E_n \propto Z^2\), então todas as energias ficam \(16\times\) maiores em módulo.</p>
+      <p><strong>(a)</strong> \(E_1(\text{Be}^{3+}) = 16\times(-13{,}6\text{ eV}) = -218\text{ eV}\) — 16 vezes maior (em módulo) que o hidrogênio.</p>
+      <p><strong>(b)</strong> Energia de ionização \(=+218\text{ eV}\), também 16 vezes maior.</p>
+      <p><strong>(c)</strong> Como \(\lambda=hc/\Delta E\) e \(\Delta E\propto Z^2\), \(\lambda\) escala por \(1/Z^2=1/16\): \(\lambda_{\text{Be}} = 122/16 \approx 7{,}63\text{ nm}\).</p>
+      <p><strong>(d)</strong> O raio de Bohr escala como \(r_n\propto n^2/Z\); para o mesmo \(n\), o raio do \(\text{Be}^{3+}\) é \(1/Z=1/4\) do raio correspondente no hidrogênio.</p>`},
+    {tag:'lista', src:'Lista 2', num:'38.27',
+      statement:r`Usando o modelo de Bohr: (a) calcule a velocidade do elétron do hidrogênio para \(n=1,2,3\). (b) Calcule o período orbital para cada nível. (c) A vida média do primeiro nível excitado é \(1{,}0\times10^{-8}\text{ s}\); quantas voltas completas o elétron dá em \(n=2\) antes de voltar ao fundamental?`,
+      resolution:r`<p><strong>(a)</strong> \(v_n = v_1/n\), com \(v_1 = \alpha c \approx 2{,}19\times10^{6}\text{ m/s}\) (\(\alpha\) = constante de estrutura fina): \(v_1=2{,}19\times10^{6}\), \(v_2=1{,}09\times10^{6}\), \(v_3=7{,}29\times10^{5}\text{ m/s}\).</p>
+      <p><strong>(b)</strong> \(T_n = 2\pi r_n/v_n \propto n^3\), com \(T_1\approx1{,}52\times10^{-16}\text{ s}\): \(T_2=8T_1\approx1{,}22\times10^{-15}\text{ s}\); \(T_3=27T_1\approx4{,}10\times10^{-15}\text{ s}\).</p>
+      <p><strong>(c)</strong> \(N = \tau/T_2 = (1{,}0\times10^{-8})/(1{,}22\times10^{-15}) \approx 8{,}2\times10^{6}\) voltas.</p>`},
+    {tag:'lista', src:'Lista 2', num:'38.59',
+      statement:r`O múon negativo tem a mesma carga do elétron, mas massa 207 vezes maior. Considere um átomo semelhante ao hidrogênio formado por um próton e um múon. (a) Qual a massa reduzida desse átomo? (b) Qual a energia do nível fundamental (eV)? (c) Qual o comprimento de onda emitido na transição \(n=2\to1\)?`,
+      resolution:r`<p><strong>(a)</strong> \(\mu = \dfrac{m_\mu m_p}{m_\mu+m_p}\), com \(m_\mu=207\,m_e=1{,}885\times10^{-28}\text{ kg}\) e \(m_p=1{,}673\times10^{-27}\text{ kg}\):</p>
+      <p>\[ \mu = \frac{(1{,}885\times10^{-28})(1{,}673\times10^{-27})}{1{,}885\times10^{-28}+1{,}673\times10^{-27}} \approx 1{,}69\times10^{-28}\text{ kg} \]</p>
+      <p><strong>(b)</strong> \(E_1 = -13{,}6\text{ eV}\times(\mu/m_e) = -13{,}6\times185{,}9 \approx -2{,}53\text{ keV}\).</p>
+      <p><strong>(c)</strong> \(\lambda\) escala inversamente com a massa: \(\lambda_\mu = 122\text{ nm}\times(m_e/\mu) = 122/185{,}9 \approx 0{,}656\text{ nm} \approx 0{,}653\text{ nm}\).</p>`},
+    {tag:'lista', src:'Lista 2', num:'38.63',
+      statement:r`(a) Qual a menor energia (eV) que deve ser fornecida a um átomo de hidrogênio, inicialmente no fundamental, para que ele emita a linha \(H_\alpha\) da série de Balmer? (b) Partindo de \(n=3\) e terminando no fundamental, quantas possibilidades diferentes existem no espectro de emissão? Calcule o comprimento de onda emitido em cada caso.`,
+      resolution:r`<p>Níveis: \(E_1=-13{,}6\text{ eV}\), \(E_2=-3{,}4\text{ eV}\), \(E_3=-1{,}511\text{ eV}\).</p>
+      <p><strong>(a)</strong> A linha \(H_\alpha\) é a transição \(3\to2\); para o átomo poder emiti-la, primeiro precisa ser excitado do fundamental até \(n=3\): \(E_3-E_1 = -1{,}511-(-13{,}6) = 12{,}09\text{ eV}\).</p>
+      <p><strong>(b)</strong> Três transições possíveis a partir de \(n=3\): \(3\to2\) (\(\Delta E=1{,}889\text{ eV}\Rightarrow\lambda=hc/\Delta E\approx656\text{ nm}\)); \(3\to1\) (\(\Delta E=12{,}09\text{ eV}\Rightarrow\lambda\approx103\text{ nm}\)); \(2\to1\) (\(\Delta E=10{,}2\text{ eV}\Rightarrow\lambda\approx122\text{ nm}\)).</p>`},
+    {tag:'lista', src:'Lista 2', num:'38.79',
+      statement:r`(a) Mostre que, no modelo de Bohr, a frequência de revolução do elétron numa órbita circular estacionária do átomo de hidrogênio é \(f=\dfrac{me^4}{4\epsilon_0^2n^3h^3}\). (b) Na física clássica, a frequência de revolução do elétron é igual à frequência da radiação emitida. Mostre que, quando \(n\) é muito grande, a frequência de revolução coincide com a frequência do fóton emitido na transição \(n_1=n+1\to n_2=n\) (princípio da correspondência de Bohr).`,
+      resolution:r`<p><strong>(a)</strong> Igualando a força centrípeta à força coulombiana, \(\dfrac{mv^2}{r_n}=\dfrac{e^2}{4\pi\epsilon_0 r_n^2}\), com a quantização \(mvr_n = n\hbar\) e o raio de Bohr \(r_n = \dfrac{4\pi\epsilon_0\hbar^2n^2}{me^2}\), obtém-se \(v_n\) e então \(f=v_n/(2\pi r_n)\), levando a:</p>
+      <p>\[ f = \frac{me^4}{4\epsilon_0^2n^3h^3} \]</p>
+      <p><strong>(b)</strong> A energia do fóton emitido em \(n+1\to n\) é \(\Delta E = E_n-E_{n+1}\). Para \(n\) grande, expandindo em série (\(1/n^2-1/(n+1)^2 \approx 2/n^3\)), o resultado de \(hf_{\text{fóton}}=\Delta E\) reduz-se exatamente à expressão de \(f\) obtida em (a) — a mecânica clássica e a quântica concordam nesse limite.</p>`}
+  ]
+},
+
+/* ============================================================ 6. DUALIDADE ============================================================ */
+{
+  id:'dualidade', icon:'duality', label:'Dualidade Onda-Partícula',
+  theory: r`
+  <h3>Comprimento de onda de De Broglie</h3>
+  <p>Toda partícula com momento \(p\) possui um comprimento de onda associado \(\lambda = h/p\). Não relativisticamente, com energia cinética \(K=\tfrac12mv^2=p^2/2m\): \(\lambda = h/\sqrt{2mK}\). Para elétrons muito rápidos, deve-se usar o momento relativístico \(p=mv/\sqrt{1-v^2/c^2}\).</p>
+  <h3>Princípio da incerteza de Heisenberg</h3>
+  <p>Não é possível conhecer simultaneamente, com precisão arbitrária, a posição e o momento (ou velocidade) de uma partícula ao longo da mesma direção:</p>
+  <p>\[ \Delta x\,\Delta p_x \gtrsim \frac{h}{4\pi} \]</p>
+  <p>relações análogas valem para \(y,p_y\) e \(z,p_z\); uma relação equivalente conecta a incerteza em energia e no tempo, \(\Delta E\,\Delta t \gtrsim h/4\pi\), útil para estimar a vida média de partículas instáveis a partir da incerteza em sua energia de repouso.</p>
+  `,
+  exercises:[
+    {tag:'lista', src:'Lista 2', num:'39.6',
+      statement:r`(a) Uma partícula não relativística de massa \(m\) tem energia cinética \(K\). Deduza a expressão do comprimento de onda de De Broglie em termos de \(m\) e \(K\). (b) Qual o comprimento de onda de De Broglie de um elétron com \(800\text{ eV}\)?`,
+      resolution:r`<p><strong>(a)</strong> De \(K=p^2/2m\), \(p=\sqrt{2mK}\), logo:</p>
+      <p>\[ \lambda = \frac{h}{\sqrt{2mK}} \]</p>
+      <p><strong>(b)</strong> \(K=800\text{ eV}=1{,}28\times10^{-16}\text{ J}\); \(2mK = 2(9{,}11\times10^{-31})(1{,}28\times10^{-16}) = 2{,}33\times10^{-46}\); \(\sqrt{2mK}=1{,}53\times10^{-23}\):</p>
+      <p>\[ \lambda = \frac{6{,}626\times10^{-34}}{1{,}53\times10^{-23}} \approx 4{,}34\times10^{-11}\text{ m} \]`},
+    {tag:'lista', src:'Lista 2', num:'39.13',
+      statement:r`(a) Com que velocidade aproximada um elétron deve se mover para que seu comprimento de onda seja útil para medir distâncias entre átomos adjacentes em cristais comuns (\(\approx0{,}10\text{ nm}\))? (b) Qual a energia cinética desse elétron? (c) Qual seria a energia de um fóton do mesmo comprimento de onda? (d) Quais partículas seriam sensores mais eficazes para estruturas de menor escala, elétrons ou fótons? Por quê?`,
+      resolution:r`<p><strong>(a)</strong> \(v = h/(m\lambda) = (6{,}626\times10^{-34})/[(9{,}11\times10^{-31})(1{,}0\times10^{-10})] \approx 7{,}3\times10^{6}\text{ m/s}\) (não relativístico: \(v/c\approx2{,}4\%\), aproximação válida).</p>
+      <p><strong>(b)</strong> \(K=\tfrac12mv^2 = \tfrac12(9{,}11\times10^{-31})(7{,}3\times10^6)^2 \approx 2{,}41\times10^{-17}\text{ J} \approx 150\text{ eV}\).</p>
+      <p><strong>(c)</strong> Um fóton com o mesmo \(\lambda\): \(E=hc/\lambda = 1240\text{ eV·nm}/0{,}10\text{ nm} = 12\,400\text{ eV} = 12{,}4\text{ keV}\).</p>
+      <p><strong>(d)</strong> Elétrons: para o mesmo \(\lambda\) de sondagem, exigem muito menos energia (\(150\text{ eV}\) contra \(12{,}4\text{ keV}\)), sendo sondas mais suaves e práticas.</p>`},
+    {tag:'lista', src:'Lista 2', num:'39.16',
+      statement:r`Um feixe de elétrons de \(188\text{ eV}\) incide perpendicularmente sobre a superfície de um cristal; o máximo \(m=2\) ocorre em \(\theta=60{,}6^\circ\). (a) Qual o espaçamento entre átomos adjacentes na superfície? (b) Em que ângulos ocorrem os demais máximos? (c) Para que energia do elétron o máximo \(m=1\) ocorreria no mesmo ângulo \(60{,}6^\circ\)? Nessa energia, existe máximo \(m=2\)? Explique.`,
+      resolution:r`<p>Primeiro, o comprimento de onda de De Broglie para \(K=188\text{ eV}\): \(\lambda = h/\sqrt{2mK} \approx 0{,}0895\text{ nm}\).</p>
+      <p><strong>(a)</strong> Da condição de máximos de difração (tipo rede), \(d\sin\theta=m\lambda\): \(d = \dfrac{2(0{,}0895)}{\sin60{,}6^\circ} = \dfrac{0{,}1790}{0{,}8712} \approx 0{,}206\text{ nm}\).</p>
+      <p><strong>(b)</strong> Para \(m=1\): \(\sin\theta=\lambda/d=0{,}0895/0{,}206=0{,}4346 \Rightarrow \theta\approx25{,}8^\circ\). Para \(m=3\): \(\sin\theta=3(0{,}0895)/0{,}206=1{,}30>1\) — não existe.</p>
+      <p><strong>(c)</strong> Para \(m=1\) ocorrer no mesmo \(\theta=60{,}6^\circ\), é preciso um novo \(\lambda'=d\sin\theta = 0{,}206\times0{,}8712 \approx 0{,}1794\text{ nm}\) (o dobro do original). A energia correspondente: \(K'=h^2/(2m\lambda'^2) \approx 46{,}8\text{ eV}\). Nessa energia, \(m=2\) exigiria \(\sin\theta=2\lambda'/d=1{,}74>1\) — <strong>não existe máximo \(m=2\)</strong> nessa energia.</p>`},
+    {tag:'lista', src:'Lista 2', num:'39.22',
+      statement:r`(a) A incerteza na coordenada \(x\) da posição de um elétron é \(0{,}20\text{ nm}\). Qual a incerteza mínima na componente \(x\) de sua velocidade? (b) Repita para um próton.`,
+      resolution:r`<p>Da relação de incerteza mínima, \(\Delta v_x = \dfrac{h}{4\pi m\,\Delta x}\).</p>
+      <p><strong>(a) Elétron:</strong> \(\Delta v_x = \dfrac{6{,}626\times10^{-34}}{4\pi(9{,}11\times10^{-31})(2{,}0\times10^{-10})} \approx 2{,}9\times10^{5}\text{ m/s}\).</p>
+      <p><strong>(b) Próton:</strong> mesma fórmula com \(m_p=1{,}673\times10^{-27}\text{ kg}\) (cerca de 1836 vezes mais massivo): \(\Delta v_x \approx 2{,}9\times10^{5}/1836 \approx 1{,}6\times10^{2}\text{ m/s}\) — bem menor, pois a maior massa do próton "absorve" mais facilmente a incerteza no momento.</p>`},
+    {tag:'lista', src:'Lista 2', num:'39.24',
+      statement:r`(a) A incerteza na coordenada \(y\) de um próton é \(2{,}0\times10^{-12}\text{ m}\). Qual a incerteza mínima na componente \(y\) de sua velocidade? (b) A incerteza na componente \(z\) da velocidade de um elétron é \(0{,}250\text{ m/s}\). Qual a incerteza mínima na coordenada \(z\) do elétron?`,
+      resolution:r`<p><strong>(a)</strong> \(\Delta v_y = \dfrac{h}{4\pi m_p\,\Delta y} = \dfrac{6{,}626\times10^{-34}}{4\pi(1{,}673\times10^{-27})(2{,}0\times10^{-12})} \approx 1{,}6\times10^{4}\text{ m/s}\).</p>
+      <p><strong>(b)</strong> Isolando \(\Delta z\): \(\Delta z = \dfrac{h}{4\pi m_e\,\Delta v_z} = \dfrac{6{,}626\times10^{-34}}{4\pi(9{,}11\times10^{-31})(0{,}250)} \approx 2{,}3\times10^{-4}\text{ m}\).</p>`},
+    {tag:'lista', src:'Lista 2', num:'39.26',
+      statement:r`<em>Vida média de uma partícula.</em> A partícula instável \(W^+\) tem energia de repouso \(80{,}41\text{ GeV}\) com incerteza \(2{,}06\text{ GeV}\). Estime a vida média da partícula \(W^+\).`,
+      resolution:r`<p>Pela relação de incerteza energia–tempo, \(\Delta E\,\Delta t \approx h/4\pi\), com \(\Delta t\) interpretado como a vida média \(\tau\):</p>
+      <p>\[ \tau \approx \frac{h}{4\pi\,\Delta E} = \frac{6{,}626\times10^{-34}}{4\pi(2{,}06\times10^{9}\times1{,}6\times10^{-19})} \approx 3{,}0\times10^{-25}\text{ s} \]`},
+    {tag:'lista', src:'Lista 2', num:'39.46',
+      statement:r`Para elétrons muito rápidos, \(\lambda=h/p\) continua válida com \(p=mv/\sqrt{1-v^2/c^2}\). (a) Mostre que \(v = \dfrac{c}{\sqrt{1+(mc\lambda/h)^2}}\). (b) A grandeza \(h/mc = 2{,}426\times10^{-12}\text{ m}\). Se \(\lambda\ll h/mc\), escreva \(v=(1-\Delta)c\) e encontre \(\Delta\) (use a série binomial). Qual deve ser \(\Delta\) para que \(\lambda=1{,}0\times10^{-15}\text{ m}\) (diâmetro de um próton)?`,
+      resolution:r`<p><strong>(a)</strong> De \(\lambda=h/p=\dfrac{h\sqrt{1-v^2/c^2}}{mv}\), isolando \(v\) (elevar ao quadrado e resolver): \(v^2\left[1+\left(\dfrac{mc\lambda}{h}\right)^2\right] = c^2\left(\dfrac{mc\lambda}{h}\right)^2\cdot\dfrac{1}{(mc\lambda/h)^2}\)... simplificando diretamente chega-se a</p>
+      <p>\[ v = \frac{c}{\sqrt{1+(mc\lambda/h)^2}} \]</p>
+      <p><strong>(b)</strong> Para \(\lambda\ll h/mc\), o termo \((mc\lambda/h)^2\) é pequeno; expandindo \((1+x)^{-1/2}\approx1-x/2\) com \(x=(mc\lambda/h)^2\):</p>
+      <p>\[ \Delta \approx \frac{1}{2}\left(\frac{mc\lambda}{h}\right)^2 = \frac{1}{2}\left(\frac{\lambda}{h/mc}\right)^2 \]</p>
+      <p>Com \(\lambda=1{,}0\times10^{-15}\text{ m}\) e \(h/mc=2{,}426\times10^{-12}\text{ m}\): \(\lambda/(h/mc)=4{,}12\times10^{-4}\); \(\Delta \approx \tfrac12(4{,}12\times10^{-4})^2 \approx 8{,}5\times10^{-8}\), ou seja \(v=(1-8{,}5\times10^{-8})c\).</p>`},
+    {tag:'lista', src:'Lista 2', num:'39.47',
+      statement:r`(a) Qual o comprimento de onda de De Broglie de um elétron acelerado do repouso por uma diferença de potencial de \(125\text{ V}\)? (b) E de uma partícula alfa (\(q=+2e\), \(m=6{,}64\times10^{-27}\text{ kg}\)) acelerada do repouso por uma queda de potencial de \(125\text{ V}\)?`,
+      resolution:r`<p>Energia cinética ganha: \(K=qV\). \(\lambda=h/\sqrt{2mK}\).</p>
+      <p><strong>(a)</strong> Elétron: \(K=(1{,}6\times10^{-19})(125)=2{,}0\times10^{-17}\text{ J}\); \(\lambda = \dfrac{6{,}626\times10^{-34}}{\sqrt{2(9{,}11\times10^{-31})(2{,}0\times10^{-17})}} \approx 1{,}10\times10^{-10}\text{ m}\).</p>
+      <p><strong>(b)</strong> Partícula alfa: \(K=(2)(1{,}6\times10^{-19})(125)=4{,}0\times10^{-17}\text{ J}\); \(\lambda = \dfrac{6{,}626\times10^{-34}}{\sqrt{2(6{,}64\times10^{-27})(4{,}0\times10^{-17})}} \approx 9{,}9\times10^{-13}\text{ m}\).</p>`},
+    {tag:'lista', src:'Lista 2', num:'39.48',
+      statement:r`Suponha que a incerteza na posição de um elétron seja igual ao raio da órbita \(n=1\) do modelo de Bohr do hidrogênio. Calcule a incerteza mínima no momento correspondente e compare com o módulo do momento do elétron nessa órbita. Discuta o resultado.`,
+      resolution:r`<p>Raio de Bohr: \(a_0=5{,}29\times10^{-11}\text{ m}\). Incerteza mínima no momento:</p>
+      <p>\[ \Delta p_x = \frac{h}{4\pi\,a_0} = \frac{6{,}626\times10^{-34}}{4\pi(5{,}29\times10^{-11})} \approx 1{,}0\times10^{-24}\text{ kg·m/s} \]</p>
+      <p>O momento do elétron na órbita \(n=1\) é \(p_1=mv_1 = (9{,}11\times10^{-31})(2{,}19\times10^{6}) \approx 2{,}0\times10^{-24}\text{ kg·m/s}\). Como \(\Delta p_x\) é da mesma ordem de grandeza que o próprio \(p_1\), a incerteza é comparável ao valor medido — mostrando que o conceito de "órbita bem definida" de Bohr não é compatível com o princípio da incerteza.</p>`},
+    {tag:'lista', src:'Lista 2', num:'39.52',
+      statement:r`No cinescópio de uma TV, a voltagem de aceleração é \(15{,}0\text{ kV}\); o feixe de elétrons passa por uma abertura de \(0{,}50\text{ mm}\) de diâmetro e atinge a tela a \(0{,}300\text{ m}\) da abertura. (a) Calcule a incerteza na componente da velocidade do elétron perpendicular à reta entre abertura e tela. (b) Qual a incerteza na localização do ponto de impacto na tela? (c) Isso afeta significativamente a nitidez da imagem? (use expressões não relativísticas.)`,
+      resolution:r`<p>Velocidade do feixe (não relativística): \(K=eV=(1{,}6\times10^{-19})(15000)=2{,}4\times10^{-15}\text{ J}\); \(v=\sqrt{2K/m}\approx7{,}26\times10^{7}\text{ m/s}\).</p>
+      <p><strong>(a)</strong> \(\Delta y = 0{,}50\text{ mm}\) (abertura); \(\Delta v_y = \dfrac{h}{4\pi m\,\Delta y} = \dfrac{6{,}626\times10^{-34}}{4\pi(9{,}11\times10^{-31})(5{,}0\times10^{-4})} \approx 0{,}12\text{ m/s}\).</p>
+      <p><strong>(b)</strong> Tempo de voo até a tela: \(t=L/v = 0{,}300/(7{,}26\times10^7) \approx 4{,}13\times10^{-9}\text{ s}\). Espalhamento na tela: \(\Delta r \approx \Delta v_y \cdot t \approx 0{,}12\times4{,}13\times10^{-9} \approx 5\times10^{-10}\text{ m}\).</p>
+      <p><strong>(c)</strong> Não; o efeito é muitíssimo menor que o tamanho de um pixel da tela, portanto desprezível para a nitidez da imagem.</p>`}
+  ]
+}
+
+];
+
+/* ---------------------------------------------------------- RENDER ---------------------------------------------------------- */
+function renderAll(){
+  const nav = document.getElementById('navlist');
+  const container = document.getElementById('topics-container');
+
+  TOPICS.forEach(topic=>{
+    // nav item
+    const li = document.createElement('li');
+    const a = document.createElement('button');
+    a.type = 'button';
+    a.className = 'navlink';
+    a.dataset.target = topic.id;
+    a.innerHTML = ICONS[topic.icon] + '<span>'+topic.label+'</span>';
+    a.addEventListener('click', ()=>{
+      const target = document.getElementById(topic.id);
+      if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+    li.appendChild(a);
+    nav.appendChild(li);
+
+    // topic section
+    const section = document.createElement('section');
+    section.className = 'topic';
+    section.id = topic.id;
+
+    const banner = document.createElement('div');
+    banner.className = 'topic-banner';
+    banner.innerHTML = `
+      <div class="icon-wrap">${ICONS[topic.icon]}</div>
+      <div>
+        <h2>${topic.label}</h2>
+        <div class="count">${topic.exercises.length} exercícios · ${topic.exercises.filter(e=>e.exam).length} de prova</div>
+      </div>`;
+    section.appendChild(banner);
+
+    const body = document.createElement('div');
+    body.className = 'topic-body';
+
+    const theoryDiv = document.createElement('div');
+    theoryDiv.className = 'theory';
+    theoryDiv.innerHTML = topic.theory;
+    body.appendChild(theoryDiv);
+
+    const exlabel = document.createElement('div');
+    exlabel.className = 'exlist-label';
+    exlabel.textContent = 'Exercícios — listas primeiro, provas por último';
+    body.appendChild(exlabel);
+
+    topic.exercises.forEach(ex=>{
+      const card = document.createElement('div');
+      card.className = 'exercise' + (ex.exam ? ' exam' : '');
+
+      const head = document.createElement('div');
+      head.className = 'ex-head';
+
+      const badges = document.createElement('div');
+      badges.className = 'ex-badges';
+      const b1 = document.createElement('span');
+      b1.className = 'badge ' + (ex.exam ? 'prova' : 'lista');
+      b1.textContent = ex.exam ? 'PROVA · ' + ex.src.replace('P1 · ','') : ex.src;
+      badges.appendChild(b1);
+      const b2 = document.createElement('span');
+      b2.className = 'badge num';
+      b2.textContent = ex.num;
+      badges.appendChild(b2);
+      head.appendChild(badges);
+
+      const stmt = document.createElement('div');
+      stmt.className = 'ex-statement';
+      stmt.innerHTML = '<p>'+ex.statement+'</p>';
+      head.appendChild(stmt);
+
+      card.appendChild(head);
+
+      const btn = document.createElement('button');
+      btn.className = 'res-toggle';
+      btn.innerHTML = 'Resolução <svg viewBox="0 0 20 20" fill="currentColor"><path d="M5 7l5 6 5-6z"/></svg>';
+
+      const panel = document.createElement('div');
+      panel.className = 'res-panel';
+      const inner = document.createElement('div');
+      inner.className = 'res-inner';
+      inner.innerHTML = ex.resolution;
+      panel.appendChild(inner);
+
+      btn.addEventListener('click', ()=>{
+        const isOpen = panel.classList.toggle('open');
+        btn.classList.toggle('open', isOpen);
+        btn.innerHTML = (isOpen ? 'Ocultar' : 'Resolução') + ' <svg viewBox="0 0 20 20" fill="currentColor"><path d="M5 7l5 6 5-6z"/></svg>';
+      });
+
+      card.appendChild(btn);
+      card.appendChild(panel);
+      body.appendChild(card);
+    });
+
+    section.appendChild(body);
+    container.appendChild(section);
+  });
+
+  // math rendering
+  if(window.renderMathInElement){
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left:'\\[', right:'\\]', display:true},
+        {left:'\\(', right:'\\)', display:false}
+      ],
+      throwOnError:false
+    });
+  }
+
+  // active nav highlight
+  const navLinks = Array.from(document.querySelectorAll('.navlist button.navlink'));
+  const sections = TOPICS.map(t=>document.getElementById(t.id));
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        navLinks.forEach(l=>l.classList.remove('active'));
+        const match = navLinks.find(l=>l.dataset.target === entry.target.id);
+        if(match) match.classList.add('active');
+      }
+    });
+  }, {rootMargin:'-10% 0px -70% 0px', threshold:0});
+  sections.forEach(s=>obs.observe(s));
+  if(navLinks[0]) navLinks[0].classList.add('active');
+}
+
+document.addEventListener('DOMContentLoaded', renderAll);
+</script>
 </body>
 </html>
