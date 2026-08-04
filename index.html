@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amplificadores Operacionais — Guias · Poli USP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+
+/* ============================================================
+   TOKENS — paleta de giz sobre quadro-negro
+   ============================================================ */
+:root{
+  --board: #24402F;
+  --board-dark: #1B3324;
+  --board-vign: #16281B;
+
+  --chalk: #EDEDE1;
+  --chalk-dim: #A9B8AC;
+  --chalk-faint: #6C7F71;
+
+  --yellow: #E5D480;
+  --orange: #D98F55;
+  --pink: #E3A9BC;
+
+  --line: rgba(237,237,225,0.09);
+  --line-strong: rgba(237,237,225,0.22);
+
+  --chalk-font: 'Kalam', cursive;
+  --serif: 'IBM Plex Serif', Georgia, serif;
+}
+
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{
+  margin:0;
+  background:var(--board);
+  color:var(--chalk);
+  font-family:var(--serif);
+  font-size:17px;
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{ background:rgba(229,212,128,.25); color:var(--yellow); }
+a{ color:inherit; }
+a:focus-visible, input:focus-visible{ outline:2px solid var(--yellow); outline-offset:2px; }
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} *{transition:none!important;} }
+
+h1,h2,h3{ font-family:var(--chalk-font); color:var(--chalk); margin:0; font-weight:700; }
+p{ margin:0 0 1em 0; }
+strong{ color:var(--chalk); font-weight:600; }
+em.term{ color:var(--yellow); font-style:normal; font-weight:600; }
+code{ font-family:var(--chalk-font); color:var(--orange); font-size:1.05em; }
+
+/* chalk dust / board texture, applied behind everything */
+.bg-grid{
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image:
+    radial-gradient(ellipse at 20% 10%, rgba(255,255,255,0.035), transparent 55%),
+    radial-gradient(ellipse at 85% 25%, rgba(255,255,255,0.03), transparent 50%),
+    radial-gradient(ellipse at 50% 95%, rgba(255,255,255,0.03), transparent 55%),
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: auto, auto, auto, 38px 38px, 38px 38px;
+  box-shadow: inset 0 0 160px 40px var(--board-vign);
+}
+
+/* ============================================================
+   SHELL: sidebar + main
+   ============================================================ */
+.shell{ position:relative; z-index:1; display:grid; grid-template-columns:300px 1fr; min-height:100vh; align-items:start; }
+
+/* ---------- SIDEBAR ---------- */
+.sidebar{
+  background:var(--board-dark);
+  border-right:5px double var(--line-strong);
+  padding:36px 30px;
+  position:sticky; top:0; height:100vh; overflow-y:auto;
+}
+.brand{ font-family:var(--chalk-font); font-weight:700; font-size:1.5rem; letter-spacing:.03em; color:var(--chalk); }
+.brand-sub{ font-family:var(--chalk-font); font-size:.95rem; color:var(--chalk-faint); margin-top:2px; }
+.sidebar hr{ border:none; border-top:1px dashed var(--line-strong); margin:24px 0; }
+.group-label{ font-family:var(--chalk-font); font-size:.95rem; color:var(--chalk-faint); letter-spacing:.04em; margin-bottom:12px; }
+.module-list{ display:flex; flex-direction:column; gap:4px; }
+.module-item{
+  display:flex; align-items:baseline; gap:12px;
+  text-decoration:none; padding:10px 14px; border-radius:6px;
+  color:var(--chalk-dim); font-family:var(--chalk-font); font-size:1.08rem;
+  border-left:3px solid transparent;
+}
+.module-item .num{ font-family:var(--chalk-font); font-size:.95rem; color:var(--chalk-faint); min-width:1.3em; }
+.module-item.active{ background:rgba(229,212,128,.08); border-left-color:var(--yellow); color:var(--chalk); }
+.module-item.active .num{ color:var(--yellow); }
+.more-soon{ font-family:var(--serif); font-style:italic; font-size:.85rem; color:var(--chalk-faint); margin-top:10px; padding:0 14px; }
+
+/* ---------- MAIN COLUMN ---------- */
+.main-col{ min-width:0; }
+.topbar{
+  display:flex; align-items:center; gap:34px; flex-wrap:wrap;
+  padding:26px 44px; border-bottom:1px dashed var(--line-strong);
+}
+.crumb{ font-family:var(--chalk-font); font-size:1.1rem; color:var(--yellow); white-space:nowrap; }
+.tabs{ display:flex; gap:24px; flex-wrap:wrap; }
+.tabs a{ font-family:var(--chalk-font); font-size:1rem; color:var(--chalk-dim); text-decoration:none; white-space:nowrap; }
+.tabs a:hover{ color:var(--yellow); }
+
+/* ---------- HERO ---------- */
+.hero-module{ position:relative; padding:54px 44px 38px; overflow:hidden; }
+.hero-eyebrow{ font-family:var(--chalk-font); font-size:1.05rem; color:var(--yellow); margin-bottom:14px; }
+.hero-eyebrow::before{ content:"— "; color:var(--chalk-faint); }
+.hero-module h1{
+  font-size:clamp(1.8rem, 3.6vw, 2.9rem);
+  line-height:1.22; letter-spacing:.01em;
+  max-width:820px; margin-bottom:.5em; position:relative; z-index:1;
+}
+.hero-module h1 .w1{ color:var(--chalk); }
+.hero-module h1 .w2{ color:var(--yellow); }
+.hero-module .dek{ max-width:64ch; color:var(--chalk-dim); font-family:var(--serif); font-size:1.06rem; position:relative; z-index:1; }
+.meta-row{ font-family:var(--chalk-font); font-size:.95rem; color:var(--chalk-faint); margin-top:1.3em; position:relative; z-index:1; }
+.meta-row b{ color:var(--chalk-dim); font-weight:400; }
+.hero-deco{ position:absolute; right:-30px; top:0; width:46%; height:100%; opacity:.85; pointer-events:none; }
+@media (max-width:1000px){ .hero-deco{ display:none; } }
+
+/* ---------- CONTENT SECTIONS ---------- */
+.content{ padding:0 44px 60px; }
+section.content-section{ padding:44px 0; border-bottom:1px dashed var(--line-strong); max-width:900px; }
+section.content-section:last-child{ border-bottom:none; }
+section.content-section .eyebrow{ font-family:var(--chalk-font); font-size:1.02rem; color:var(--yellow); margin-bottom:.4em; }
+section.content-section .eyebrow::before{ content:"— "; color:var(--chalk-faint); }
+section.content-section h2{ font-size:1.7rem; margin:.15em 0 .5em; }
+.lead{ color:var(--chalk-dim); font-size:1.03em; max-width:70ch; }
+
+/* equations, hand-chalked */
+.eq{ font-family:var(--chalk-font); font-size:1.2rem; color:var(--chalk); line-height:1.9; margin:18px 0; }
+.eq .y{ color:var(--yellow); }
+.eq .dim{ color:var(--chalk-faint); font-size:.8em; }
+
+.hand-box{ display:inline-block; border:2.5px solid var(--chalk); border-radius:255px 18px 225px 15px/15px 225px 15px 255px; padding:.5em 1.1em; background:rgba(237,237,225,.02); }
+.hand-circle{ display:inline-block; border:2.5px solid var(--yellow); border-radius:50%; padding:.05em .55em; transform:rotate(-2deg); }
+.crossed{ position:relative; display:inline-block; opacity:.6; }
+.crossed::before,.crossed::after{ content:""; position:absolute; left:-4%; right:-4%; top:50%; border-top:2px solid var(--orange); }
+.crossed::before{ transform:rotate(6deg); }
+.crossed::after{ transform:rotate(-6deg); }
+
+figure.panel{ margin:26px 0; }
+figure.panel svg{ width:100%; height:auto; display:block; }
+figure.panel figcaption{ font-family:var(--serif); font-style:italic; font-size:.92rem; color:var(--chalk-faint); margin-top:10px; }
+
+/* ideal/prática list */
+.ideal-item{ margin:20px 0; padding-left:2.2em; position:relative; }
+.ideal-item .num{ position:absolute; left:0; top:.05em; font-family:var(--chalk-font); font-size:1.3rem; color:var(--yellow); }
+.ideal-item .claim{ font-family:var(--chalk-font); font-size:1.1rem; color:var(--chalk); }
+.ideal-item .claim .val{ color:var(--yellow); }
+.ideal-item .pratica{ margin-top:.35em; font-family:var(--serif); font-size:.95rem; color:var(--chalk-dim); padding:.4em .8em; border-left:3px solid var(--orange); }
+.ideal-item .pratica b{ color:var(--orange); font-family:var(--chalk-font); font-weight:400; }
+
+.attn{ border:2px dashed var(--pink); border-radius:6px; padding:16px 20px; margin:24px 0; }
+.attn .tag{ font-family:var(--chalk-font); color:var(--pink); font-size:1.05rem; display:block; margin-bottom:.3em; }
+
+/* toggle */
+.toggle-block{ margin:22px 0; }
+.toggle-input{ position:absolute; opacity:0; width:1px; height:1px; }
+.toggle-label{ font-family:var(--chalk-font); font-size:1rem; display:inline-flex; align-items:center; gap:10px; cursor:pointer; color:var(--chalk-dim); margin-bottom:12px; }
+.toggle-track{ width:44px; height:23px; border-radius:99px; background:var(--board-dark); border:2px solid var(--line-strong); position:relative; }
+.toggle-thumb{ position:absolute; top:1px; left:1px; width:17px; height:17px; border-radius:50%; background:var(--yellow); transition:transform .2s ease, background .2s ease; }
+.toggle-input:checked ~ .toggle-label .toggle-thumb{ transform:translateX(21px); background:var(--pink); }
+.toggle-label .side.ideal{ color:var(--yellow); }
+.toggle-input:checked ~ .toggle-label .side.ideal{ color:var(--chalk-faint); }
+.toggle-input:checked ~ .toggle-label .side.real{ color:var(--pink); }
+.panels .panel-view{ display:none; }
+.toggle-input:not(:checked) ~ .panels .panel-view.ideal{ display:block; }
+.toggle-input:checked ~ .panels .panel-view.real{ display:block; }
+
+.example{ border:2px solid var(--line-strong); border-radius:8px; margin:26px 0; padding:20px 22px 22px; }
+.example .ex-head{ font-family:var(--chalk-font); font-size:1.15rem; color:var(--yellow); margin-bottom:.6em; }
+
+table.spec{ width:100%; border-collapse:collapse; margin:16px 0 8px; font-family:var(--serif); font-size:.94em; }
+table.spec th{ font-family:var(--chalk-font); font-weight:400; font-size:1rem; color:var(--yellow); text-align:left; padding:6px 12px; border-bottom:2px dashed var(--line-strong); }
+table.spec td{ padding:10px 12px; border-bottom:1px dashed var(--line); vertical-align:top; }
+table.spec td.sym{ font-family:var(--chalk-font); color:var(--orange); white-space:nowrap; font-size:1.03em; }
+table.spec tr:last-child td{ border-bottom:none; }
+
+footer.page-footer{ padding:24px 44px 60px; font-family:var(--chalk-font); font-size:.92rem; color:var(--chalk-faint); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+
+@media (max-width:900px){
+  .shell{ grid-template-columns:1fr; }
+  .sidebar{ position:static; height:auto; border-right:none; border-bottom:5px double var(--line-strong); }
+  .topbar{ padding:20px 22px; }
+  .hero-module{ padding:34px 22px 28px; }
+  .content{ padding:0 22px 44px; }
+  footer.page-footer{ padding:20px 22px 44px; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-grid" aria-hidden="true"></div>
+
+<div class="shell">
+
+  <!-- ============================================================
+       SIDEBAR
+       ============================================================ -->
+  <aside class="sidebar">
+    <div class="brand">GUIAS</div>
+    <div class="brand-sub">Poli USP · notas de aula</div>
+    <hr>
+    <div class="group-label">ELETRÔNICA ANALÓGICA</div>
+    <nav class="module-list">
+      <a class="module-item active" href="#top"><span class="num">01</span> Amplificadores Operacionais</a>
+    </nav>
+    <div class="more-soon">+ novos módulos em breve</div>
+  </aside>
+
+  <!-- ============================================================
+       MAIN
+       ============================================================ -->
+  <div class="main-col">
+
+    <div class="topbar" id="top">
+      <div class="crumb">ELETRÔNICA · AMPLIFICADORES OPERACIONAIS</div>
+      <nav class="tabs">
+        <a href="#intro">Introdução</a>
+        <a href="#funcionamento">Funcionamento</a>
+        <a href="#ideal">Amp Op ideal</a>
+        <a href="#inversora">Config. inversora</a>
+        <a href="#real">A real</a>
+        <a href="#exemplos">Exemplos</a>
+      </nav>
+    </div>
+
+    <section class="hero-module">
+      <div class="hero-eyebrow">MÓDULO 01 · GUIA DE BANCADA</div>
+      <h1><span class="w1">Um bloco com ganho quase infinito chega às suas mãos.</span> <span class="w2">Como dois resistores o transformam num amplificador previsível?</span></h1>
+      <p class="dek">O amplificador operacional compara duas tensões de entrada e amplifica a diferença por um ganho enorme demais para usar sozinho. Este módulo cobre o modelo ideal (e por que o curto-circuito virtual funciona), a configuração inversora, as limitações de um CI real como o LM741, e exemplos numéricos resolvidos passo a passo.</p>
+      <div class="meta-row"><b>Curso</b> Eletrônica Analógica — Poli USP &nbsp;&nbsp;&nbsp; <b>Módulo</b> Amplificadores Operacionais</div>
+
+      <svg class="hero-deco" viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <polyline points="20,460 130,460 270,60 380,60" fill="none" stroke="var(--chalk-faint)" stroke-width="1.6" stroke-dasharray="5,7"/>
+        <g fill="var(--yellow)">
+          <circle cx="20" cy="460" r="5.5"/>
+          <circle cx="62" cy="460" r="5.5"/>
+          <circle cx="104" cy="460" r="5.5"/>
+          <circle cx="150" cy="418" r="5.5"/>
+          <circle cx="182" cy="330" r="5.5"/>
+          <circle cx="214" cy="242" r="5.5"/>
+          <circle cx="246" cy="154" r="5.5"/>
+          <circle cx="278" cy="66" r="5.5"/>
+          <circle cx="322" cy="60" r="5.5"/>
+          <circle cx="366" cy="60" r="5.5"/>
+        </g>
+      </svg>
+    </section>
+
+    <div class="content">
+
+      <!-- ============================================================
+           INTRODUÇÃO
+           ============================================================ -->
+      <section class="content-section" id="intro">
+        <div class="eyebrow">INTRODUÇÃO</div>
+        <h2>Amplificador Operacional</h2>
+        <p class="lead">Um amp op é um circuito integrado com dois terminais de entrada — <code>v1</code> (inversora) e <code>v2</code> (não-inversora) — e um terminal de saída <code>v0</code>, alimentado por uma fonte simétrica (+Vcc / −Vcc).</p>
+
+        <p>O nome vem dos primeiros computadores analógicos (décadas de 1940–50), onde esse bloco de ganho era usado para realizar "operações" — somar, subtrair, integrar tensões. O uso mais comum hoje é bem mais simples: amplificar e condicionar sinais.</p>
+
+        <figure class="panel">
+          <svg viewBox="0 0 460 240" xmlns="http://www.w3.org/2000/svg">
+            <g stroke="var(--chalk)" stroke-width="2.2" fill="none">
+              <line x1="40" y1="80" x2="120" y2="80"/>
+              <line x1="40" y1="160" x2="120" y2="160"/>
+              <line x1="320" y1="120" x2="400" y2="120"/>
+              <line x1="220" y1="16" x2="220" y2="42"/>
+              <line x1="220" y1="198" x2="220" y2="224"/>
+            </g>
+            <polygon points="120,42 120,198 320,120" fill="none" stroke="var(--chalk)" stroke-width="2.5"/>
+            <text x="138" y="90" font-family="Kalam" font-size="24" fill="var(--chalk)">−</text>
+            <text x="138" y="172" font-family="Kalam" font-size="24" fill="var(--chalk)">+</text>
+            <text x="4" y="72" font-family="Kalam" font-size="17" fill="var(--chalk-dim)">v1</text>
+            <text x="4" y="176" font-family="Kalam" font-size="17" fill="var(--chalk-dim)">v2</text>
+            <text x="410" y="126" font-family="Kalam" font-size="18" fill="var(--yellow)">v0</text>
+            <text x="228" y="14" font-family="Kalam" font-size="14" fill="var(--chalk-faint)">+Vcc</text>
+            <text x="226" y="236" font-family="Kalam" font-size="14" fill="var(--chalk-faint)">−Vcc</text>
+          </svg>
+          <figcaption>v1 (entrada inversora, "−") e v2 (entrada não-inversora, "+") — notação usada em todo o módulo.</figcaption>
+        </figure>
+
+        <p>Um dos CIs mais usados em ensino é o <code>LM741</code> (1968) — vamos usá-lo como referência de valores "prática" ao longo do guia.</p>
+        <p><strong>Aplicações:</strong> amplificadores de tensão, somadores/subtratores, buffers, filtros ativos, integradores/diferenciadores, conversores corrente–tensão, comparadores, amplificadores de instrumentação.</p>
+      </section>
+
+      <!-- ============================================================
+           FUNCIONAMENTO BÁSICO
+           ============================================================ -->
+      <section class="content-section" id="funcionamento">
+        <div class="eyebrow">FUNCIONAMENTO BÁSICO</div>
+        <h2>O modelo do amp op</h2>
+        <p class="lead">O comportamento do bloco inteiro é resumido pela relação entre a saída e a diferença das entradas:</p>
+
+        <div class="eq"><span class="hand-box">v0 &nbsp;=&nbsp; A · (v2 − v1)</span></div>
+
+        <p>Essa é a forma simplificada. A forma completa também inclui um termo de <em class="term">modo comum</em> — a parte do sinal igual nas duas entradas:</p>
+
+        <div class="eq"><span class="crossed">v0 = Ad(v2 − v1) + Acm·(v1 + v2)/2</span></div>
+        <p style="margin-top:-.4em">Assumimos <code>Acm ≈ 0</code> (CMRR → ∞, ver Amp Op ideal), sobrando <code>v0 = Ad(v2−v1) = A(v2−v1)</code>.</p>
+
+        <figure class="panel">
+          <figcaption style="margin-top:0;margin-bottom:10px">Modelo — circuito equivalente por dentro do símbolo</figcaption>
+          <svg viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="140,50 140,250 460,150" fill="none" stroke="var(--chalk-faint)" stroke-width="2" stroke-dasharray="6,5"/>
+            <g stroke="var(--chalk)" stroke-width="2.2" fill="none">
+              <line x1="40" y1="110" x2="200" y2="110"/>
+              <line x1="40" y1="190" x2="200" y2="190"/>
+            </g>
+            <text x="4" y="103" font-family="Kalam" font-size="16" fill="var(--chalk-dim)">v1</text>
+            <text x="4" y="196" font-family="Kalam" font-size="16" fill="var(--chalk-dim)">v2</text>
+            <polyline points="200,110 200,124 214,132 186,144 214,156 186,168 200,176 200,190" fill="none" stroke="var(--orange)" stroke-width="2.2"/>
+            <text x="222" y="156" font-family="Kalam" font-size="16" fill="var(--orange)">Ri</text>
+            <line x1="200" y1="150" x2="256" y2="150" stroke="var(--chalk)" stroke-width="2"/>
+            <polygon points="256,150 280,132 304,150 280,168" fill="none" stroke="var(--yellow)" stroke-width="2.2"/>
+            <text x="256" y="120" font-family="Kalam" font-size="16" fill="var(--yellow)">A·vd</text>
+            <line x1="304" y1="150" x2="330" y2="150" stroke="var(--chalk)" stroke-width="2"/>
+            <polyline points="330,150 340,150 347,138 361,162 375,138 389,162 396,150 406,150" fill="none" stroke="var(--orange)" stroke-width="2.2"/>
+            <text x="350" y="126" font-family="Kalam" font-size="16" fill="var(--orange)">Ro</text>
+            <line x1="406" y1="150" x2="460" y2="150" stroke="var(--chalk)" stroke-width="2"/>
+            <line x1="460" y1="150" x2="510" y2="150" stroke="var(--chalk)" stroke-width="2"/>
+            <text x="518" y="156" font-family="Kalam" font-size="18" fill="var(--yellow)">v0</text>
+          </svg>
+          <figcaption>Ri entre as entradas · fonte dependente A·vd (vd = v2−v1) · Ro em série até a saída — o mesmo modelo Thévenin usado em circuitos elétricos.</figcaption>
+        </figure>
+      </section>
+
+      <!-- ============================================================
+           AMP OP IDEAL
+           ============================================================ -->
+      <section class="content-section" id="ideal">
+        <div class="eyebrow">AMP OP IDEAL</div>
+        <h2>Amplificador Operacional Ideal</h2>
+        <p class="lead">Cinco hipóteses de idealização — cada uma comparada com o valor típico de um CI real:</p>
+
+        <div class="ideal-item"><span class="num">1</span>
+          <div class="claim">Ganho A infinito &nbsp; <span class="val">A = ∞</span></div>
+          <div class="pratica"><b>Prática</b> — A → 10⁴ a 10⁵ V/V</div>
+        </div>
+        <div class="ideal-item"><span class="num">2</span>
+          <div class="claim">Impedância de entrada infinita &nbsp; <span class="val">Rin = ∞</span></div>
+          <div class="pratica"><b>Prática</b> — Rin ≈ 20 MΩ</div>
+        </div>
+        <div class="ideal-item"><span class="num">3</span>
+          <div class="claim">Impedância de saída nula &nbsp; <span class="val">Rout = 0</span></div>
+          <div class="pratica"><b>Prática</b> — Rout ≈ 50 Ω</div>
+        </div>
+        <div class="ideal-item"><span class="num">4</span>
+          <div class="claim">Taxa de Rejeição de Modo Comum infinita &nbsp; <span class="val">CMRR = Ad/Acm = ∞</span></div>
+          <div class="pratica"><b>Prática</b> — CMRR tipicamente 70–90 dB</div>
+        </div>
+        <div class="ideal-item"><span class="num">5</span>
+          <div class="claim">Faixa de passagem infinita</div>
+          <div class="pratica"><b>Prática</b> — banda finita: GBW ≈ 1 MHz no LM741</div>
+        </div>
+
+        <figure class="panel">
+          <svg viewBox="0 0 440 300" xmlns="http://www.w3.org/2000/svg">
+            <line x1="40" y1="30" x2="40" y2="230" stroke="var(--chalk-faint)" stroke-width="1.5"/>
+            <line x1="40" y1="230" x2="420" y2="230" stroke="var(--chalk-faint)" stroke-width="1.5"/>
+            <text x="46" y="24" font-family="Kalam" font-size="16" fill="var(--chalk-dim)">20 log |A(ω)|</text>
+            <g font-family="Kalam" font-size="13" fill="var(--chalk-faint)">
+              <text x="10" y="234">0</text><text x="10" y="189">20</text><text x="10" y="144">40</text><text x="10" y="99">60</text>
+            </g>
+            <g font-family="Kalam" font-size="12" fill="var(--chalk-faint)">
+              <text x="26" y="248">10⁻³</text><text x="66" y="248">10⁻²</text><text x="106" y="248">10⁻¹</text>
+              <text x="152" y="248">1</text><text x="192" y="248">10</text><text x="228" y="248">10²</text>
+              <text x="268" y="248">10³</text><text x="308" y="248">10⁴</text><text x="348" y="248">10⁵</text><text x="388" y="248">10⁶</text>
+            </g>
+            <text x="380" y="264" font-family="Kalam" font-size="14" fill="var(--chalk-faint)">ω</text>
+            <polyline points="40,50 200,50 400,255" fill="none" stroke="var(--yellow)" stroke-width="2.6"/>
+          </svg>
+          <figcaption>5. Faixa de passagem infinita — na prática, o ganho cai a −20 dB/década após o polo dominante.</figcaption>
+        </figure>
+
+        <h3 style="margin-top:40px;font-size:1.3rem">Conceito de curto virtual</h3>
+        <p class="lead">Por que dá pra assumir v1 ≈ v2? Um exemplo concreto: A = 10⁴, Vcc = 10 V.</p>
+
+        <figure class="panel">
+          <svg viewBox="0 0 460 300" xmlns="http://www.w3.org/2000/svg">
+            <text x="10" y="24" font-family="Kalam" font-size="16" fill="var(--chalk-dim)">A = 10⁴</text>
+            <text x="10" y="46" font-family="Kalam" font-size="16" fill="var(--chalk-dim)">Vcc = 10 V</text>
+            <line x1="30" y1="160" x2="440" y2="160" stroke="var(--chalk-faint)" stroke-width="1.5"/>
+            <line x1="250" y1="30" x2="250" y2="270" stroke="var(--chalk-faint)" stroke-width="1.5"/>
+            <text x="256" y="24" font-family="Kalam" font-size="16" fill="var(--chalk-dim)">v0 (V)</text>
+            <text x="400" y="180" font-family="Kalam" font-size="15" fill="var(--chalk-dim)">v2 − v1</text>
+            <g font-family="Kalam" font-size="12" fill="var(--chalk-faint)">
+              <text x="30" y="176">−10V</text><text x="82" y="176">−1V</text><text x="128" y="176">−0,1V</text>
+              <text x="176" y="176">−10mV</text><text x="222" y="176">−1mV</text>
+              <text x="264" y="176">1mV</text><text x="298" y="176">10mV</text>
+            </g>
+            <text x="228" y="115" font-family="Kalam" font-size="13" fill="var(--chalk-dim)">10</text>
+            <text x="228" y="220" font-family="Kalam" font-size="13" fill="var(--chalk-dim)">−10</text>
+            <polyline points="40,255 230,255 270,65 430,65" fill="none" stroke="var(--yellow)" stroke-width="2.6"/>
+            <path d="M 220,272 Q 250,290 280,272" fill="none" stroke="var(--pink)" stroke-width="2"/>
+            <text x="180" y="298" font-family="Kalam" font-size="15" fill="var(--pink)">|v2 − v1| &lt; 1 mV</text>
+          </svg>
+          <figcaption>Vcc/A = 10 V / 10⁴ = 1 mV — para qualquer saída razoável, a diferença de entrada precisa ser menor que 1 mV. Ou seja: v1 ≈ v2.</figcaption>
+        </figure>
+
+        <p>Essa é a justificativa por trás das duas <em class="term">regras de ouro</em>, válidas sempre que houver realimentação negativa fechando a malha:</p>
+
+        <div class="eq">
+          Regra 1 <span class="dim">(curto virtual)</span> — <span class="y">v1 = v2</span><br>
+          Regra 2 <span class="dim">(sem corrente de entrada)</span> — <span class="y">i1 = i2 = 0</span>
+        </div>
+
+        <div class="attn">
+          <span class="tag">atenção</span>
+          As regras só valem <strong>com realimentação negativa</strong>. Sem malha fechada, o amp op não se equilibra — vira comparador saturado em +Vcc ou −Vcc.
+        </div>
+      </section>
+
+      <!-- ============================================================
+           CONFIGURAÇÃO INVERSORA
+           ============================================================ -->
+      <section class="content-section" id="inversora">
+        <div class="eyebrow">CONFIGURAÇÃO INVERSORA</div>
+        <h2>Configuração Inversora</h2>
+        <p class="lead">vi entra por R1 até o nó v1; R2 realimenta a saída de volta para o mesmo nó; v2 é aterrado.</p>
+
+        <figure class="panel">
+          <svg viewBox="0 0 620 280" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="80" cy="100" r="24" fill="none" stroke="var(--chalk)" stroke-width="2.2"/>
+            <text x="80" y="106" text-anchor="middle" font-family="Kalam" font-size="15" fill="var(--chalk)">vi</text>
+            <line x1="104" y1="100" x2="140" y2="100" stroke="var(--chalk)" stroke-width="2.2"/>
+            <polyline points="140,100 150,100 157,88 171,112 185,88 199,112 206,100 220,100" fill="none" stroke="var(--orange)" stroke-width="2.3"/>
+            <text x="178" y="78" text-anchor="middle" font-family="Kalam" font-size="16" fill="var(--orange)">R1</text>
+            <text x="150" y="128" text-anchor="middle" font-family="Kalam" font-size="13" fill="var(--yellow)">i1</text>
+
+            <line x1="220" y1="100" x2="240" y2="100" stroke="var(--chalk)" stroke-width="2.2"/>
+            <circle cx="240" cy="100" r="4" fill="var(--chalk)"/>
+            <text x="230" y="124" font-family="Kalam" font-size="14" fill="var(--chalk-dim)">v1</text>
+            <line x1="240" y1="100" x2="300" y2="100" stroke="var(--chalk)" stroke-width="2.2"/>
+
+            <polygon points="300,60 300,160 460,110" fill="none" stroke="var(--chalk)" stroke-width="2.5"/>
+            <text x="316" y="105" font-family="Kalam" font-size="20" fill="var(--chalk)">−</text>
+            <text x="316" y="150" font-family="Kalam" font-size="20" fill="var(--chalk)">+</text>
+            <text x="370" y="90" font-family="Kalam" font-size="15" fill="var(--chalk-faint)">ideal</text>
+            <path d="M 385,95 Q 355,85 335,95" fill="none" stroke="var(--chalk-faint)" stroke-width="1.5"/>
+
+            <line x1="300" y1="150" x2="255" y2="150" stroke="var(--chalk)" stroke-width="2.2"/>
+            <line x1="255" y1="150" x2="255" y2="185" stroke="var(--chalk)" stroke-width="2.2"/>
+            <g stroke="var(--chalk)" stroke-width="2.2">
+              <line x1="240" y1="185" x2="270" y2="185"/>
+              <line x1="245" y1="193" x2="265" y2="193"/>
+              <line x1="250" y1="201" x2="260" y2="201"/>
+            </g>
+            <text x="205" y="200" font-family="Kalam" font-size="14" fill="var(--chalk-dim)">v2 = 0</text>
+
+            <line x1="460" y1="110" x2="500" y2="110" stroke="var(--chalk)" stroke-width="2.2"/>
+            <circle cx="500" cy="110" r="4" fill="var(--yellow)"/>
+            <line x1="500" y1="110" x2="560" y2="110" stroke="var(--chalk)" stroke-width="2.2"/>
+            <text x="568" y="116" font-family="Kalam" font-size="16" fill="var(--yellow)">v0</text>
+
+            <line x1="500" y1="110" x2="500" y2="30" stroke="var(--chalk)" stroke-width="2.2"/>
+            <line x1="500" y1="30" x2="365" y2="30" stroke="var(--chalk)" stroke-width="2.2"/>
+            <polyline points="365,30 358,30 351,18 337,42 323,18 309,42 302,30 285,30" fill="none" stroke="var(--orange)" stroke-width="2.3"/>
+            <text x="323" y="14" text-anchor="middle" font-family="Kalam" font-size="16" fill="var(--orange)">R2</text>
+            <text x="323" y="52" text-anchor="middle" font-family="Kalam" font-size="13" fill="var(--yellow)">i2</text>
+            <line x1="285" y1="30" x2="240" y2="30" stroke="var(--chalk)" stroke-width="2.2"/>
+            <line x1="240" y1="30" x2="240" y2="100" stroke="var(--chalk)" stroke-width="2.2"/>
+          </svg>
+          <figcaption>R1 traz o sinal (âmbar) · R2 fecha a realimentação negativa até o nó v1 · v2 aterrado.</figcaption>
+        </figure>
+
+        <p><strong>1.</strong> Regra 1 (curto virtual): como v2 = 0, então <code>v1 = v2 = 0</code> — terra virtual.</p>
+        <p><strong>2.</strong> KCL no nó v1 (nenhuma corrente entra no amp op): <code>i1 = i2</code></p>
+
+        <div class="eq">i1 &nbsp;=&nbsp; (vi − v1) / R1 &nbsp;=&nbsp; vi / R1</div>
+
+        <p><strong>3.</strong> Relação em R2, do nó v1 até a saída:</p>
+        <div class="eq">v0 &nbsp;=&nbsp; v1 − R2·i2 &nbsp;=&nbsp; 0 − R2·i2</div>
+
+        <p><strong>4.</strong> Substituindo i2 = i1 = vi/R1:</p>
+        <div class="eq" style="font-size:1.4rem"><span class="hand-box">v0 &nbsp;=&nbsp; −(R2/R1) · vi</span></div>
+
+        <div class="eq">G &nbsp;=&nbsp; v0/vi &nbsp;=&nbsp; −<span class="hand-circle">R2/R1</span></div>
+
+        <p style="margin-top:1.2em">O sinal negativo é a inversão de 180°. O ganho depende só dos resistores externos — nada de A entra na conta, desde que A seja bem maior que R2/R1.</p>
+
+        <table class="spec">
+          <tr><th>Grandeza</th><th>Símbolo</th><th>Valor (ideal)</th></tr>
+          <tr><td>Ganho de tensão</td><td class="sym">G</td><td>−R2 / R1</td></tr>
+          <tr><td>Impedância de entrada do circuito</td><td class="sym">Zin</td><td>R1</td></tr>
+          <tr><td>Impedância de saída do circuito</td><td class="sym">Zout</td><td>≈ 0</td></tr>
+          <tr><td>Tensão no nó v1</td><td class="sym">v1</td><td>0 V (terra virtual)</td></tr>
+        </table>
+      </section>
+
+      <!-- ============================================================
+           A REAL
+           ============================================================ -->
+      <section class="content-section" id="real">
+        <div class="eyebrow">A REAL</div>
+        <h2>Amplificador Operacional Real</h2>
+        <p class="lead">Além das cinco características já comparadas (Amp Op ideal), o CI real tem outras imperfeições:</p>
+
+        <div class="ideal-item"><span class="num">·</span>
+          <div class="claim">Tensão de offset &nbsp; <span class="val">Vos</span></div>
+          <div class="pratica">Com as duas entradas em 0 V, a saída não fica em 0 V — assimetria de fabricação do par diferencial. No 741, Vos típico ≈ 1 mV (máx. ≈ 6 mV).</div>
+        </div>
+        <div class="ideal-item"><span class="num">·</span>
+          <div class="claim">Correntes de polarização &nbsp; <span class="val">Ib, Ios</span></div>
+          <div class="pratica">A Regra 2 é aproximação: uma pequena corrente DC entra nos dois terminais (Ib ≈ 80 nA no 741). A diferença entre elas é Ios = |Ib+ − Ib−|.</div>
+        </div>
+        <div class="ideal-item"><span class="num">·</span>
+          <div class="claim">Taxa de subida (Slew Rate) &nbsp; <span class="val">SR</span></div>
+          <div class="pratica">Velocidade máxima de variação da saída, em V/µs. No 741, SR ≈ 0,5 V/µs — sinais rápidos saem distorcidos em rampa.</div>
+        </div>
+        <div class="ideal-item"><span class="num">·</span>
+          <div class="claim">Saturação</div>
+          <div class="pratica">v0 nunca ultrapassa a alimentação — na prática fica 1–2 V abaixo de +Vcc e acima de −Vcc. Ver Exemplo 2 abaixo.</div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           EXEMPLOS
+           ============================================================ -->
+      <section class="content-section" id="exemplos">
+        <div class="eyebrow">EXEMPLOS</div>
+        <h2>Exemplos!</h2>
+
+        <div class="example">
+          <div class="ex-head">Exemplo 1 — ganho inversor básico</div>
+          <p><strong>Dados:</strong> R1 = 1 kΩ, R2 = 10 kΩ, vi = 0,5 V. Amp op ideal.</p>
+          <div class="eq">
+            G = −R2/R1 = −10 kΩ/1 kΩ = <span class="y">−10</span><br>
+            v0 = G · vi = −10 · 0,5 V = <span class="y">−5 V</span>
+          </div>
+          <p style="margin-top:.8em">Zin = R1 = 1 kΩ: a fonte de sinal enxerga só 1 kΩ de carga.</p>
+        </div>
+
+        <div class="example">
+          <div class="ex-head">Exemplo 2 — quando o modelo ideal "quebra": saturação</div>
+          <p><strong>Dados:</strong> R1 = 1 kΩ, R2 = 100 kΩ, vi = 0,3 V, alimentação ±12 V (satura ≈ ±11 V na prática).</p>
+
+          <div class="toggle-block">
+            <input type="checkbox" id="toggle-model" class="toggle-input">
+            <label for="toggle-model" class="toggle-label">
+              <span class="side ideal">modelo ideal</span>
+              <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              <span class="side real">modelo real</span>
+            </label>
+            <div class="panels">
+              <div class="panel-view ideal">
+                <div class="eq">G = −100 kΩ/1 kΩ = −100<br>v0 = −100 · 0,3 V = <span class="y">−30 V</span></div>
+                <p>Matematicamente "correto" — mas impossível: a alimentação é só ±12 V.</p>
+              </div>
+              <div class="panel-view real">
+                <div class="eq">Previsão ideal: −30 V <span class="dim">(inatingível)</span><br>Saída real: <span style="color:var(--pink)">satura em ≈ −11 V</span></div>
+                <p>A saída bate no limite da alimentação e fica ceifada (clipping) — distorção, não amplificação linear.</p>
+              </div>
+            </div>
+          </div>
+
+          <figure class="panel" style="margin-top:6px">
+            <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+              <line x1="200" y1="20" x2="200" y2="380" stroke="var(--chalk-faint)" stroke-width="1.5"/>
+              <line x1="20" y1="200" x2="380" y2="200" stroke="var(--chalk-faint)" stroke-width="1.5"/>
+              <text x="204" y="32" font-family="Kalam" font-size="15" fill="var(--chalk-dim)">v0</text>
+              <text x="352" y="216" font-family="Kalam" font-size="15" fill="var(--chalk-dim)">vi</text>
+              <line x1="40" y1="68" x2="360" y2="68" stroke="var(--pink)" stroke-width="1" stroke-dasharray="4,5"/>
+              <line x1="40" y1="332" x2="360" y2="332" stroke="var(--pink)" stroke-width="1" stroke-dasharray="4,5"/>
+              <text x="278" y="62" font-family="Kalam" font-size="13" fill="var(--pink)">+Vsat ≈ 11V</text>
+              <text x="270" y="348" font-family="Kalam" font-size="13" fill="var(--pink)">−Vsat ≈ −11V</text>
+              <polyline points="40,68 141,68 259,332 360,332" fill="none" stroke="var(--yellow)" stroke-width="2.6" stroke-linejoin="round"/>
+            </svg>
+            <figcaption>Trecho linear com inclinação −R2/R1 no meio; fora dele, a saída satura.</figcaption>
+          </figure>
+        </div>
+
+        <div class="example">
+          <div class="ex-head">Exemplo 3 — erro por offset de entrada</div>
+          <p><strong>Dados:</strong> mesmo circuito do Exemplo 1 (G = −10), vi = 0 V, Vos = 2 mV.</p>
+          <div class="eq">v0(offset) ≈ Vos · (1 + R2/R1) = 2 mV · 11 = <span class="y">22 mV</span></div>
+          <p style="margin-top:.8em">Mesmo sem sinal, a saída não é 0 V — erro de zero de 22 mV, relevante em instrumentação de baixo nível.</p>
+        </div>
+
+        <h2 style="margin-top:48px;font-size:1.5rem">Resumo — configuração inversora</h2>
+        <table class="spec">
+          <tr><th>Parâmetro</th><th>Símbolo</th><th>Expressão</th></tr>
+          <tr><td>Regra de ouro 1</td><td class="sym">v1, v2</td><td>v1 = v2</td></tr>
+          <tr><td>Regra de ouro 2</td><td class="sym">i1, i2</td><td>i1 = i2 = 0</td></tr>
+          <tr><td>Ganho de tensão</td><td class="sym">G</td><td>−R2 / R1</td></tr>
+          <tr><td>Impedância de entrada</td><td class="sym">Zin</td><td>R1</td></tr>
+          <tr><td>Erro de offset na saída</td><td class="sym">v0,os</td><td>Vos · (1 + R2/R1)</td></tr>
+          <tr><td>Ganho-banda (741)</td><td class="sym">GBW</td><td>≈ 1 MHz</td></tr>
+        </table>
+      </section>
+
+    </div>
+
+    <footer class="page-footer">
+      <span>guias · poli usp</span>
+      <span>módulo 01 · amplificadores operacionais</span>
+    </footer>
+
+  </div>
+</div>
+
+</body>
+</html>
