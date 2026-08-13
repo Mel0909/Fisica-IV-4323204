@@ -21,8 +21,18 @@
     --amber:#E8A33D;
     --amber-dark:#B97817;
     --teal:#5FB8AA;
+    --teal-deep:#2F7F73;
     --coral:#C1554B;
     --grid-line: rgba(255,255,255,0.05);
+
+    /* escala de espaçamento — tudo no site usa estes degraus */
+    --s1:4px; --s2:8px; --s3:12px; --s4:16px;
+    --s5:24px; --s6:32px; --s7:48px; --s8:64px;
+
+    /* coluna de leitura: uma única medida para o site inteiro */
+    --col:820px;
+    --gutter:28px;
+    --subnav-h:50px;
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
@@ -31,10 +41,14 @@
     background:var(--bg);
     color:var(--ink);
     font-family:'Source Sans 3', sans-serif;
-    font-size:16.5px;
-    line-height:1.55;
+    font-size:17.5px;
+    line-height:1.72;
+    -webkit-font-smoothing:antialiased;
   }
   ::selection{background:var(--amber); color:var(--ink);}
+
+  /* wrapper único — hero, banner, subnav e conteúdo alinham na mesma coluna */
+  .wrap{max-width:var(--col); margin:0 auto; padding:0 var(--gutter); width:100%;}
 
   /* ---------- layout ---------- */
   .app{display:flex; min-height:100vh;}
@@ -105,7 +119,7 @@
       repeating-linear-gradient(0deg, var(--grid-line) 0px, var(--grid-line) 1px, transparent 1px, transparent 34px),
       repeating-linear-gradient(90deg, var(--grid-line) 0px, var(--grid-line) 1px, transparent 1px, transparent 34px),
       var(--bg);
-    padding:64px 56px 46px 56px;
+    padding:var(--s8) 0 var(--s7) 0;
     overflow:hidden;
   }
   .hero .eyebrow{
@@ -125,10 +139,10 @@
     letter-spacing:-0.01em;
   }
   .hero p.lede{
-    max-width:640px;
+    max-width:58ch;
     color:#B9C7CB;
     font-size:1.05rem;
-    margin:0 0 22px 0;
+    margin:0 0 var(--s5) 0;
   }
   .hero .fringe{
     position:absolute;
@@ -156,10 +170,9 @@
     padding:0 0 10px 0;
   }
   .topic-banner{
-    display:flex; align-items:center; gap:18px;
-    padding:38px 56px 22px 56px;
-    border-bottom:1px solid rgba(255,255,255,0.08);
+    padding:var(--s7) 0 var(--s5) 0;
   }
+  .topic-banner .wrap{display:flex; align-items:center; gap:18px;}
   .topic-banner .icon-wrap{
     width:56px; height:56px; flex:0 0 56px;
     border-radius:14px;
@@ -168,53 +181,138 @@
     color:var(--amber);
   }
   .topic-banner .icon-wrap svg{width:32px; height:32px;}
+  .topic-banner .topic-num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--teal); font-weight:600; display:block; margin-bottom:2px;
+  }
   .topic-banner h2{
     font-family:'Fraunces', serif;
     font-weight:600;
-    font-size:1.75rem;
+    font-size:1.8rem;
     color:#F7F4EA;
     margin:0;
+    line-height:1.2;
   }
   .topic-banner .count{
     font-family:'IBM Plex Mono', monospace;
     font-size:0.78rem;
     color:#8CA1A6;
-    margin-top:4px;
+    margin-top:5px;
+  }
+
+  /* ---------- subnav sticky por tópico ---------- */
+  .page-subnav{
+    position:sticky; top:0; z-index:20;
+    height:var(--subnav-h);
+    display:flex; align-items:center;
+    background:rgba(15,32,39,0.92);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    border-top:1px solid rgba(255,255,255,0.08);
+    border-bottom:1px solid rgba(255,255,255,0.08);
+  }
+  .page-subnav .wrap{
+    display:flex; align-items:center; gap:14px;
+    overflow-x:auto; white-space:nowrap;
+    scrollbar-width:none; -ms-overflow-style:none;
+  }
+  .page-subnav .wrap::-webkit-scrollbar{display:none;}
+  .psn-links{display:flex; gap:2px; align-items:center;}
+  .psn-links button{
+    background:none; border:none; cursor:pointer;
+    font-family:'Source Sans 3', sans-serif;
+    font-size:0.83rem;
+    color:#9FB3B8;
+    padding:5px 11px;
+    border-radius:100px;
+    white-space:nowrap;
+    transition:background .15s ease, color .15s ease;
+  }
+  .psn-links button:hover{color:#F3EFE3; background:rgba(255,255,255,0.06);}
+  .psn-links button.active{
+    color:#2A1B04; background:var(--amber); font-weight:600;
   }
 
   .topic-body{
     background:linear-gradient(180deg, var(--bg) 0%, #0C1A20 100%);
-    padding:30px 56px 54px 56px;
+    padding:var(--s6) 0 var(--s8) 0;
   }
 
-  .theory{
+  /* ---------- pilha de subtópicos ---------- */
+  .theory-stack{
+    display:flex; flex-direction:column;
+    gap:var(--s5);
+    margin-bottom:var(--s7);
+  }
+  .subtopic{
     background:var(--paper);
     border:1px solid var(--paper-line);
     border-radius:14px;
-    padding:26px 30px;
-    margin-bottom:34px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.25);
+    padding:var(--s5) var(--s6) var(--s6) var(--s6);
+    box-shadow:0 10px 30px rgba(0,0,0,0.22);
+    scroll-margin-top:calc(var(--subnav-h) + 16px);
   }
-  .theory h3{
+  .st-head{
+    margin-bottom:var(--s5);
+    padding-bottom:var(--s3);
+    border-bottom:1px solid var(--paper-line);
+  }
+  .st-num{
+    display:block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem; letter-spacing:0.1em;
+    color:var(--teal-deep); font-weight:600;
+    margin-bottom:var(--s1);
+  }
+  .subtopic h3{
     font-family:'Fraunces', serif;
-    font-size:1.05rem;
-    margin:0 0 12px 0;
+    font-size:1.32rem;
+    line-height:1.3;
+    margin:0;
     color:var(--ink);
     font-weight:600;
+    letter-spacing:-0.005em;
   }
-  .theory h3::before{
-    content:"§ ";
-    color:var(--teal);
+  .subtopic h3 .katex{font-size:0.92em;}
+
+  /* corpo do subtópico — o respiro mora aqui */
+  .st-body > p{margin:0 0 var(--s5) 0; color:var(--ink);}
+  .st-body > p:last-child{margin-bottom:0;}
+  .st-body > ul, .st-body > ol{margin:var(--s4) 0 var(--s5) 0; padding-left:22px;}
+  .st-body > li, .st-body ul > li, .st-body ol > li{margin-bottom:var(--s3);}
+  .st-body > ul > li:last-child, .st-body > ol > li:last-child{margin-bottom:0;}
+  .st-body .katex{font-size:1.02em;}
+  .st-body > *:last-child{margin-bottom:0 !important;}
+  /* diagramas e equações-chave respiram um pouco além da coluna de texto */
+  .st-body > .diagram, .st-body > .keyeq{margin-left:-14px; margin-right:-14px;}
+
+  /* tabela de constantes / valores */
+  table.consts{
+    width:100%; border-collapse:collapse;
+    margin:var(--s4) 0 var(--s5) 0;
+    font-size:0.94rem;
   }
-  .theory p{margin:0 0 10px 0; color:var(--ink);}
-  .theory p:last-child{margin-bottom:0;}
-  .theory ul{margin:8px 0; padding-left:20px;}
-  .theory li{margin-bottom:6px;}
-  .theory .katex{font-size:1.02em;}
+  table.consts th{
+    text-align:left;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.7rem; text-transform:uppercase; letter-spacing:0.08em;
+    color:var(--teal-deep); font-weight:600;
+    padding:0 14px 8px 0;
+    border-bottom:1px solid var(--paper-line);
+  }
+  table.consts td{
+    padding:9px 14px 9px 0;
+    border-bottom:1px solid rgba(231,224,206,0.6);
+    vertical-align:top;
+  }
+  table.consts tr:last-child td{border-bottom:none;}
+  table.consts td:first-child{white-space:nowrap; color:var(--ink);}
+  table.consts td:last-child{color:var(--ink-soft); font-size:0.9rem;}
 
   .diagram{
-    margin:16px 0 18px 0;
-    padding:14px 12px 10px 12px;
+    margin:var(--s5) 0;
+    padding:var(--s4) var(--s3) var(--s3) var(--s3);
     background:rgba(15,32,39,0.03);
     border:1px solid rgba(15,32,39,0.08);
     border-radius:8px;
@@ -223,19 +321,21 @@
     display:block; width:100%; height:auto; max-width:560px; margin:0 auto;
   }
   .diagram-caption{
-    margin:8px 0 0 0 !important;
+    margin:var(--s3) auto 0 auto !important;
+    max-width:52ch;
     font-size:0.85rem;
+    line-height:1.55;
     font-style:italic;
     color:#57666D;
     text-align:center;
   }
   .flag{
     display:block;
-    margin-top:6px;
+    margin-top:var(--s3);
     font-style:italic;
     color:#57666D;
     border-left:2px solid var(--amber);
-    padding-left:10px;
+    padding-left:12px;
   }
 
   /* ---------- blocos didáticos ---------- */
@@ -244,53 +344,55 @@
     border:1px solid var(--paper-line);
     border-left:3px solid var(--teal);
     border-radius:0 10px 10px 0;
-    padding:15px 20px;
-    margin:16px 0 18px 0;
+    padding:var(--s5) var(--s5);
+    margin:var(--s5) 0;
   }
   .derive .derive-title{
     font-family:'IBM Plex Mono', monospace;
     font-size:0.7rem; text-transform:uppercase; letter-spacing:0.08em;
-    color:#2F7F73; font-weight:600; display:block; margin-bottom:10px;
+    color:var(--teal-deep); font-weight:600; display:block; margin-bottom:var(--s4);
   }
-  .derive ol{margin:6px 0 0 0; padding-left:22px;}
-  .derive ol > li{margin-bottom:11px;}
+  .derive ol{margin:var(--s3) 0 0 0; padding-left:24px;}
+  .derive ol > li{margin-bottom:var(--s4);}
   .derive ol > li:last-child{margin-bottom:0;}
-  .derive p{margin:0 0 9px 0;}
+  .derive p{margin:0 0 var(--s3) 0;}
   .derive p:last-child{margin-bottom:0;}
-  .derive .katex-display{margin:8px 0;}
+  .derive .katex-display{margin:var(--s3) 0;}
 
   .keyeq{
     background:rgba(232,163,61,0.14);
     border:1px solid rgba(185,120,23,0.32);
     border-radius:8px;
-    padding:4px 16px;
-    margin:14px 0;
+    padding:var(--s3) var(--s5);
+    margin:var(--s5) 0;
+    overflow-x:auto;
   }
   .keyeq p{margin:0;}
-  .keyeq .katex-display{margin:10px 0;}
+  .keyeq .katex-display{margin:var(--s3) 0;}
 
   .tips{
     background:#FCF4E4;
     border:1px solid #EBDCB9;
     border-radius:10px;
-    padding:15px 20px;
-    margin:20px 0 4px 0;
+    padding:var(--s5) var(--s5);
+    margin:var(--s5) 0 0 0;
   }
   .tips .tips-title{
     font-family:'IBM Plex Mono', monospace;
     font-size:0.72rem; text-transform:uppercase; letter-spacing:0.08em;
-    color:var(--amber-dark); font-weight:600; display:block; margin-bottom:9px;
+    color:var(--amber-dark); font-weight:600; display:block; margin-bottom:var(--s3);
   }
-  .tips ul{margin:0; padding-left:20px;}
-  .tips li{margin-bottom:8px;}
+  .tips ul{margin:0; padding-left:22px;}
+  .tips li{margin-bottom:var(--s3);}
   .tips li:last-child{margin-bottom:0;}
 
   .why{
     font-size:0.94rem;
+    line-height:1.65;
     color:var(--ink-soft);
     border-left:2px solid var(--paper-line);
-    padding-left:13px;
-    margin:11px 0;
+    padding-left:14px;
+    margin:var(--s5) 0;
   }
   .why strong{color:var(--ink);}
 
@@ -300,10 +402,12 @@
   .exlist-label{
     font-family:'IBM Plex Mono', monospace;
     font-size:0.75rem;
-    letter-spacing:0.08em;
+    letter-spacing:0.1em;
     text-transform:uppercase;
     color:#7FA3A0;
-    margin:0 0 14px 2px;
+    margin:0 0 var(--s5) 0;
+    padding-top:var(--s5);
+    border-top:1px solid rgba(255,255,255,0.08);
   }
 
   /* ---------- exercise card ---------- */
@@ -311,16 +415,16 @@
     background:var(--paper);
     border:1px solid var(--paper-line);
     border-radius:12px;
-    margin-bottom:16px;
+    margin-bottom:var(--s3);
     overflow:hidden;
     border-left:4px solid #C9C2A8;
     transition:box-shadow .15s ease;
   }
   .exercise:hover{box-shadow:0 8px 22px rgba(0,0,0,0.22);}
   .exercise.exam{border-left-color:var(--coral);}
-  .ex-head{padding:18px 22px 14px 22px;}
+  .ex-head{padding:var(--s5) var(--s5) var(--s4) var(--s5);}
   .ex-badges{
-    display:flex; align-items:center; gap:8px; margin-bottom:10px; flex-wrap:wrap;
+    display:flex; align-items:center; gap:8px; margin-bottom:var(--s3); flex-wrap:wrap;
   }
   .badge{
     font-family:'IBM Plex Mono', monospace;
@@ -334,12 +438,12 @@
   .badge.prova{background:#F4DEDB; color:var(--coral);}
   .badge.num{background:transparent; color:var(--ink-soft); border:1px solid var(--paper-line); padding:3px 9px;}
   .ex-statement{color:var(--ink); font-size:0.98rem;}
-  .ex-statement p{margin:0 0 8px 0;}
+  .ex-statement p{margin:0 0 var(--s3) 0;}
   .ex-statement p:last-child{margin-bottom:0;}
 
   .res-toggle{
     display:inline-flex; align-items:center; gap:7px;
-    margin:2px 22px 18px 22px;
+    margin:2px var(--s5) var(--s5) var(--s5);
     background:var(--amber);
     color:#3A2607;
     border:none;
@@ -357,18 +461,21 @@
   .res-toggle svg{width:13px; height:13px; transition:transform .2s ease;}
   .res-toggle.open svg{transform:rotate(180deg);}
 
+  /* painel de resolução — grid 0fr→1fr anima em qualquer altura,
+     sem o hack de max-height que cortava resoluções longas */
   .res-panel{
-    max-height:0;
-    overflow:hidden;
-    transition:max-height .28s ease;
+    display:grid;
+    grid-template-rows:0fr;
+    transition:grid-template-rows .3s ease;
     background:#F2EDE0;
-    border-top:1px solid var(--paper-line);
+    border-top:0 solid var(--paper-line);
   }
-  .res-panel.open{max-height:40000px;}
+  .res-panel.open{grid-template-rows:1fr; border-top-width:1px;}
+  .res-wrap{overflow:hidden; min-height:0;}
   .res-inner{
-    padding:20px 22px 22px 22px;
+    padding:var(--s5);
     border-left:3px solid var(--teal);
-    margin:16px 22px 4px 22px;
+    margin:var(--s4) var(--s5) var(--s4) var(--s5);
     background:#FDFCF8;
     border-radius:0 8px 8px 0;
   }
@@ -382,30 +489,44 @@
     margin-bottom:8px;
     font-weight:600;
   }
-  .res-inner p{margin:0 0 9px 0; font-size:0.95rem;}
+  .res-inner p{margin:0 0 var(--s4) 0; font-size:0.95rem;}
   .res-inner p:last-child{margin-bottom:0;}
   .res-inner strong{color:var(--ink);}
+  .res-inner ul, .res-inner ol{margin:var(--s3) 0 var(--s4) 0; padding-left:22px;}
+  .res-inner li{margin-bottom:var(--s2);}
 
   footer.site-foot{
     text-align:center;
     color:#7FA3A0;
     font-family:'IBM Plex Mono', monospace;
     font-size:0.75rem;
-    padding:34px 20px 46px 20px;
+    padding:var(--s7) 20px var(--s8) 20px;
   }
 
   @media (max-width: 880px){
+    :root{--gutter:20px; --subnav-h:46px;}
+    body{font-size:16.5px;}
     .app{flex-direction:column;}
     .sidebar{position:relative; width:100%; height:auto; flex:none;}
-    .hero{padding:40px 22px 30px 22px;}
+    .hero{padding:var(--s7) 0 var(--s6) 0;}
     .hero .fringe{display:none;}
-    .topic-banner{padding:28px 22px 18px 22px;}
-    .topic-body{padding:22px 22px 40px 22px;}
-    .theory{padding:20px;}
+    .topic-banner{padding:var(--s6) 0 var(--s5) 0;}
+    .topic-body{padding:var(--s5) 0 var(--s7) 0;}
+    .subtopic{padding:var(--s5) var(--s4);}
+    .st-body > .diagram, .st-body > .keyeq{margin-left:0; margin-right:0;}
+    .derive, .tips{padding:var(--s4);}
+    .ex-head{padding:var(--s4);}
+    .res-inner{margin:var(--s3) var(--s4); padding:var(--s4);}
+    .res-toggle{margin:2px var(--s4) var(--s4) var(--s4);}
   }
 
   /* focus visibility */
   a:focus-visible, button:focus-visible{outline:2px solid var(--teal); outline-offset:2px;}
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{transition-duration:0.01ms !important; animation-duration:0.01ms !important;}
+  }
 </style>
 </head>
 <body>
@@ -419,13 +540,15 @@
 
   <main>
     <header class="hero">
-      <div class="eyebrow">Física IV · 4323204</div>
-      <h1>Ondas, Relatividade<br>e Física Quântica</h1>
-      <p class="lede">Todo o conteúdo das Listas 1 e 2 e das três provas P1 (2023, 2024 e 2025), organizado por tópico. Cada exercício termina com um botão <strong>Resolução</strong> — clique para revelar a resposta. As questões de prova aparecem sempre por último em cada tópico.</p>
-      <div class="sources">
-        <span class="source-chip">Lista 1 — Interferência, Difração, Relatividade</span>
-        <span class="source-chip">Lista 2 — Relatividade, Fótons, Bohr, Ondas de matéria</span>
-        <span class="source-chip">P1 2023 · P1 2024 · P1 2025</span>
+      <div class="wrap">
+        <div class="eyebrow">Física IV · 4323204</div>
+        <h1>Ondas, Relatividade<br>e Física Quântica</h1>
+        <p class="lede">Todo o conteúdo das Listas 1 e 2 e das três provas P1 (2023, 2024 e 2025), organizado por tópico. Cada exercício termina com um botão <strong>Resolução</strong> — clique para revelar a resposta. As questões de prova aparecem sempre por último em cada tópico.</p>
+        <div class="sources">
+          <span class="source-chip">Lista 1 — Interferência, Difração, Relatividade</span>
+          <span class="source-chip">Lista 2 — Relatividade, Fótons, Bohr, Ondas de matéria</span>
+          <span class="source-chip">P1 2023 · P1 2024 · P1 2025</span>
+        </div>
       </div>
     </header>
 
@@ -494,8 +617,10 @@ const TOPICS = [
   id:'interferencia', icon:'wave', label:'Interferência',
   theory: r`
   <h3>1. Superposição de duas ondas — de onde sai \(I=I_0\cos^2(\phi/2)\)</h3>
-  <p>Interferência é só uma coisa: <strong>duas ondas chegam no mesmo ponto e os campos elétricos se somam</strong>. Não há nada de exótico — é a soma algébrica \(E=E_1+E_2\). O que muda de ponto para ponto na tela é o <em>atraso</em> de uma onda em relação à outra, medido como uma diferença de fase \(\phi\). Se elas chegam em fase, os campos se reforçam; se chegam em oposição, se cancelam.</p>
-  <p>O detector (olho, fotodiodo, filme) não mede o campo — mede a <strong>intensidade</strong>, que é proporcional ao <em>quadrado</em> da amplitude resultante, com média no tempo. Então o roteiro é sempre: somar campos \(\to\) achar a amplitude resultante \(\to\) elevar ao quadrado.</p>
+  <p>Interferência é só uma coisa: <strong>duas ondas chegam no mesmo ponto e os campos elétricos se somam</strong>. Não há nada de exótico — é a soma algébrica \(E=E_1+E_2\).</p>
+  <p>O que muda de ponto para ponto na tela é o <em>atraso</em> de uma onda em relação à outra, medido como uma diferença de fase \(\phi\). Se elas chegam em fase, os campos se reforçam; se chegam em oposição, se cancelam.</p>
+  <p>Só que o detector (olho, fotodiodo, filme) não mede o campo — mede a <strong>intensidade</strong>, que é proporcional ao <em>quadrado</em> da amplitude resultante, com média no tempo.</p>
+  <p>Daí o roteiro, sempre o mesmo: somar campos \(\to\) achar a amplitude resultante \(\to\) elevar ao quadrado.</p>
 
   <div class="derive"><span class="derive-title">Dedução — intensidade de duas fontes idênticas</span>
   <ol>
@@ -513,7 +638,8 @@ const TOPICS = [
   </ol>
   </div>
 
-  <p>O mesmo resultado sai em três linhas com <strong>fasores</strong>: represente cada onda por um vetor de módulo \(E_0\), o segundo girado de \(\phi\) em relação ao primeiro. A resultante é a diagonal do losango. Como o triângulo é isósceles (os dois lados valem \(E_0\)), a diagonal bissecta o ângulo \(\phi\), e a projeção de cada lado sobre ela vale \(E_0\cos(\phi/2)\) — logo \(A=2E_0\cos(\phi/2)\). O \(\phi/2\) é literalmente o ângulo da bissetriz.</p>
+  <p>O mesmo resultado sai em três linhas com <strong>fasores</strong>: represente cada onda por um vetor de módulo \(E_0\), o segundo girado de \(\phi\) em relação ao primeiro. A resultante é a diagonal do losango.</p>
+  <p>Como o triângulo é isósceles (os dois lados valem \(E_0\)), a diagonal bissecta o ângulo \(\phi\), e a projeção de cada lado sobre ela vale \(E_0\cos(\phi/2)\) — logo \(A=2E_0\cos(\phi/2)\). O \(\phi/2\) é literalmente o ângulo da bissetriz.</p>
 
   <div class="diagram">
   <svg viewBox="0 0 560 250" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace">
@@ -548,7 +674,13 @@ const TOPICS = [
     <li>\(\lambda\) — comprimento de onda no vácuo/ar (m).</li>
   </ul>
 
-  <p><strong>Limites e sanity checks.</strong> Em \(\phi=0\) (ou qualquer múltiplo de \(2\pi\)): \(I=I_0\), máximo. Em \(\phi=\pi\) (ou ímpar\(\times\pi\)): \(I=0\), escuro total — o cancelamento é perfeito só porque as amplitudes são iguais; se uma fenda for mais estreita, o mínimo não zera. E a energia? A média de \(\cos^2\) é \(1/2\), então \(\langle I\rangle = I_0/2 = 2I_{\text{1 fenda}}\) — exatamente a soma das duas fontes. <em>A interferência redistribui energia, não cria nem destrói.</em></p>
+  <p><strong>Limites e sanity checks.</strong> Três leituras rápidas para conferir se a fórmula está sendo usada certo:</p>
+  <ul>
+    <li>\(\phi=0\) (ou qualquer múltiplo de \(2\pi\)): \(I=I_0\), máximo.</li>
+    <li>\(\phi=\pi\) (ou ímpar\(\times\pi\)): \(I=0\), escuro total. O cancelamento só é perfeito porque as amplitudes são iguais — se uma fenda for mais estreita, o mínimo não zera.</li>
+    <li>Média: como \(\langle\cos^2\rangle = 1/2\), sai \(\langle I\rangle = I_0/2 = 2I_{\text{1 fenda}}\), exatamente a soma das duas fontes.</li>
+  </ul>
+  <p>A última é a mais importante: <em>a interferência redistribui energia, não cria nem destrói</em>.</p>
 
   <div class="tips"><span class="tips-title">Na prova</span>
   <ul>
@@ -756,10 +888,22 @@ const TOPICS = [
   </div>
 
   <h3>5. Filmes finos — montando a contagem de fase raio a raio</h3>
-  <p>Uma bolha de sabão ou uma mancha de óleo mostram cores porque a luz refletida na face <em>de cima</em> do filme interfere com a luz refletida na face <em>de baixo</em>. As duas voltam praticamente sobrepostas para o seu olho, e a diferença entre elas tem <strong>duas origens</strong>: (i) o caminho extra dentro do filme e (ii) possíveis inversões de fase nas reflexões. Não decore a regra pronta — monte a contagem em cada problema.</p>
+  <p>Uma bolha de sabão ou uma mancha de óleo mostram cores porque a luz refletida na face <em>de cima</em> do filme interfere com a luz refletida na face <em>de baixo</em>. As duas voltam praticamente sobrepostas para o seu olho.</p>
+  <p>A diferença entre elas tem <strong>duas origens</strong>:</p>
+  <ol>
+    <li>o caminho extra percorrido dentro do filme;</li>
+    <li>possíveis inversões de fase nas reflexões.</li>
+  </ol>
+  <p>Não decore a regra pronta — monte a contagem em cada problema.</p>
 
-  <p><strong>Por que existe a inversão de \(\pi\).</strong> Pense numa corda: você manda um pulso para cima em direção a uma extremidade <em>presa na parede</em>. A parede não pode se mexer; a única forma de a soma "pulso incidente + pulso refletido" dar deslocamento nulo na parede é o pulso voltar <strong>invertido</strong>. Se, em vez disso, a corda terminar num anel que desliza livremente numa haste (extremidade livre), nada impede o movimento e o pulso volta <strong>do mesmo lado</strong>.</p>
-  <p>Na óptica o papel da "parede" é feito pelo meio mais lento (índice maior): refletir num meio de índice <em>maior</em> equivale à extremidade fixa \(\Rightarrow\) <strong>inversão de \(\pi\)</strong> (meio comprimento de onda). Refletir num meio de índice <em>menor</em> equivale à extremidade livre \(\Rightarrow\) <strong>sem inversão</strong>. A onda transmitida nunca inverte.</p>
+  <p><strong>Por que existe a inversão de \(\pi\).</strong> Pense numa corda: você manda um pulso para cima em direção a uma extremidade <em>presa na parede</em>. A parede não pode se mexer; a única forma de a soma "pulso incidente + pulso refletido" dar deslocamento nulo na parede é o pulso voltar <strong>invertido</strong>.</p>
+  <p>Se, em vez disso, a corda terminar num anel que desliza livremente numa haste (extremidade livre), nada impede o movimento e o pulso volta <strong>do mesmo lado</strong>.</p>
+  <p>Na óptica, o papel da "parede" é feito pelo meio mais lento (índice maior). Traduzindo a analogia:</p>
+  <ul>
+    <li>refletir num meio de índice <em>maior</em> equivale à extremidade fixa \(\Rightarrow\) <strong>inversão de \(\pi\)</strong> (meio comprimento de onda);</li>
+    <li>refletir num meio de índice <em>menor</em> equivale à extremidade livre \(\Rightarrow\) <strong>sem inversão</strong>;</li>
+    <li>a onda transmitida nunca inverte.</li>
+  </ul>
 
   <div class="diagram">
   <svg viewBox="0 0 560 230" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace">
@@ -837,7 +981,8 @@ const TOPICS = [
   <p class="diagram-caption">Contagem raio a raio no caso ar–filme–ar (ou ar–filme–meio de índice menor): só o raio 1 inverte, o raio 2 paga \(2nt\) de caminho óptico. A assimetria de meio comprimento de onda é o que inverte as condições em relação à intuição ingênua.</p>
   </div>
 
-  <p><strong>Incidência oblíqua.</strong> Se a luz chega com ângulo, o raio 2 percorre um zigue-zague mais longo, mas a frente de onda também se desloca; o resultado (dedução análoga, com a perpendicular baixada sobre o raio 1) é trocar \(2nt\) por \(2nt\cos\theta_t\), onde \(\theta_t\) é o ângulo <em>dentro</em> do filme (dado por Snell, \(n_1\sin\theta_i=n\sin\theta_t\)). Em incidência normal, \(\cos\theta_t=1\) e recuperamos a fórmula anterior — outro sanity check. Nos exercícios desta lista a incidência é sempre normal.</p>
+  <p><strong>Incidência oblíqua.</strong> Se a luz chega com ângulo, o raio 2 percorre um zigue-zague mais longo, mas a frente de onda também se desloca. O resultado (dedução análoga, com a perpendicular baixada sobre o raio 1) é trocar \(2nt\) por \(2nt\cos\theta_t\), onde \(\theta_t\) é o ângulo <em>dentro</em> do filme, dado por Snell: \(n_1\sin\theta_i=n\sin\theta_t\).</p>
+  <p>Em incidência normal, \(\cos\theta_t=1\) e recuperamos a fórmula anterior — outro sanity check. Nos exercícios desta lista a incidência é sempre normal.</p>
 
   <p><strong>Reflexão x transmissão.</strong> A energia que não é refletida é transmitida. Logo os máximos da <em>transmissão</em> caem exatamente nos mínimos da <em>reflexão</em>: se a reflexão é destrutiva em \(2nt=m\lambda\), então a transmissão é construtiva ali. É por isso que uma bolha de sabão vista por reflexão e por transparência mostra cores complementares.</p>
 
@@ -1189,7 +1334,9 @@ const TOPICS = [
       \]</p>
       <p><strong>Resposta (b):</strong> \(551\text{ nm}\), um <strong>verde</strong>.</p>
 
-      <p><strong>Sanity check.</strong> Azul refletido, verde transmitido — cores diferentes, como esperado, já que as condições são complementares. Repare que \(441\) e \(551\text{ nm}\) não são exatamente "complementares" no sentido de somar branco, porque o filme só deixa passar um punhado de ordens no visível; ainda assim, é a mesma física que faz uma mancha de óleo mudar de cor conforme a espessura e o ângulo de observação. Sanity check numérico: \(1102/441 = 2{,}5\) (semi-inteiro \(\Rightarrow\) reflexão construtiva ✓) e \(1102/551 = 2{,}0\) (inteiro \(\Rightarrow\) reflexão destrutiva, logo transmissão construtiva ✓).</p>
+      <p><strong>Sanity check.</strong> Azul refletido, verde transmitido — cores diferentes, como esperado, já que as condições são complementares.</p>
+      <p>Repare que \(441\) e \(551\text{ nm}\) não são exatamente "complementares" no sentido de somar branco, porque o filme só deixa passar um punhado de ordens no visível. Ainda assim, é a mesma física que faz uma mancha de óleo mudar de cor conforme a espessura e o ângulo de observação.</p>
+      <p>Conferindo pelos números: \(1102/441 = 2{,}5\) (semi-inteiro \(\Rightarrow\) reflexão construtiva ✓) e \(1102/551 = 2{,}0\) (inteiro \(\Rightarrow\) reflexão destrutiva, logo transmissão construtiva ✓).</p>
       <p><strong>Resposta: (a) \(441\text{ nm}\) (azul-violeta); (b) \(551\text{ nm}\) (verde).</strong></p>`},
 
     {tag:'prova', exam:true, src:'P1 · 2023', num:'Questão 1',
@@ -1376,9 +1523,103 @@ const TOPICS = [
   theory: r`
   <h3>1. O que é difração — e por que ela não é "outra coisa" além de interferência</h3>
   <p>Se a luz fosse feita de raios retilíneos, uma fenda projetaria uma sombra de bordas perfeitamente nítidas. Não é o que acontece: ao atravessar uma abertura comparável a \(\lambda\), a luz <strong>se espalha</strong> para dentro da região de sombra geométrica e forma, no anteparo, uma sequência de faixas claras e escuras. Isso é <em>difração</em>.</p>
-  <p>A explicação é o <strong>princípio de Huygens–Fresnel</strong>: cada ponto de uma frente de onda que atravessa a fenda se comporta como uma <em>fonte secundária</em> de ondas esféricas, e o campo em qualquer ponto adiante é a soma (com fase) de todas essas contribuições. Ou seja: difração é interferência — só que de <strong>infinitas</strong> fontes distribuídas continuamente pela largura da fenda, em vez de duas fontes pontuais.</p>
+  <p>A explicação é o <strong>princípio de Huygens–Fresnel</strong>: cada ponto de uma frente de onda que atravessa a fenda se comporta como uma <em>fonte secundária</em> de ondas esféricas, e o campo em qualquer ponto adiante é a soma (com fase) de todas essas contribuições.</p>
+
+  <div class="diagram">
+  <svg viewBox="0 0 560 250" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace">
+    <!-- frentes de onda planas incidentes -->
+    <line x1="24"  y1="26" x2="24"  y2="224" stroke="#5FB8AA" stroke-width="1.6"/>
+    <line x1="58"  y1="26" x2="58"  y2="224" stroke="#5FB8AA" stroke-width="1.6"/>
+    <line x1="92"  y1="26" x2="92"  y2="224" stroke="#5FB8AA" stroke-width="1.6"/>
+    <line x1="126" y1="26" x2="126" y2="224" stroke="#5FB8AA" stroke-width="1.6"/>
+    <line x1="160" y1="26" x2="160" y2="224" stroke="#5FB8AA" stroke-width="1.6"/>
+    <path d="M150 240 L188 240" stroke="#57666D" stroke-width="1.2"/>
+    <path d="M182 236 L189 240 L182 244" fill="none" stroke="#57666D" stroke-width="1.2"/>
+    <text x="30" y="242" font-size="11.5" fill="#57666D">onda plana incidente</text>
+
+    <!-- anteparo com a fenda de largura a -->
+    <line x1="205" y1="14"  x2="205" y2="95"  stroke="#B9AF92" stroke-width="7"/>
+    <line x1="205" y1="155" x2="205" y2="236" stroke="#B9AF92" stroke-width="7"/>
+    <line x1="222" y1="95"  x2="222" y2="155" stroke="#1C2B33" stroke-width="1.2" stroke-dasharray="3 3"/>
+    <path d="M222 95 L218 101 M222 95 L226 101 M222 155 L218 149 M222 155 L226 149" stroke="#1C2B33" stroke-width="1.2"/>
+    <text x="230" y="129" font-size="13" fill="#1C2B33">a</text>
+
+    <!-- fontes secundárias na abertura + wavelets esféricas -->
+    <g stroke="#C1554B" stroke-width="1.3" fill="none" opacity="0.85">
+      <path d="M205 101 m -26 0 a 26 26 0 0 1 52 0" transform="rotate(90 205 101)"/>
+      <path d="M205 101 m -52 0 a 52 52 0 0 1 104 0" transform="rotate(90 205 101)"/>
+      <path d="M205 101 m -78 0 a 78 78 0 0 1 156 0" transform="rotate(90 205 101)"/>
+      <path d="M205 125 m -26 0 a 26 26 0 0 1 52 0" transform="rotate(90 205 125)"/>
+      <path d="M205 125 m -52 0 a 52 52 0 0 1 104 0" transform="rotate(90 205 125)"/>
+      <path d="M205 125 m -78 0 a 78 78 0 0 1 156 0" transform="rotate(90 205 125)"/>
+      <path d="M205 149 m -26 0 a 26 26 0 0 1 52 0" transform="rotate(90 205 149)"/>
+      <path d="M205 149 m -52 0 a 52 52 0 0 1 104 0" transform="rotate(90 205 149)"/>
+      <path d="M205 149 m -78 0 a 78 78 0 0 1 156 0" transform="rotate(90 205 149)"/>
+    </g>
+    <circle cx="205" cy="101" r="3.6" fill="#C1554B"/>
+    <circle cx="205" cy="125" r="3.6" fill="#C1554B"/>
+    <circle cx="205" cy="149" r="3.6" fill="#C1554B"/>
+
+    <!-- sombra geométrica: a luz invade as duas faixas -->
+    <line x1="205" y1="95"  x2="530" y2="95"  stroke="#8CA1A6" stroke-width="1" stroke-dasharray="4 4"/>
+    <line x1="205" y1="155" x2="530" y2="155" stroke="#8CA1A6" stroke-width="1" stroke-dasharray="4 4"/>
+    <text x="392" y="60"  font-size="11" fill="#8CA1A6">sombra geométrica</text>
+    <text x="392" y="205" font-size="11" fill="#8CA1A6">sombra geométrica</text>
+    <path d="M420 70 L420 88"   stroke="#E8A33D" stroke-width="1.3"/>
+    <path d="M416 82 L420 89 L424 82" fill="none" stroke="#E8A33D" stroke-width="1.3"/>
+    <path d="M420 180 L420 162" stroke="#E8A33D" stroke-width="1.3"/>
+    <path d="M416 168 L420 161 L424 168" fill="none" stroke="#E8A33D" stroke-width="1.3"/>
+
+    <text x="272" y="30" font-size="11.5" fill="#C1554B">cada ponto da abertura = fonte secundária</text>
+    <text x="272" y="232" font-size="11.5" fill="#E8A33D">a luz entra na região de sombra</text>
+  </svg>
+  <p class="diagram-caption">Princípio de Huygens–Fresnel. A onda plana chega à fenda; cada ponto da abertura reemite uma wavelet esférica. A envoltória dessas wavelets é a nova frente de onda — e ela é <em>curva</em> nas bordas, o que joga luz para dentro da sombra geométrica (setas âmbar).</p>
+  </div>
+
+  <p>Ou seja: difração é interferência — só que de <strong>infinitas</strong> fontes distribuídas continuamente pela largura da fenda, em vez de duas fontes pontuais.</p>
   <p>Essa é a diferença conceitual que a prova cobra: na fenda dupla ideal você soma <em>dois</em> fasores; na fenda simples você soma um <em>contínuo</em> de fasores. Tudo o mais (diferença de caminho \(\to\) fase \(\to\) somar campos \(\to\) elevar ao quadrado) é idêntico.</p>
-  <p>Vamos trabalhar sempre no <strong>regime de Fraunhofer</strong> (difração "de campo distante"): o anteparo está tão longe (ou há uma lente convergente) que os raios que chegam a um mesmo ponto podem ser tratados como <em>paralelos</em>, todos formando o mesmo ângulo \(\theta\) com o eixo. Critério prático: \(L \gg a^2/\lambda\). Com \(a=0{,}5\text{ mm}\) e \(\lambda=500\text{ nm}\), \(a^2/\lambda = 0{,}5\text{ m}\) — qualquer bancada de laboratório serve.</p>
+
+  <div class="diagram">
+  <svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace">
+    <text x="14" y="20" font-size="11.5" fill="#57666D" letter-spacing="0.06em">FENDA DUPLA IDEAL — 2 FASORES</text>
+    <line x1="14" y1="30" x2="262" y2="30" stroke="#E7E0CE" stroke-width="1.4"/>
+    <line x1="60" y1="46" x2="60" y2="150" stroke="#B9AF92" stroke-width="5"/>
+    <circle cx="60" cy="78"  r="5" fill="#C1554B"/>
+    <circle cx="60" cy="118" r="5" fill="#C1554B"/>
+    <g stroke="#5FB8AA" stroke-width="1.6" fill="none">
+      <path d="M110 98 L178 68"/>
+      <path d="M178 68 L214 118"/>
+    </g>
+    <path d="M110 98 L214 118" stroke="#E8A33D" stroke-width="2.4" fill="none"/>
+    <path d="M206 112 L215 119 L205 123" fill="#E8A33D" stroke="none"/>
+    <text x="128" y="70"  font-size="12" fill="#5FB8AA">E1</text>
+    <text x="200" y="90"  font-size="12" fill="#5FB8AA">E2</text>
+    <text x="146" y="130" font-size="12" fill="#B97817">E total</text>
+    <text x="60"  y="176" font-size="11" fill="#57666D" text-anchor="middle">soma de 2 vetores</text>
+
+    <line x1="280" y1="24" x2="280" y2="182" stroke="#E7E0CE" stroke-width="1.4"/>
+
+    <text x="300" y="20" font-size="11.5" fill="#57666D" letter-spacing="0.06em">FENDA SIMPLES — CONTÍNUO DE FASORES</text>
+    <line x1="300" y1="30" x2="548" y2="30" stroke="#E7E0CE" stroke-width="1.4"/>
+    <line x1="336" y1="46" x2="336" y2="150" stroke="#B9AF92" stroke-width="5"/>
+    <line x1="336" y1="70" x2="336" y2="126" stroke="#C1554B" stroke-width="5"/>
+    <!-- arco de fasores: muitos vetorezinhos formando um arco -->
+    <path d="M386 128 A 46 46 0 0 1 470 78" fill="none" stroke="#5FB8AA" stroke-width="2.2"/>
+    <g stroke="#5FB8AA" stroke-width="0.9" opacity="0.75">
+      <path d="M386 128 L392 121"/><path d="M398 116 L404 110"/><path d="M411 104 L418 99"/>
+      <path d="M426 94 L434 90"/><path d="M442 86 L451 83"/><path d="M459 80 L468 78"/>
+    </g>
+    <path d="M386 128 L470 78" stroke="#E8A33D" stroke-width="2.4" fill="none"/>
+    <path d="M462 78 L471 77 L466 85" fill="#E8A33D" stroke="none"/>
+    <text x="404" y="150" font-size="12" fill="#B97817">E total (corda)</text>
+    <text x="452" y="106" font-size="11.5" fill="#5FB8AA">arco</text>
+    <text x="424" y="176" font-size="11" fill="#57666D" text-anchor="middle">soma de infinitos vetores</text>
+  </svg>
+  <p class="diagram-caption">A mesma física, dois limites. À esquerda, duas fontes pontuais: o campo resultante é a soma de dois fasores. À direita, uma fenda de largura \(a\): os infinitos fasores das fontes secundárias, cada um girado um pouquinho em relação ao anterior, se encadeiam num arco — e o campo resultante é a <em>corda</em> desse arco.</p>
+  </div>
+
+  <p>Vamos trabalhar sempre no <strong>regime de Fraunhofer</strong> (difração "de campo distante"): o anteparo está tão longe (ou há uma lente convergente) que os raios que chegam a um mesmo ponto podem ser tratados como <em>paralelos</em>, todos formando o mesmo ângulo \(\theta\) com o eixo.</p>
+  <p>Critério prático: \(L \gg a^2/\lambda\). Com \(a=0{,}5\text{ mm}\) e \(\lambda=500\text{ nm}\), \(a^2/\lambda = 0{,}5\text{ m}\) — qualquer bancada de laboratório serve.</p>
 
   <div class="tips"><span class="tips-title">Na prova</span>
   <ul>
@@ -1576,13 +1817,15 @@ const TOPICS = [
 
   <p><strong>(i) Largura angular do máximo central.</strong> Ele vai do mínimo \(m=-1\) ao mínimo \(m=+1\):</p>
   <div class="keyeq">\[ \sin\theta_1 = \frac{\lambda}{a} \ \ \Longrightarrow\ \ \Delta\theta_{\text{central}} = 2\theta_1 \approx \frac{2\lambda}{a}\ \ (\text{ângulos pequenos}) \]</div>
-  <p>Na tela, a uma distância \(L\), a largura em metros é \(W = 2L\tan\theta_1 \approx \dfrac{2\lambda L}{a}\). Note o <strong>comportamento inverso</strong>: apertar a fenda (\(a\downarrow\)) <em>alarga</em> o padrão. É contraintuitivo se você pensa em raios, e óbvio se você pensa em ondas — quanto mais confinada a onda na saída, mais ela se espalha. (É o mesmo conteúdo do princípio de incerteza: confinar em \(x\) espalha em \(p_x\).)</p>
+  <p>Na tela, a uma distância \(L\), a largura em metros é \(W = 2L\tan\theta_1 \approx \dfrac{2\lambda L}{a}\).</p>
+  <p>Note o <strong>comportamento inverso</strong>: apertar a fenda (\(a\downarrow\)) <em>alarga</em> o padrão. É contraintuitivo se você pensa em raios, e óbvio se você pensa em ondas — quanto mais confinada a onda na saída, mais ela se espalha. É o mesmo conteúdo do princípio de incerteza: confinar em \(x\) espalha em \(p_x\).</p>
 
   <p><strong>(ii) Máximos secundários.</strong> Entre dois mínimos consecutivos há um máximo. Como o numerador \(\sin(\beta/2)\) oscila muito mais rápido que o denominador \(\beta/2\) cresce, esses máximos ficam <em>quase</em> onde \(|\sin(\beta/2)|=1\), isto é \(\beta/2=(m+\tfrac12)\pi\):</p>
   <div class="keyeq">\[ a\sin\theta \approx \left(m+\tfrac12\right)\lambda,\qquad m=1,2,3,\dots\ \ (\textbf{máximos secundários, aproximado}) \]</div>
   <p>A condição exata sai de \(\dfrac{d}{dx}\left(\dfrac{\sin x}{x}\right)^2=0 \Rightarrow \tan x = x\), cuja primeira raiz não nula é \(x=\beta/2=4{,}4934\), ou \(a\sin\theta=1{,}4303\lambda\) — bem perto de \(1{,}5\lambda\). A intensidade nesses picos é minúscula:</p>
   <p>\[ \frac{I_1}{I_0}=\left(\frac{2}{3\pi}\right)^2 = 4{,}5\%,\qquad \frac{I_2}{I_0}=\left(\frac{2}{5\pi}\right)^2=1{,}6\%,\qquad \frac{I_3}{I_0}=\left(\frac{2}{7\pi}\right)^2=0{,}83\% \]</p>
-  <p>Ou seja: <strong>praticamente toda a energia (cerca de 90%) está no máximo central</strong>. E o máximo central tem o <em>dobro</em> da largura dos secundários — porque ele ocupa o intervalo de \(-\lambda/a\) a \(+\lambda/a\), enquanto cada secundário vai de \(m\lambda/a\) a \((m+1)\lambda/a\).</p>
+  <p>Ou seja: <strong>praticamente toda a energia (cerca de 90%) está no máximo central</strong>.</p>
+  <p>E o máximo central tem o <em>dobro</em> da largura dos secundários — porque ele ocupa o intervalo de \(-\lambda/a\) a \(+\lambda/a\), enquanto cada secundário vai de \(m\lambda/a\) a \((m+1)\lambda/a\).</p>
 
   <p><strong>(iii) Largura a meia altura (FWHM).</strong> Alguns problemas definem largura como o intervalo em que \(I\ge I_0/2\). A condição é</p>
   <p>\[ \left[\frac{\sin x}{x}\right]^2=\frac12 \ \Longleftrightarrow\ \frac{\sin x}{x}=\frac{1}{\sqrt2}=0{,}7071,\qquad x\equiv\frac{\beta}{2} \]</p>
@@ -1679,7 +1922,8 @@ const TOPICS = [
   <h3>6. Rede de difração e poder de resolução</h3>
   <p>Uma <strong>rede</strong> é o mesmo experimento com \(N\) fendas igualmente espaçadas de \(d\), com \(N\) na casa dos milhares. A condição de máximo principal é a mesma da fenda dupla — todas as fendas em fase exige que a diferença de caminho entre <em>vizinhas</em> seja um número inteiro de \(\lambda\):</p>
   <div class="keyeq">\[ d\sin\theta = m\lambda \qquad(\textbf{máximos principais da rede}) \]</div>
-  <p>O que muda dramaticamente é a <strong>nitidez</strong>. Com \(N\) fendas, os \(N\) fasores só se somam construtivamente numa faixa angular estreitíssima; basta o fasor girar \(2\pi/N\) por fenda para a poligonal fechar um círculo completo e a soma zerar. Isso dá o primeiro zero ao lado de um máximo principal em</p>
+  <p>O que muda dramaticamente é a <strong>nitidez</strong>. Com \(N\) fendas, os \(N\) fasores só se somam construtivamente numa faixa angular estreitíssima: basta o fasor girar \(2\pi/N\) por fenda para a poligonal fechar um círculo completo e a soma zerar.</p>
+  <p>Isso dá o primeiro zero ao lado de um máximo principal em</p>
   <p>\[ N d\,\Delta(\sin\theta) = \lambda \ \Longrightarrow\ \Delta\theta_{\text{meia-largura}} = \frac{\lambda}{Nd\cos\theta} \]</p>
   <p>Os picos ficam \(N\) vezes mais finos que os da fenda dupla — é isso que transforma a rede num <em>espectrômetro</em>.</p>
 
@@ -1701,7 +1945,8 @@ const TOPICS = [
     <li>\(m\) — ordem em que se observa;</li>
     <li>\(\Delta\lambda\) — menor diferença de comprimento de onda resolvível (m).</li>
   </ul>
-  <p><strong>Leitura física:</strong> resolver melhor exige mais fendas <em>ou</em> ordem mais alta. Trabalhar em \(m=2\) dobra a resolução em relação a \(m=1\) — mas cuidado, ordens altas podem não existir: precisa de \(m\lambda\le d\).</p>
+  <p><strong>Leitura física:</strong> resolver melhor exige mais fendas <em>ou</em> ordem mais alta. Trabalhar em \(m=2\) dobra a resolução em relação a \(m=1\).</p>
+  <p>Mas cuidado: ordens altas podem simplesmente não existir — precisa de \(m\lambda\le d\).</p>
 
   <div class="tips"><span class="tips-title">Na prova</span>
   <ul>
@@ -1845,7 +2090,13 @@ const TOPICS = [
   <p class="diagram-caption">Critério de Rayleigh. Os dois padrões (tracejados) estão separados exatamente pela distância do pico ao primeiro mínimo. A curva cheia é a soma — o que o detector realmente mede. Ainda há um vale entre os picos (a cerca de 81% da altura para fenda, 73,5% para abertura circular): é o mínimo contraste que convencionamos chamar de "resolvido". Aproxime mais as fontes e o vale some.</p>
   </div>
 
-  <p><strong>Limites e leitura física.</strong> \(\theta_{\min}\propto\lambda/D\): para enxergar mais fino, ou aumente a abertura, ou use onda mais curta. É por isso que radiotelescópios precisam ser gigantescos (\(\lambda\) de centímetros a metros), que microscópios eletrônicos batem os ópticos (\(\lambda\) de picômetros), e que telescópios espaciais são construídos com espelhos enormes. Note também que \(\theta_{\min}\) <strong>não depende da distância</strong> ao anteparo/detector: é uma propriedade angular do instrumento.</p>
+  <p><strong>Limites e leitura física.</strong> Como \(\theta_{\min}\propto\lambda/D\), há só dois caminhos para enxergar mais fino: aumentar a abertura ou usar onda mais curta. Três consequências que aparecem no mundo real:</p>
+  <ul>
+    <li>radiotelescópios precisam ser gigantescos (\(\lambda\) de centímetros a metros);</li>
+    <li>microscópios eletrônicos batem os ópticos (\(\lambda\) de picômetros);</li>
+    <li>telescópios espaciais são construídos com espelhos enormes.</li>
+  </ul>
+  <p>Note também que \(\theta_{\min}\) <strong>não depende da distância</strong> ao anteparo/detector: é uma propriedade angular do instrumento.</p>
 
   <div class="tips"><span class="tips-title">Na prova</span>
   <ul>
@@ -2067,7 +2318,8 @@ const TOPICS = [
       \]</p>
       <p>Agora só três ordens: \(m_{\max}=\lfloor 2d/\lambda\rfloor = \lfloor 3{,}19\rfloor = 3\).</p>
 
-      <p><strong>Sanity check.</strong> Comparando os dois itens: planos mais juntos (\(d\) menor por um fator \(\sqrt2\)) produzem ângulos <em>maiores</em> e <em>menos</em> ordens — exatamente o que a relação \(\sin\theta\propto1/d\) prevê. É o mesmo comportamento inverso da difração por fenda (\(a\downarrow\Rightarrow\theta\uparrow\)), e é o princípio por trás da cristalografia: <strong>medindo os ângulos, você deduz as distâncias interatômicas</strong>. De fato, se você não soubesse \(a\), poderia obtê-la de \(\theta_1=12{,}8^\circ\): \(d = \lambda/(2\sin12{,}8^\circ) = 0{,}125/(2\times0{,}2215) = 0{,}282\text{ nm}\). ✓</p>
+      <p><strong>Sanity check.</strong> Comparando os dois itens: planos mais juntos (\(d\) menor por um fator \(\sqrt2\)) produzem ângulos <em>maiores</em> e <em>menos</em> ordens — exatamente o que a relação \(\sin\theta\propto1/d\) prevê. É o mesmo comportamento inverso da difração por fenda (\(a\downarrow\Rightarrow\theta\uparrow\)).</p>
+      <p>E é o princípio por trás da cristalografia: <strong>medindo os ângulos, você deduz as distâncias interatômicas</strong>. De fato, se você não soubesse \(a\), poderia obtê-la de \(\theta_1=12{,}8^\circ\): \(d = \lambda/(2\sin12{,}8^\circ) = 0{,}125/(2\times0{,}2215) = 0{,}282\text{ nm}\). ✓</p>
       <p><strong>Resposta: (a) \(12{,}8^\circ,\ 26{,}3^\circ,\ 41{,}7^\circ,\ 62{,}4^\circ\); (b) \(18{,}3^\circ,\ 38{,}8^\circ,\ 70{,}1^\circ\).</strong></p>
 
       <div class="tips"><span class="tips-title">Na prova</span>
@@ -2274,7 +2526,37 @@ const TOPICS = [
     <li><strong>Princípio da relatividade:</strong> as leis da física são as mesmas em todos os referenciais inerciais. Nenhum experimento feito dentro de um laboratório fechado consegue dizer se ele está "parado" ou em movimento retilíneo uniforme.</li>
     <li><strong>Invariância de \(c\):</strong> a luz no vácuo se propaga com o mesmo módulo \(c=3{,}00\times10^{8}\ \text{m/s}\) em todos os referenciais inerciais, <em>independentemente</em> do movimento da fonte ou do observador.</li>
   </ol>
-  <p>O segundo postulado não é um capricho: ele sai do primeiro aplicado ao eletromagnetismo. As equações de Maxwell dão \(c=1/\sqrt{\varepsilon_0\mu_0}\) — um número fixo, montado com duas constantes de laboratório. Se as leis são as mesmas em todo referencial inercial, então esse número tem que ser o mesmo em todo referencial inercial.</p>
+  <p>O segundo postulado não é um capricho: ele sai do primeiro aplicado ao eletromagnetismo.</p>
+  <p>As equações de Maxwell dão \(c=1/\sqrt{\varepsilon_0\mu_0}\) — um número fixo, montado com duas constantes de laboratório. Se as leis são as mesmas em todo referencial inercial, então esse número tem que ser o mesmo em todo referencial inercial.</p>
+
+  <div class="diagram"><svg viewBox="0 0 560 250" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace">
+    <text x="12" y="20" font-size="11" fill="#57666D">1) Bola lancada de dentro do veiculo: as velocidades se somam</text>
+    <line x1="20" y1="92" x2="306" y2="92" stroke="#B9AF92" stroke-width="1.5"/>
+    <rect x="50" y="54" width="86" height="38" fill="none" stroke="#C1554B" stroke-width="2"/>
+    <line x1="52" y1="42" x2="96" y2="42" stroke="#C1554B" stroke-width="2"/>
+    <polygon points="104,42 93,38 93,46" fill="#C1554B"/>
+    <text x="110" y="46" font-size="11" fill="#C1554B">u</text>
+    <circle cx="148" cy="72" r="4" fill="#1C2B33"/>
+    <line x1="156" y1="72" x2="232" y2="72" stroke="#1C2B33" stroke-width="2"/>
+    <polygon points="240,72 229,68 229,76" fill="#1C2B33"/>
+    <text x="190" y="64" font-size="12" fill="#1C2B33">v&#8242;</text>
+    <text x="254" y="76" font-size="11" fill="#5FB8AA">no solo: v&#8242; + u</text>
+    <line x1="12" y1="110" x2="548" y2="110" stroke="#B9AF92" stroke-width="1" stroke-dasharray="4 4"/>
+    <text x="12" y="134" font-size="11" fill="#57666D">2) Pulso de luz: NAO se somam &#8212; da c nos dois referenciais</text>
+    <line x1="20" y1="214" x2="306" y2="214" stroke="#B9AF92" stroke-width="1.5"/>
+    <rect x="50" y="176" width="86" height="38" fill="none" stroke="#C1554B" stroke-width="2"/>
+    <line x1="52" y1="164" x2="96" y2="164" stroke="#C1554B" stroke-width="2"/>
+    <polygon points="104,164 93,160 93,168" fill="#C1554B"/>
+    <text x="110" y="168" font-size="11" fill="#C1554B">u</text>
+    <circle cx="148" cy="194" r="5" fill="#E8A33D"/>
+    <line x1="158" y1="194" x2="292" y2="194" stroke="#E8A33D" stroke-width="2"/>
+    <polygon points="300,194 289,190 289,198" fill="#E8A33D"/>
+    <text x="218" y="186" font-size="12" fill="#B97817">c</text>
+    <rect x="322" y="174" width="118" height="44" fill="none" stroke="#E8A33D" stroke-width="1"/>
+    <text x="330" y="192" font-size="11" fill="#C1554B">no veiculo: c</text>
+    <text x="330" y="210" font-size="11" fill="#5FB8AA">no solo:    c</text>
+    <text x="326" y="234" font-size="10" fill="#B97817">o mesmo numero</text>
+  </svg><p class="diagram-caption">Com a bola, cada referencial mede um valor diferente e a soma \(v'+u\) funciona. Com a luz não: os dois medem exatamente \(c\). É essa teimosia de \(c\) que obriga a abandonar \(t'=t\).</p></div>
 
   <div class="derive"><span class="derive-title">Dedução — a incompatibilidade que mata \(t'=t\)</span>
   <ol>
@@ -2371,6 +2653,56 @@ const TOPICS = [
   <h3>Contração do comprimento</h3>
   <p>Medir o comprimento de um objeto que passa voando exige marcar as posições das duas pontas <em>ao mesmo tempo</em>. Como "ao mesmo tempo" depende do referencial, o comprimento também depende. O truque didático é evitar a simultaneidade de vez: em vez de medir duas pontas, cronometre uma régua passando por um único relógio.</p>
 
+  <div class="diagram"><svg viewBox="0 0 560 275" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace">
+    <text x="12" y="18" font-size="11" fill="#57666D">Referencial da regua: ela esta parada &#8212; comprimento proprio</text>
+    <rect x="60" y="32" width="340" height="26" fill="none" stroke="#C1554B" stroke-width="2"/>
+    <line x1="94" y1="32" x2="94" y2="41" stroke="#C1554B" stroke-width="1"/>
+    <line x1="128" y1="32" x2="128" y2="41" stroke="#C1554B" stroke-width="1"/>
+    <line x1="162" y1="32" x2="162" y2="41" stroke="#C1554B" stroke-width="1"/>
+    <line x1="196" y1="32" x2="196" y2="41" stroke="#C1554B" stroke-width="1"/>
+    <line x1="230" y1="32" x2="230" y2="41" stroke="#C1554B" stroke-width="1"/>
+    <line x1="264" y1="32" x2="264" y2="41" stroke="#C1554B" stroke-width="1"/>
+    <line x1="298" y1="32" x2="298" y2="41" stroke="#C1554B" stroke-width="1"/>
+    <line x1="332" y1="32" x2="332" y2="41" stroke="#C1554B" stroke-width="1"/>
+    <line x1="366" y1="32" x2="366" y2="41" stroke="#C1554B" stroke-width="1"/>
+    <line x1="60" y1="66" x2="60" y2="86" stroke="#57666D" stroke-width="1"/>
+    <line x1="400" y1="66" x2="400" y2="86" stroke="#57666D" stroke-width="1"/>
+    <line x1="60" y1="76" x2="400" y2="76" stroke="#57666D" stroke-width="1.5"/>
+    <polygon points="60,76 71,72 71,80" fill="#57666D"/>
+    <polygon points="400,76 389,72 389,80" fill="#57666D"/>
+    <text x="222" y="70" font-size="12" fill="#57666D">L&#8320;</text>
+    <line x1="12" y1="98" x2="548" y2="98" stroke="#B9AF92" stroke-width="1" stroke-dasharray="4 4"/>
+    <text x="12" y="120" font-size="11" fill="#57666D">Referencial que ve a regua passar com velocidade v</text>
+    <rect x="60" y="140" width="340" height="26" fill="none" stroke="#8CA1A6" stroke-width="1" stroke-dasharray="4 4"/>
+    <text x="406" y="157" font-size="10" fill="#8CA1A6">L&#8320; (se nao contraisse)</text>
+    <rect x="60" y="140" width="272" height="26" fill="none" stroke="#C1554B" stroke-width="2"/>
+    <line x1="87" y1="140" x2="87" y2="149" stroke="#C1554B" stroke-width="1"/>
+    <line x1="114" y1="140" x2="114" y2="149" stroke="#C1554B" stroke-width="1"/>
+    <line x1="142" y1="140" x2="142" y2="149" stroke="#C1554B" stroke-width="1"/>
+    <line x1="169" y1="140" x2="169" y2="149" stroke="#C1554B" stroke-width="1"/>
+    <line x1="196" y1="140" x2="196" y2="149" stroke="#C1554B" stroke-width="1"/>
+    <line x1="223" y1="140" x2="223" y2="149" stroke="#C1554B" stroke-width="1"/>
+    <line x1="251" y1="140" x2="251" y2="149" stroke="#C1554B" stroke-width="1"/>
+    <line x1="278" y1="140" x2="278" y2="149" stroke="#C1554B" stroke-width="1"/>
+    <line x1="305" y1="140" x2="305" y2="149" stroke="#C1554B" stroke-width="1"/>
+    <line x1="380" y1="185" x2="428" y2="185" stroke="#C1554B" stroke-width="2"/>
+    <polygon points="436,185 425,181 425,189" fill="#C1554B"/>
+    <text x="400" y="178" font-size="11" fill="#C1554B">v</text>
+    <line x1="60" y1="132" x2="60" y2="212" stroke="#5FB8AA" stroke-width="1.5"/>
+    <line x1="332" y1="132" x2="332" y2="212" stroke="#5FB8AA" stroke-width="1.5"/>
+    <circle cx="60" cy="224" r="9" fill="none" stroke="#5FB8AA" stroke-width="1.5"/>
+    <line x1="60" y1="224" x2="60" y2="216" stroke="#5FB8AA" stroke-width="1.5"/>
+    <line x1="60" y1="224" x2="65" y2="228" stroke="#5FB8AA" stroke-width="1.5"/>
+    <circle cx="332" cy="224" r="9" fill="none" stroke="#5FB8AA" stroke-width="1.5"/>
+    <line x1="332" y1="224" x2="332" y2="216" stroke="#5FB8AA" stroke-width="1.5"/>
+    <line x1="332" y1="224" x2="337" y2="228" stroke="#5FB8AA" stroke-width="1.5"/>
+    <text x="80" y="228" font-size="11" fill="#5FB8AA">marcas feitas no mesmo instante t</text>
+    <line x1="60" y1="252" x2="332" y2="252" stroke="#E8A33D" stroke-width="2"/>
+    <polygon points="60,252 71,248 71,256" fill="#E8A33D"/>
+    <polygon points="332,252 321,248 321,256" fill="#E8A33D"/>
+    <text x="344" y="257" font-size="12" fill="#B97817">L = L&#8320;/&#947;</text>
+  </svg><p class="diagram-caption">Medir a régua em movimento é marcar as <em>duas</em> pontas no mesmo instante \(t\) (as duas linhas verticais em teal, com relógios sincronizados). A distância entre as marcas é \(L=L_0/\gamma\), menor que o comprimento próprio tracejado.</p></div>
+
   <div class="derive"><span class="derive-title">Dedução — \(L=L_0/\gamma\) a partir da dilatação do tempo</span>
   <ol>
     <li>Uma régua de comprimento próprio \(L_0\) está em repouso no solo (referencial \(S\)). Uma nave passa por ela com velocidade \(v\).</li>
@@ -2405,6 +2737,44 @@ const TOPICS = [
   <h3>Transformações de Lorentz</h3>
   <p>Dilatação e contração são casos particulares. A ferramenta geral converte as <em>coordenadas de um evento</em> entre referenciais. Seja \(S'\) movendo-se com velocidade \(u\hat\imath\) em relação a \(S\), com as origens coincidindo em \(t=t'=0\).</p>
 
+  <div class="diagram"><svg viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace">
+    <line x1="100" y1="250" x2="500" y2="250" stroke="#1C2B33" stroke-width="1.5"/>
+    <polygon points="508,250 497,246 497,254" fill="#1C2B33"/>
+    <line x1="120" y1="272" x2="120" y2="38" stroke="#1C2B33" stroke-width="1.5"/>
+    <polygon points="120,30 116,41 124,41" fill="#1C2B33"/>
+    <text x="512" y="256" font-size="12" fill="#57666D">x</text>
+    <text x="104" y="26" font-size="12" fill="#57666D">ct</text>
+    <line x1="120" y1="250" x2="350" y2="20" stroke="#E8A33D" stroke-width="2"/>
+    <text x="356" y="36" font-size="11" fill="#B97817">luz: x = ct</text>
+    <line x1="120" y1="250" x2="230" y2="30" stroke="#C1554B" stroke-width="2"/>
+    <text x="236" y="34" font-size="12" fill="#C1554B">ct&#8242;</text>
+    <line x1="120" y1="250" x2="460" y2="80" stroke="#C1554B" stroke-width="2"/>
+    <text x="466" y="76" font-size="12" fill="#C1554B">x&#8242;</text>
+    <path d="M 190 250 A 70 70 0 0 0 183 219" fill="none" stroke="#57666D" stroke-width="1"/>
+    <text x="193" y="238" font-size="11" fill="#57666D">&#952;</text>
+    <path d="M 120 180 A 70 70 0 0 1 151 187" fill="none" stroke="#57666D" stroke-width="1"/>
+    <text x="132" y="176" font-size="11" fill="#57666D">&#952;</text>
+    <line x1="250" y1="80" x2="250" y2="250" stroke="#8CA1A6" stroke-width="1" stroke-dasharray="4 4"/>
+    <line x1="250" y1="80" x2="120" y2="80" stroke="#8CA1A6" stroke-width="1" stroke-dasharray="4 4"/>
+    <line x1="250" y1="80" x2="180" y2="220" stroke="#8CA1A6" stroke-width="1" stroke-dasharray="4 4"/>
+    <line x1="250" y1="80" x2="190" y2="110" stroke="#8CA1A6" stroke-width="1" stroke-dasharray="4 4"/>
+    <circle cx="250" cy="80" r="5" fill="#1C2B33"/>
+    <text x="258" y="74" font-size="13" fill="#1C2B33">P</text>
+    <circle cx="250" cy="250" r="3.5" fill="#1C2B33"/>
+    <text x="234" y="268" font-size="11" fill="#1C2B33">x(P)</text>
+    <circle cx="120" cy="80" r="3.5" fill="#1C2B33"/>
+    <text x="76" y="76" font-size="11" fill="#1C2B33">ct(P)</text>
+    <circle cx="180" cy="220" r="3.5" fill="#C1554B"/>
+    <text x="188" y="240" font-size="11" fill="#C1554B">x&#8242;(P)</text>
+    <circle cx="190" cy="110" r="3.5" fill="#C1554B"/>
+    <text x="126" y="106" font-size="11" fill="#C1554B">ct&#8242;(P)</text>
+    <text x="150" y="286" font-size="11" fill="#57666D">tan &#952; = &#946; = u/c</text>
+    <text x="300" y="270" font-size="11" fill="#1C2B33">S: eixos ortogonais</text>
+    <text x="300" y="286" font-size="11" fill="#C1554B">S&#8242;: eixos inclinados de &#952;</text>
+  </svg><p class="diagram-caption">Um único evento \(P\), duas leituras. Em \(S\) projeta-se paralelamente aos eixos retos; em \(S'\) projeta-se paralelamente aos eixos <em>inclinados</em> — e é isso que as transformações de Lorentz calculam. A reta da luz a 45° fica no meio dos dois pares de eixos, em qualquer \(u\): é a invariância de \(c\) desenhada.</p></div>
+
+  <p>A dedução abaixo monta as fórmulas do zero com apenas três ingredientes: linearidade, o princípio da relatividade e a invariância de \(c\). Vale acompanhar uma vez com calma — depois basta o resultado.</p>
+
   <div class="derive"><span class="derive-title">Dedução — forma linear + invariância de \(c\)</span>
   <ol>
     <li><strong>Por que linear?</strong> O espaço é homogêneo e o tempo uniforme: um movimento retilíneo uniforme em \(S\) tem que continuar retilíneo uniforme em \(S'\) (senão haveria forças fictícias e \(S'\) não seria inercial). Só transformações lineares preservam retas.</li>
@@ -2429,7 +2799,8 @@ const TOPICS = [
 
   <div class="keyeq">\[ \begin{aligned} x' &= \gamma(x-ut), & y'&=y, & z'&=z, & t' &= \gamma\left(t-\frac{ux}{c^2}\right)\\ x &= \gamma(x'+ut'), & y&=y', & z&=z', & t &= \gamma\left(t'+\frac{ux'}{c^2}\right) \end{aligned} \]</div>
   <p><strong>Limite não relativístico:</strong> com \(u\ll c\), \(\gamma\to1\) e o termo \(ux/c^2\) some, restando \(x'=x-ut\), \(t'=t\) — Galileu de volta, como tem que ser.</p>
-  <p><strong>Sanity check embutido:</strong> aplique a transformação a um pulso de luz (\(x=ct\)) e obtenha \(x'=\gamma(ct-ut)=\gamma t(c-u)\) e \(t'=\gamma t(1-u/c)=\gamma t(c-u)/c\); logo \(x'/t'=c\). A construção funciona.</p>
+  <p><strong>Sanity check embutido:</strong> aplique a transformação a um pulso de luz (\(x=ct\)). Sai \(x'=\gamma(ct-ut)=\gamma t(c-u)\) e \(t'=\gamma t(1-u/c)=\gamma t(c-u)/c\).</p>
+  <p>Dividindo um pelo outro, \(x'/t'=c\). A construção funciona: ela devolve exatamente o postulado de que partiu.</p>
 
   <div class="tips"><span class="tips-title">Na prova</span>
   <ul>
@@ -2463,6 +2834,40 @@ const TOPICS = [
 
   <div class="keyeq">\[ v_x'=\frac{v_x-u}{1-\dfrac{uv_x}{c^2}},\qquad v_y'=\frac{v_y\sqrt{1-u^2/c^2}}{1-\dfrac{uv_x}{c^2}},\qquad v_x=\frac{v_x'+u}{1+\dfrac{uv_x'}{c^2}} \]</div>
   <p>Um corolário bonito: se \(|v_x|<c\) e \(|u|<c\), o resultado tem sempre módulo menor que \(c\). A fórmula é uma "soma" que nunca ultrapassa \(c\) — o limite é uma propriedade da geometria, não um obstáculo tecnológico.</p>
+
+  <div class="diagram"><svg viewBox="0 0 560 255" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace">
+    <rect x="430" y="34" width="118" height="168" fill="#B9AF92" fill-opacity="0.25"/>
+    <line x1="430" y1="30" x2="430" y2="206" stroke="#1C2B33" stroke-width="2"/>
+    <text x="424" y="24" font-size="12" fill="#1C2B33">c</text>
+    <text x="444" y="186" font-size="10" fill="#57666D">inacessivel</text>
+    <text x="74" y="54" font-size="11" fill="#B97817">0,5c &#8853; 0,5c = 0,8c</text>
+    <line x1="70" y1="62" x2="350" y2="62" stroke="#E8A33D" stroke-width="2.5"/>
+    <polygon points="358,62 347,58 347,66" fill="#E8A33D"/>
+    <line x1="358" y1="62" x2="430" y2="62" stroke="#8CA1A6" stroke-width="1.5" stroke-dasharray="4 4"/>
+    <text x="436" y="66" font-size="10" fill="#8CA1A6">Galileu: 1,0c</text>
+    <text x="74" y="102" font-size="11" fill="#B97817">0,9c &#8853; 0,9c &#8776; 0,994c</text>
+    <line x1="70" y1="110" x2="420" y2="110" stroke="#E8A33D" stroke-width="2.5"/>
+    <polygon points="428,110 417,106 417,114" fill="#E8A33D"/>
+    <line x1="428" y1="110" x2="540" y2="110" stroke="#8CA1A6" stroke-width="1.5" stroke-dasharray="4 4"/>
+    <text x="436" y="126" font-size="10" fill="#8CA1A6">Galileu: 1,8c</text>
+    <text x="74" y="150" font-size="11" fill="#B97817">c &#8853; 0,9c = c</text>
+    <text x="176" y="150" font-size="10" fill="#57666D">a luz vale c em todo referencial</text>
+    <line x1="70" y1="158" x2="430" y2="158" stroke="#E8A33D" stroke-width="2.5"/>
+    <circle cx="430" cy="158" r="4.5" fill="#E8A33D"/>
+    <line x1="358" y1="62" x2="358" y2="188" stroke="#8CA1A6" stroke-width="1" stroke-dasharray="4 4"/>
+    <line x1="428" y1="110" x2="428" y2="188" stroke="#8CA1A6" stroke-width="1" stroke-dasharray="4 4"/>
+    <line x1="70" y1="196" x2="430" y2="196" stroke="#1C2B33" stroke-width="2"/>
+    <line x1="70" y1="192" x2="70" y2="202" stroke="#1C2B33" stroke-width="1.5"/>
+    <line x1="250" y1="192" x2="250" y2="202" stroke="#1C2B33" stroke-width="1.5"/>
+    <line x1="358" y1="192" x2="358" y2="202" stroke="#1C2B33" stroke-width="1.5"/>
+    <line x1="428" y1="192" x2="428" y2="202" stroke="#E8A33D" stroke-width="1.5"/>
+    <text x="64" y="216" font-size="11" fill="#57666D">0</text>
+    <text x="232" y="216" font-size="11" fill="#57666D">0,5c</text>
+    <text x="340" y="216" font-size="11" fill="#57666D">0,8c</text>
+    <text x="422" y="216" font-size="11" fill="#1C2B33">c</text>
+    <line x1="428" y1="202" x2="452" y2="230" stroke="#8CA1A6" stroke-width="1"/>
+    <text x="456" y="236" font-size="10" fill="#B97817">0,994c</text>
+  </svg><p class="diagram-caption">A soma galileana (tracejado cinza) atravessa a parede em \(c\) sem cerimônia; a soma relativística (âmbar) se espreme contra ela e nunca chega. Note como \(0{,}9c\oplus0{,}9c\) ainda fica <em>abaixo</em> de \(c\), e como \(c\oplus v\) devolve exatamente \(c\).</p></div>
 
   <div class="tips"><span class="tips-title">Na prova</span>
   <ul>
@@ -2584,9 +2989,21 @@ const TOPICS = [
 
   <p><strong>Classificação (com \(\Delta s^2=c^2\Delta t^2-\Delta x^2\)):</strong></p>
   <ul>
-    <li><strong>Tipo-tempo</strong> (\(\Delta s^2>0\), isto é \(|\Delta x|<c|\Delta t|\)): dá para ir de um evento ao outro com \(v<c\). Existe um referencial onde eles ocorrem <em>no mesmo lugar</em>; nele o intervalo de tempo é o tempo próprio \(\Delta\tau=\Delta s/c=\sqrt{\Delta t^2-\Delta x^2/c^2}\), e é o <strong>menor</strong> possível. A ordem temporal é absoluta.</li>
-    <li><strong>Tipo-luz</strong> (\(\Delta s^2=0\)): só um raio de luz conecta os eventos. Vale em todo referencial (é o postulado 2 disfarçado).</li>
-    <li><strong>Tipo-espaço</strong> (\(\Delta s^2<0\), \(|\Delta x|>c|\Delta t|\)): existe um referencial onde eles são <em>simultâneos</em>; nele a separação é a distância própria \(\Delta x_{\text{prop}}=\sqrt{\Delta x^2-c^2\Delta t^2}\), e é a <strong>menor</strong> possível. A ordem temporal <em>depende</em> do referencial — mas isso não gera paradoxo, porque nenhum sinal poderia ligá-los.</li>
+    <li><strong>Tipo-tempo</strong> — \(\Delta s^2>0\), isto é \(|\Delta x|<c|\Delta t|\). Dá para ir de um evento ao outro com \(v<c\).
+      <ul>
+        <li>Existe um referencial onde os dois ocorrem <em>no mesmo lugar</em>.</li>
+        <li>Nele o intervalo de tempo é o tempo próprio \(\Delta\tau=\Delta s/c=\sqrt{\Delta t^2-\Delta x^2/c^2}\), e é o <strong>menor</strong> possível.</li>
+        <li>A ordem temporal é absoluta.</li>
+      </ul>
+    </li>
+    <li><strong>Tipo-luz</strong> — \(\Delta s^2=0\). Só um raio de luz conecta os eventos, e isso vale em todo referencial (é o postulado 2 disfarçado).</li>
+    <li><strong>Tipo-espaço</strong> — \(\Delta s^2<0\), isto é \(|\Delta x|>c|\Delta t|\). Os dois eventos ficam fora do cone de luz um do outro.
+      <ul>
+        <li>Existe um referencial onde eles são <em>simultâneos</em>.</li>
+        <li>Nele a separação é a distância própria \(\Delta x_{\text{prop}}=\sqrt{\Delta x^2-c^2\Delta t^2}\), e é a <strong>menor</strong> possível.</li>
+        <li>A ordem temporal <em>depende</em> do referencial — mas isso não gera paradoxo, porque nenhum sinal poderia ligá-los.</li>
+      </ul>
+    </li>
   </ul>
   <div class="why">A causalidade sobrevive exatamente porque a inversão de ordem só acontece para pares tipo-espaço. Se \(A\) causou \(B\), algum sinal com \(v\le c\) foi de \(A\) a \(B\), o par é tipo-tempo ou tipo-luz, e \(\Delta t\) tem o mesmo sinal em todo referencial. Ninguém vê o efeito antes da causa.</div>
 
@@ -2599,7 +3016,11 @@ const TOPICS = [
   </div>
 
   <h3>Momento, energia e massa</h3>
-  <p>A segunda lei de Newton com \(p=mv\) é incompatível com a relatividade: \(F=ma\) constante levaria \(v\) além de \(c\). Além disso, \(p=mv\) <em>não se conserva</em> em colisões quando você muda de referencial via Lorentz. A correção é surpreendentemente simples.</p>
+  <p>A segunda lei de Newton com \(p=mv\) é incompatível com a relatividade: \(F=ma\) constante levaria \(v\) além de \(c\).</p>
+  <p>E tem um problema pior, porque é estrutural: \(p=mv\) <em>não se conserva</em> em colisões quando você muda de referencial via Lorentz. Uma lei de conservação que só vale num referencial não é lei de conservação nenhuma.</p>
+  <p>A correção é surpreendentemente simples — e o resto desta seção é ela se propagando para a energia e para a massa. São três deduções encadeadas.</p>
+
+  <p><strong>Primeira:</strong> consertar o momento. A ideia é não abandonar \(p=mv\), e sim medir o tempo com o relógio certo. O que sai dali é \(p=\gamma mv\), a definição que sobrevive à mudança de referencial.</p>
 
   <div class="derive"><span class="derive-title">Dedução — por que \(p=\gamma mv\)</span>
   <ol>
@@ -2612,6 +3033,8 @@ const TOPICS = [
     <li>Sanity check: \(v\ll c\Rightarrow\gamma\to1\Rightarrow \vec p\to m\vec v\). E \(v\to c\Rightarrow p\to\infty\): não há força finita capaz de empurrar a partícula até \(c\).</li>
   </ol>
   </div>
+
+  <p><strong>Segunda:</strong> com o momento consertado, a energia vem de graça — basta refazer o teorema trabalho-energia usando o \(p\) novo. A conta é mais longa, mas o ponto é um só: o resultado não é \(\tfrac12mv^2\) com um remendo, e sim uma <em>diferença</em> entre dois termos — e um deles sobra mesmo com a partícula parada.</p>
 
   <div class="derive"><span class="derive-title">Dedução — \(E=\gamma mc^2\) pelo teorema trabalho-energia</span>
   <ol>
@@ -2630,6 +3053,8 @@ const TOPICS = [
   </ol>
   </div>
 
+  <p><strong>Terceira:</strong> agora você tem \(p\) e \(E\), e ambos dependem do referencial através de \(\gamma\). A pergunta natural é se existe alguma combinação dos dois que <em>não</em> dependa. Existe — e ela acaba sendo a ferramenta mais prática das três na hora da prova.</p>
+
   <div class="derive"><span class="derive-title">Dedução — a relação \(E^2=(pc)^2+(mc^2)^2\)</span>
   <ol>
     <li>Escreva os dois: \(E=\gamma mc^2\) e \(pc=\gamma mvc\).</li>
@@ -2642,7 +3067,32 @@ const TOPICS = [
   </ol>
   </div>
 
+  <div class="why">As três deduções são uma corrente só. O conserto original foi trocar \(dt\) por \(d\tau\) na definição de momento; isso arrasta a energia junto, porque \(E\) é o trabalho feito contra esse \(p\) novo; e, tendo a mesma origem, \(p\) e \(E\) se combinam num invariante. O saldo é uma mudança de estatuto da massa: ela deixa de ser "quantidade de matéria" e vira o <em>rótulo invariante</em> da partícula — o que resta de \(E\) depois que você desconta todo o movimento. É por isso que \(m=0\) é permitido: é só uma partícula sem energia de repouso.</div>
+
   <div class="keyeq">\[ p=\gamma mv,\qquad E=\gamma mc^2,\qquad K=(\gamma-1)mc^2,\qquad E^2=(pc)^2+(mc^2)^2,\qquad \frac{v}{c}=\frac{pc}{E} \]</div>
+
+  <div class="diagram"><svg viewBox="0 0 560 240" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace">
+    <text x="12" y="24" font-size="12" fill="#1C2B33">E&#178; = (pc)&#178; + (mc&#178;)&#178;</text>
+    <line x1="120" y1="200" x2="380" y2="200" stroke="#5FB8AA" stroke-width="2.5"/>
+    <line x1="120" y1="200" x2="120" y2="60" stroke="#C1554B" stroke-width="2.5"/>
+    <line x1="380" y1="200" x2="120" y2="60" stroke="#E8A33D" stroke-width="3"/>
+    <polyline points="120,186 134,186 134,200" fill="none" stroke="#57666D" stroke-width="1"/>
+    <text x="238" y="222" font-size="12" fill="#5FB8AA">pc</text>
+    <text x="84" y="132" font-size="12" fill="#C1554B">mc&#178;</text>
+    <text x="256" y="112" font-size="13" fill="#B97817">E</text>
+    <path d="M 340 200 A 40 40 0 0 1 345 181" fill="none" stroke="#57666D" stroke-width="1"/>
+    <text x="326" y="194" font-size="10" fill="#57666D">&#952;</text>
+    <text x="150" y="190" font-size="10" fill="#57666D">cos &#952; = pc/E = v/c</text>
+    <line x1="404" y1="30" x2="404" y2="220" stroke="#B9AF92" stroke-width="1" stroke-dasharray="4 4"/>
+    <text x="418" y="56" font-size="11" fill="#57666D">p &#8594; 0 (repouso)</text>
+    <line x1="424" y1="112" x2="424" y2="76" stroke="#C1554B" stroke-width="3"/>
+    <line x1="430" y1="112" x2="430" y2="76" stroke="#E8A33D" stroke-width="3"/>
+    <text x="440" y="98" font-size="12" fill="#B97817">E = mc&#178;</text>
+    <text x="418" y="150" font-size="11" fill="#57666D">m &#8594; 0 (foton)</text>
+    <line x1="424" y1="176" x2="506" y2="176" stroke="#5FB8AA" stroke-width="3"/>
+    <line x1="424" y1="182" x2="506" y2="182" stroke="#E8A33D" stroke-width="3"/>
+    <text x="436" y="204" font-size="12" fill="#B97817">E = pc</text>
+  </svg><p class="diagram-caption">A relação \(E^2=(pc)^2+(mc^2)^2\) é literalmente Pitágoras: \(E\) na hipotenusa, \(pc\) e \(mc^2\) nos catetos. Achatar o cateto \(pc\) dá a partícula em repouso (\(E=mc^2\)); achatar o cateto \(mc^2\) dá o fóton (\(E=pc\)).</p></div>
 
   <p><strong>Limite não relativístico por expansão binomial.</strong> Para \(\beta\ll1\),</p>
   <p>\[ \gamma=(1-\beta^2)^{-1/2}=1+\frac12\beta^2+\frac38\beta^4+\cdots \]</p>
@@ -2666,6 +3116,42 @@ const TOPICS = [
 
   <h3>Efeito Doppler relativístico</h3>
   <p>No Doppler sonoro, importa a velocidade em relação ao <em>meio</em>, e as fórmulas de fonte-que-se-move e observador-que-se-move são diferentes. Para a luz não há meio: só existe a velocidade <em>relativa</em>, e a fórmula é única.</p>
+
+  <div class="diagram"><svg viewBox="0 0 560 260" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace">
+    <text x="12" y="22" font-size="11" fill="#57666D">Cada circulo e uma frente emitida um periodo antes; a fonte anda entre elas</text>
+    <circle cx="288" cy="140" r="25" fill="none" stroke="#57666D" stroke-width="1.2"/>
+    <circle cx="276" cy="140" r="50" fill="none" stroke="#57666D" stroke-width="1.2"/>
+    <circle cx="264" cy="140" r="75" fill="none" stroke="#57666D" stroke-width="1.2"/>
+    <circle cx="252" cy="140" r="100" fill="none" stroke="#57666D" stroke-width="1.2"/>
+    <line x1="152" y1="132" x2="152" y2="148" stroke="#E8A33D" stroke-width="1.5"/>
+    <line x1="189" y1="132" x2="189" y2="148" stroke="#E8A33D" stroke-width="1.5"/>
+    <line x1="226" y1="132" x2="226" y2="148" stroke="#E8A33D" stroke-width="1.5"/>
+    <line x1="263" y1="132" x2="263" y2="148" stroke="#E8A33D" stroke-width="1.5"/>
+    <line x1="313" y1="132" x2="313" y2="148" stroke="#E8A33D" stroke-width="1.5"/>
+    <line x1="326" y1="132" x2="326" y2="148" stroke="#E8A33D" stroke-width="1.5"/>
+    <line x1="339" y1="132" x2="339" y2="148" stroke="#E8A33D" stroke-width="1.5"/>
+    <line x1="352" y1="132" x2="352" y2="148" stroke="#E8A33D" stroke-width="1.5"/>
+    <line x1="189" y1="140" x2="226" y2="140" stroke="#E8A33D" stroke-width="2.5"/>
+    <polygon points="189,140 200,136 200,144" fill="#E8A33D"/>
+    <polygon points="226,140 215,136 215,144" fill="#E8A33D"/>
+    <line x1="339" y1="140" x2="352" y2="140" stroke="#E8A33D" stroke-width="3.5"/>
+    <text x="44" y="112" font-size="11" fill="#B97817">&#955; maior</text>
+    <text x="36" y="128" font-size="10" fill="#57666D">(vermelho)</text>
+    <text x="372" y="112" font-size="11" fill="#B97817">&#955; menor</text>
+    <text x="380" y="128" font-size="10" fill="#57666D">(azul)</text>
+    <circle cx="86" cy="140" r="7" fill="none" stroke="#5FB8AA" stroke-width="2"/>
+    <text x="44" y="172" font-size="10" fill="#5FB8AA">observador</text>
+    <circle cx="414" cy="140" r="7" fill="none" stroke="#5FB8AA" stroke-width="2"/>
+    <text x="372" y="172" font-size="10" fill="#5FB8AA">observador</text>
+    <line x1="247" y1="135" x2="257" y2="145" stroke="#8CA1A6" stroke-width="1.3"/>
+    <line x1="247" y1="145" x2="257" y2="135" stroke="#8CA1A6" stroke-width="1.3"/>
+    <line x1="252" y1="134" x2="252" y2="110" stroke="#8CA1A6" stroke-width="1" stroke-dasharray="4 4"/>
+    <line x1="300" y1="134" x2="300" y2="110" stroke="#8CA1A6" stroke-width="1" stroke-dasharray="4 4"/>
+    <line x1="252" y1="110" x2="294" y2="110" stroke="#C1554B" stroke-width="2"/>
+    <polygon points="300,110 289,106 289,114" fill="#C1554B"/>
+    <text x="258" y="104" font-size="10" fill="#C1554B">v&#916;t</text>
+    <circle cx="300" cy="140" r="5" fill="#C1554B"/>
+  </svg><p class="diagram-caption">A fonte (ponto coral) não está no centro dos círculos (×): entre uma crista e outra ela andou \(v\Delta t\). À frente as frentes se amontoam (\(\lambda\) menor, azul) e atrás se espalham (\(\lambda\) maior, vermelho) — mas todas viajam a \(c\).</p></div>
 
   <div class="derive"><span class="derive-title">Dedução — fonte se afastando com velocidade \(v\)</span>
   <ol>
@@ -2711,16 +3197,45 @@ const TOPICS = [
 
   <h3>Kit numérico: \(\gamma\), \(\beta\) e atalhos</h3>
   <p>Boa parte da nota em relatividade vem de não errar aritmética sob pressão. Vale memorizar meia dúzia de pares \((\beta,\gamma)\).</p>
-  <p>\[ \begin{aligned} \beta=0{,}6 &\Rightarrow \gamma=1{,}25=\tfrac54 & \beta=0{,}8 &\Rightarrow \gamma=\tfrac53\approx1{,}667\\ \beta=0{,}866=\tfrac{\sqrt3}{2} &\Rightarrow \gamma=2 & \beta=0{,}9 &\Rightarrow \gamma\approx2{,}294\\ \beta=0{,}95 &\Rightarrow \gamma\approx3{,}20 & \beta=0{,}99 &\Rightarrow \gamma\approx7{,}09\\ \beta=0{,}999 &\Rightarrow \gamma\approx22{,}4 & \beta=0{,}986 &\Rightarrow \gamma=6 \end{aligned} \]</p>
-  <p>Os pares \((0{,}6;\,0{,}8;\,1)\) e \((0{,}8;\,0{,}6;\,1)\) são triângulos pitagóricos: \(\beta=3/5\Rightarrow 1/\gamma=4/5\) e \(\beta=4/5\Rightarrow1/\gamma=3/5\). Se a prova escolheu \(4c/5\), ela quer \(\gamma=5/3\) — é sinal de que as contas vão fechar em frações.</p>
+
+  <table class="consts">
+    <thead><tr><th>\(\beta = v/c\)</th><th>\(\gamma\)</th></tr></thead>
+    <tbody>
+      <tr><td>\(0{,}6=\tfrac35\)</td><td>\(1{,}25=\tfrac54\)</td></tr>
+      <tr><td>\(0{,}8=\tfrac45\)</td><td>\(\tfrac53\approx1{,}667\)</td></tr>
+      <tr><td>\(0{,}866=\tfrac{\sqrt3}{2}\)</td><td>\(2\)</td></tr>
+      <tr><td>\(0{,}9\)</td><td>\(\approx2{,}294\)</td></tr>
+      <tr><td>\(0{,}95\)</td><td>\(\approx3{,}20\)</td></tr>
+      <tr><td>\(0{,}986\)</td><td>\(6\)</td></tr>
+      <tr><td>\(0{,}99\)</td><td>\(\approx7{,}09\)</td></tr>
+      <tr><td>\(0{,}999\)</td><td>\(\approx22{,}4\)</td></tr>
+    </tbody>
+  </table>
+
+  <p>Os pares \((0{,}6;\,0{,}8;\,1)\) e \((0{,}8;\,0{,}6;\,1)\) são triângulos pitagóricos: \(\beta=3/5\Rightarrow 1/\gamma=4/5\) e \(\beta=4/5\Rightarrow1/\gamma=3/5\).</p>
+  <p>Isso serve de sinalização: se a prova escolheu \(4c/5\), ela quer \(\gamma=5/3\) — as contas vão fechar em frações, não em decimais quebrados.</p>
+
   <p><strong>Fórmulas de ida e volta:</strong></p>
   <p>\[ \gamma=\frac{1}{\sqrt{1-\beta^2}},\qquad \beta=\sqrt{1-\frac{1}{\gamma^2}},\qquad \gamma\beta=\sqrt{\gamma^2-1}=\frac{p}{mc} \]</p>
+
   <p><strong>Regimes:</strong></p>
   <ul>
     <li>\(\beta\lesssim0{,}1\): \(\gamma\approx1+\tfrac12\beta^2\) (erro &lt; 0,1%). Use sempre que a calculadora "arredondar o efeito para zero".</li>
     <li>\(\gamma\gg1\): escreva \(\beta=1-\Delta\) com \(\Delta\approx\dfrac{1}{2\gamma^2}\), e \(E\approx pc\).</li>
   </ul>
-  <p><strong>Constantes úteis:</strong> \(c=2{,}998\times10^{8}\ \text{m/s}\approx3{,}00\times10^{8}\); \(1\ \text{ano-luz}=9{,}46\times10^{15}\ \text{m}\); \(m_ec^2=0{,}511\ \text{MeV}\); \(m_pc^2=938{,}3\ \text{MeV}\); \(1\ \text{u}=1{,}6605\times10^{-27}\ \text{kg}\) (\(=931{,}5\ \text{MeV}/c^2\)); \(1\ \text{eV}=1{,}602\times10^{-19}\ \text{J}\).</p>
+
+  <p><strong>Constantes úteis:</strong></p>
+  <table class="consts">
+    <thead><tr><th>Grandeza</th><th>Valor</th></tr></thead>
+    <tbody>
+      <tr><td>\(c\)</td><td>\(2{,}998\times10^{8}\ \text{m/s}\approx3{,}00\times10^{8}\ \text{m/s}\)</td></tr>
+      <tr><td>1 ano-luz</td><td>\(9{,}46\times10^{15}\ \text{m}\)</td></tr>
+      <tr><td>\(m_ec^2\)</td><td>\(0{,}511\ \text{MeV}\)</td></tr>
+      <tr><td>\(m_pc^2\)</td><td>\(938{,}3\ \text{MeV}\)</td></tr>
+      <tr><td>\(1\ \text{u}\)</td><td>\(1{,}6605\times10^{-27}\ \text{kg} = 931{,}5\ \text{MeV}/c^2\)</td></tr>
+      <tr><td>\(1\ \text{eV}\)</td><td>\(1{,}602\times10^{-19}\ \text{J}\)</td></tr>
+    </tbody>
+  </table>
 
   <div class="tips"><span class="tips-title">Na prova</span>
   <ul>
@@ -3732,7 +4247,8 @@ const TOPICS = [
   id:'fotons', icon:'photon', label:'Fótons e Efeito Fotoelétrico',
   theory: r`
   <h3>O problema do corpo negro e a hipótese de Planck</h3>
-  <p>Um <em>corpo negro</em> é um absorvedor perfeito: tudo que chega nele entra, nada é refletido. Em equilíbrio térmico ele tem que devolver, em radiação, exatamente a mesma potência que absorve — e o espectro dessa radiação depende <strong>só da temperatura</strong>, não do material. Esse é o ponto que torna o problema fundamental: existe uma curva universal \(I(\lambda,T)\), e a física do século XIX tinha que ser capaz de prevê-la.</p>
+  <p>Um <em>corpo negro</em> é um absorvedor perfeito: tudo que chega nele entra, nada é refletido. Em equilíbrio térmico ele tem que devolver, em radiação, exatamente a mesma potência que absorve.</p>
+  <p>E o espectro dessa radiação depende <strong>só da temperatura</strong>, não do material. É isso que torna o problema fundamental: existe uma curva universal \(I(\lambda,T)\), e a física do século XIX tinha que ser capaz de prevê-la.</p>
   <p>Ela não foi. Tratando a radiação dentro de uma cavidade como um conjunto de ondas estacionárias e dando a cada modo a energia média \(k T\) do teorema da equipartição, chega-se à fórmula de <strong>Rayleigh–Jeans</strong>:</p>
   <div class="keyeq">
   \[ I_{\text{RJ}}(\lambda,T) = \frac{2\pi c\,kT}{\lambda^{4}} \]
@@ -3741,7 +4257,12 @@ const TOPICS = [
   <div class="why">A raiz do problema: existem infinitos modos de onda de comprimento de onda curto (o número de modos cresce como \(1/\lambda^{4}\)), e a equipartição clássica dá \(kT\) para <strong>cada um deles</strong>, por menor que seja o comprimento de onda. Infinitos modos × energia fixa = infinito.</div>
   <p>Em 1900 Planck resolveu o impasse com uma hipótese que ele mesmo achou desconfortável: um modo de frequência \(f\) não pode ter qualquer energia — só múltiplos inteiros de um <strong>quantum</strong> \(hf\). A energia média deixa de ser \(kT\) e passa a ser</p>
   <p>\[ \langle E\rangle = \frac{hf}{e^{hf/kT}-1} \]</p>
-  <p>Para \(hf \ll kT\) (comprimento de onda longo) o denominador vira \(hf/kT\) e \(\langle E\rangle \to kT\): a equipartição é recuperada, e por isso Rayleigh–Jeans acertava naquele regime. Mas para \(hf \gg kT\) (comprimento de onda curto) o \(e^{hf/kT}\) explode e \(\langle E\rangle \to 0\): os modos de alta frequência ficam <strong>congelados</strong>, porque nem sequer um quantum cabe na energia térmica disponível. A divergência morre. Substituindo essa energia média na contagem de modos:</p>
+  <p>Vale conferir essa expressão nos dois extremos:</p>
+  <ul>
+    <li>\(hf \ll kT\) (comprimento de onda longo): o denominador vira \(hf/kT\) e \(\langle E\rangle \to kT\). A equipartição é recuperada — por isso Rayleigh–Jeans acertava nesse regime.</li>
+    <li>\(hf \gg kT\) (comprimento de onda curto): o \(e^{hf/kT}\) explode e \(\langle E\rangle \to 0\). Os modos de alta frequência ficam <strong>congelados</strong>, porque nem sequer um quantum cabe na energia térmica disponível.</li>
+  </ul>
+  <p>É o segundo caso que mata a divergência. Substituindo essa energia média na contagem de modos:</p>
   <div class="keyeq">
   \[ I(\lambda,T) = \frac{2\pi h c^{2}}{\lambda^{5}}\,\frac{1}{e^{hc/\lambda kT}-1} \]
   </div>
@@ -3823,6 +4344,43 @@ const TOPICS = [
   <div class="keyeq">
   \[ E = hf = \frac{hc}{\lambda} \]
   </div>
+  <div class="diagram">
+  <svg viewBox="0 0 560 250" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace">
+    <text x="20" y="18" font-size="11" fill="#57666D">Onda classica: energia continua</text>
+    <path d="M25 72 Q39 40 53 72 Q67 104 81 72 Q95 40 109 72 Q123 104 137 72 Q151 40 165 72 Q179 104 193 72 Q207 40 221 72 Q235 104 249 72" fill="none" stroke="#C1554B" stroke-width="2"/>
+    <text x="25" y="108" font-size="11" fill="#C1554B">intensidade I</text>
+    <path d="M25 150 Q39 105 53 150 Q67 195 81 150 Q95 105 109 150 Q123 195 137 150 Q151 105 165 150 Q179 195 193 150 Q207 105 221 150 Q235 195 249 150" fill="none" stroke="#C1554B" stroke-width="2"/>
+    <text x="25" y="190" font-size="11" fill="#C1554B">intensidade 2I: onda mais alta</text>
+    <text x="25" y="215" font-size="11" fill="#57666D">a energia chegaria espalhada,</text>
+    <text x="25" y="230" font-size="11" fill="#57666D">sem pedacos minimos</text>
+
+    <line x1="272" y1="10" x2="272" y2="240" stroke="#B9AF92" stroke-width="1" stroke-dasharray="4 4"/>
+
+    <text x="292" y="18" font-size="11" fill="#57666D">Fotons: pacotes de energia hf</text>
+    <circle cx="305" cy="72" r="13" fill="#E8A33D"/>
+    <circle cx="337" cy="72" r="13" fill="#E8A33D"/>
+    <circle cx="369" cy="72" r="13" fill="#E8A33D"/>
+    <circle cx="401" cy="72" r="13" fill="#E8A33D"/>
+    <text x="298" y="76" font-size="11" fill="#B97817">hf</text>
+    <text x="330" y="76" font-size="11" fill="#B97817">hf</text>
+    <text x="362" y="76" font-size="11" fill="#B97817">hf</text>
+    <text x="394" y="76" font-size="11" fill="#B97817">hf</text>
+    <text x="305" y="108" font-size="11" fill="#1C2B33">4 fotons  →  I</text>
+    <circle cx="305" cy="150" r="13" fill="#E8A33D"/>
+    <circle cx="337" cy="150" r="13" fill="#E8A33D"/>
+    <circle cx="369" cy="150" r="13" fill="#E8A33D"/>
+    <circle cx="401" cy="150" r="13" fill="#E8A33D"/>
+    <circle cx="433" cy="150" r="13" fill="#E8A33D"/>
+    <circle cx="465" cy="150" r="13" fill="#E8A33D"/>
+    <circle cx="497" cy="150" r="13" fill="#E8A33D"/>
+    <circle cx="529" cy="150" r="13" fill="#E8A33D"/>
+    <text x="305" y="190" font-size="11" fill="#1C2B33">8 fotons  →  2I</text>
+    <text x="305" y="215" font-size="11" fill="#B97817">dobrou o NUMERO de fotons,</text>
+    <text x="305" y="230" font-size="11" fill="#B97817">cada um ainda com E = hf</text>
+  </svg>
+  <p class="diagram-caption">Duas leituras da mesma luz. À esquerda, a onda clássica: aumentar a intensidade só aumenta a amplitude. À direita, o fóton: dobrar a intensidade dobra o <em>número</em> de pacotes, e cada um continua valendo \(E=hf\).</p>
+  </div>
+
   <p>O momento sai da relatividade, sem hipótese adicional. Na relação energia-momento \(E^{2} = (pc)^{2}+(mc^{2})^{2}\), o fóton tem \(m=0\); logo \(E^{2}=(pc)^{2}\) e</p>
   <div class="keyeq">
   \[ p = \frac{E}{c} = \frac{hf}{c} = \frac{h}{\lambda} \]
@@ -4012,6 +4570,37 @@ const TOPICS = [
   <h3>Pressão de radiação</h3>
   <p>Se cada fóton carrega momento, um feixe que bate numa parede exerce força. A conta é curta e vale a pena saber montá-la, porque a prova costuma pedir a <em>dedução</em>, não o número.</p>
 
+  <div class="diagram">
+  <svg viewBox="0 0 560 230" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace">
+    <text x="18" y="20" font-size="11" fill="#57666D">Superficie absorvedora</text>
+    <rect x="248" y="40" width="12" height="140" fill="#B9AF92"/>
+    <path d="M40 80 Q46 70 52 80 Q58 90 64 80 Q70 70 76 80 Q82 90 88 80 Q94 70 100 80 Q106 90 112 80 Q118 70 124 80 Q130 90 136 80 Q142 70 148 80 Q154 90 160 80 Q166 70 172 80 Q178 90 184 80 Q190 70 196 80 Q202 90 208 80 Q214 70 220 80 Q226 90 232 80 L238 80" fill="none" stroke="#C1554B" stroke-width="2"/>
+    <path d="M246 80 L236 75 L236 85 Z" fill="#C1554B"/>
+    <text x="40" y="62" font-size="11" fill="#C1554B">foton chega com p</text>
+    <text x="150" y="104" font-size="11" fill="#57666D">e absorvido</text>
+    <line x1="190" y1="145" x2="240" y2="145" stroke="#E8A33D" stroke-width="2.5"/>
+    <path d="M246 145 L237 140 L237 150 Z" fill="#E8A33D"/>
+    <text x="40" y="149" font-size="11" fill="#B97817">parede recebe Δp = p</text>
+    <text x="95" y="205" font-size="13" fill="#1C2B33">P = I / c</text>
+
+    <line x1="272" y1="12" x2="272" y2="218" stroke="#B9AF92" stroke-width="1" stroke-dasharray="4 4"/>
+
+    <text x="292" y="20" font-size="11" fill="#57666D">Superficie refletora</text>
+    <rect x="518" y="40" width="12" height="140" fill="#B9AF92"/>
+    <path d="M310 64 Q316 54 322 64 Q328 74 334 64 Q340 54 346 64 Q352 74 358 64 Q364 54 370 64 Q376 74 382 64 Q388 54 394 64 Q400 74 406 64 Q412 54 418 64 Q424 74 430 64 Q436 54 442 64 Q448 74 454 64 Q460 54 466 64 Q472 74 478 64 Q484 54 490 64 Q496 74 502 64 L508 64" fill="none" stroke="#C1554B" stroke-width="2"/>
+    <path d="M516 64 L506 59 L506 69 Z" fill="#C1554B"/>
+    <text x="310" y="48" font-size="11" fill="#C1554B">chega com p</text>
+    <path d="M304 104 L310 104 Q316 94 322 104 Q328 114 334 104 Q340 94 346 104 Q352 114 358 104 Q364 94 370 104 Q376 114 382 104 Q388 94 394 104 Q400 114 406 104 Q412 94 418 104 Q424 114 430 104 Q436 94 442 104 Q448 114 454 104 Q460 94 466 104 Q472 114 478 104 Q484 94 490 104 Q496 114 502 104" fill="none" stroke="#5FB8AA" stroke-width="2"/>
+    <path d="M296 104 L306 99 L306 109 Z" fill="#5FB8AA"/>
+    <text x="310" y="124" font-size="11" fill="#5FB8AA">volta com −p</text>
+    <line x1="460" y1="160" x2="510" y2="160" stroke="#E8A33D" stroke-width="2.5"/>
+    <path d="M516 160 L507 155 L507 165 Z" fill="#E8A33D"/>
+    <text x="300" y="164" font-size="11" fill="#B97817">parede recebe Δp = 2p</text>
+    <text x="360" y="205" font-size="13" fill="#1C2B33">P = 2I / c</text>
+  </svg>
+  <p class="diagram-caption">O fóton chega com o mesmo momento \(p\) nos dois casos. Na superfície absorvedora a parede fica com \(p\); na refletora o fóton sai com \(-p\), então a parede recebe \(2p\) — e a pressão dobra.</p>
+  </div>
+
   <div class="derive"><span class="derive-title">Dedução — \(P = I/c\) (absorção) e \(P = 2I/c\) (reflexão)</span>
   <ol>
     <li>Num intervalo \(\Delta t\), a energia que atinge uma área \(A\) é \(U = I A \Delta t\) (definição de intensidade: potência por área).</li>
@@ -4038,16 +4627,22 @@ const TOPICS = [
   </div>
 
   <h3>Constantes e atalhos</h3>
-  <ul>
-    <li>\(h = 6{,}626\times10^{-34}\) J·s \(= 4{,}136\times10^{-15}\) eV·s</li>
-    <li>\(hc = 1240\) eV·nm \(= 1{,}986\times10^{-25}\) J·m</li>
-    <li>\(h/e = 4{,}136\times10^{-15}\) V·s (inclinação do gráfico \(V_0\times f\))</li>
-    <li>\(h/m_ec = 2{,}426\) pm (comprimento de onda Compton do elétron)</li>
-    <li>\(m_ec^{2} = 0{,}511\) MeV \(\;\;\cdot\;\; m_pc^{2} = 938\) MeV</li>
-    <li>\(k = 1{,}381\times10^{-23}\) J/K \(\;\;\cdot\;\; \sigma = 5{,}67\times10^{-8}\) W/(m\(^2\)K\(^4\))</li>
-    <li>Wien: \(\lambda_m T = 2{,}898\times10^{-3}\) m·K \(\;\;\cdot\;\; 1\) atm \(= 1{,}013\times10^{5}\) Pa</li>
-    <li>Energia em eV a partir de \(\lambda\) em nm: divida 1240 por \(\lambda\). Em pm: divida \(1{,}240\times10^{6}\) por \(\lambda\).</li>
-  </ul>
+  <table class="consts">
+    <thead><tr><th>Grandeza</th><th>Valor</th><th>Quando usar</th></tr></thead>
+    <tbody>
+      <tr><td>\(h\)</td><td>\(6{,}626\times10^{-34}\) J·s \(= 4{,}136\times10^{-15}\) eV·s</td><td>\(E=hf\); a versão em eV·s poupa conversão quando a resposta é em eV</td></tr>
+      <tr><td>\(hc\)</td><td>\(1240\) eV·nm \(= 1{,}986\times10^{-25}\) J·m</td><td>energia do fóton a partir de \(\lambda\)</td></tr>
+      <tr><td>\(h/e\)</td><td>\(4{,}136\times10^{-15}\) V·s</td><td>inclinação do gráfico \(V_0\times f\)</td></tr>
+      <tr><td>\(h/m_ec\)</td><td>\(2{,}426\) pm</td><td>comprimento de onda Compton do elétron</td></tr>
+      <tr><td>\(m_ec^{2}\)</td><td>\(0{,}511\) MeV</td><td>energia de repouso do elétron</td></tr>
+      <tr><td>\(m_pc^{2}\)</td><td>\(938\) MeV</td><td>energia de repouso do próton</td></tr>
+      <tr><td>\(k\)</td><td>\(1{,}381\times10^{-23}\) J/K</td><td>constante de Boltzmann (corpo negro, Planck)</td></tr>
+      <tr><td>\(\sigma\)</td><td>\(5{,}67\times10^{-8}\) W/(m\(^2\)K\(^4\))</td><td>Stefan–Boltzmann</td></tr>
+      <tr><td>\(\lambda_m T\)</td><td>\(2{,}898\times10^{-3}\) m·K</td><td>lei de Wien</td></tr>
+      <tr><td>\(1\) atm</td><td>\(1{,}013\times10^{5}\) Pa</td><td>converter pressão de radiação para atm</td></tr>
+    </tbody>
+  </table>
+  <p class="flag">Atalho de cabeça: energia em eV a partir de \(\lambda\) em nm — divida 1240 por \(\lambda\). Se \(\lambda\) vier em pm, divida \(1{,}240\times10^{6}\) por \(\lambda\).</p>
   `,
   exercises:[
     {tag:'lista', src:'Lista 2', num:'32.28',
@@ -4488,7 +5083,35 @@ const TOPICS = [
   id:'bohr', icon:'bohr', label:'Modelo de Bohr',
   theory: r`
   <h3>Por que o átomo clássico é impossível</h3>
-  <p>Rutherford mostrou que o átomo é um núcleo minúsculo com elétrons ao redor. O problema é que isso, com a física clássica, <strong>não pode existir</strong>. Uma carga em órbita está acelerada (aceleração centrípeta), e carga acelerada irradia energia. Perdendo energia, o elétron espirala para dentro. O cálculo clássico dá o tempo de colapso: cerca de \(10^{-11}\) s. A matéria não deveria ser estável nem por um piscar de olhos.</p>
+  <p>Rutherford mostrou que o átomo é um núcleo minúsculo com elétrons ao redor. O problema é que isso, com a física clássica, <strong>não pode existir</strong>.</p>
+  <p>O argumento tem três passos: uma carga em órbita está acelerada (aceleração centrípeta); carga acelerada irradia energia; perdendo energia, o elétron espirala para dentro.</p>
+  <p>E o cálculo clássico dá o tempo de colapso: cerca de \(10^{-11}\) s. Nesse mundo, a matéria não seria estável nem por um piscar de olhos.</p>
+  <div class="diagram">
+  <svg viewBox="0 0 560 250" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace">
+    <circle cx="170" cy="125" r="100" fill="none" stroke="#8CA1A6" stroke-width="1" stroke-dasharray="4 4"/>
+    <path d="M270 125 A91 91 0 0 0 88 125 A73.5 73.5 0 0 1 235 125 A57 57 0 0 0 121 125 A41.5 41.5 0 0 1 204 125 A27 27 0 0 0 150 125 A14 14 0 0 1 178 125" fill="none" stroke="#C1554B" stroke-width="2"/>
+    <circle cx="170" cy="125" r="6" fill="#1C2B33"/>
+    <circle cx="270" cy="125" r="5" fill="#C1554B"/>
+    <text x="252" y="112" font-size="11" fill="#C1554B">e⁻</text>
+    <line x1="170" y1="26" x2="170" y2="14" stroke="#E8A33D" stroke-width="1.5"/>
+    <path d="M170 6 L166 15 L174 15 Z" fill="#E8A33D"/>
+    <line x1="66" y1="125" x2="54" y2="125" stroke="#E8A33D" stroke-width="1.5"/>
+    <path d="M46 125 L55 121 L55 129 Z" fill="#E8A33D"/>
+    <line x1="101" y1="194" x2="89" y2="206" stroke="#E8A33D" stroke-width="1.5"/>
+    <path d="M83 212 L87 202 L93 208 Z" fill="#E8A33D"/>
+    <text x="180" y="16" font-size="11" fill="#B97817">irradia</text>
+
+    <line x1="330" y1="15" x2="330" y2="235" stroke="#B9AF92" stroke-width="1" stroke-dasharray="4 4"/>
+    <text x="350" y="72" font-size="11" fill="#57666D">carga acelerada irradia</text>
+    <text x="350" y="96" font-size="11" fill="#57666D">perde energia a cada volta</text>
+    <text x="350" y="120" font-size="11" fill="#57666D">o raio encolhe: espiral</text>
+    <text x="350" y="158" font-size="13" fill="#B97817">colapso em ≈ 10⁻¹¹ s</text>
+    <text x="350" y="184" font-size="11" fill="#C1554B">mas a materia e estavel!</text>
+    <text x="350" y="208" font-size="11" fill="#57666D">logo, algo esta errado</text>
+  </svg>
+  <p class="diagram-caption">Carga acelerada irradia: a cada volta o elétron perde energia e o raio encolhe. O cálculo clássico prevê o colapso no núcleo em cerca de \(10^{-11}\) s — nesse mundo, a matéria não existiria.</p>
+  </div>
+
   <p>E havia um segundo fato incômodo: gases excitados emitem <strong>linhas discretas</strong>, não um espectro contínuo. Balmer tinha percebido, empiricamente, que as linhas visíveis do hidrogênio obedecem a uma fórmula simples, depois generalizada por Rydberg:</p>
   <div class="keyeq">
   \[ \frac{1}{\lambda} = R\left(\frac{1}{n_f^{2}}-\frac{1}{n_i^{2}}\right), \qquad R = 1{,}097\times10^{7}\ \text{m}^{-1} \]
@@ -4503,10 +5126,42 @@ const TOPICS = [
     <li><strong>Saltos quânticos.</strong> A radiação só é emitida ou absorvida quando o elétron <em>pula</em> entre duas órbitas, e o fóton carrega exatamente a diferença de energia:
       \[ hf = |E_{n_i}-E_{n_f}| \]</li>
   </ol>
+  <div class="diagram">
+  <svg viewBox="0 0 560 270" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace">
+    <circle cx="185" cy="140" r="12" fill="none" stroke="#1C2B33" stroke-width="1.3"/>
+    <circle cx="185" cy="140" r="48" fill="none" stroke="#1C2B33" stroke-width="1.3"/>
+    <circle cx="185" cy="140" r="108" fill="none" stroke="#1C2B33" stroke-width="1.3"/>
+    <circle cx="185" cy="140" r="6" fill="#1C2B33"/>
+    <text x="164" y="119" font-size="11" fill="#57666D">n=1</text>
+    <text x="132" y="87" font-size="11" fill="#57666D">n=2</text>
+    <text x="92" y="47" font-size="11" fill="#57666D">n=3</text>
+    <line x1="185" y1="140" x2="219" y2="106" stroke="#E8A33D" stroke-width="1.5"/>
+    <text x="188" y="122" font-size="11" fill="#B97817">r₂</text>
+    <circle cx="219" cy="106" r="5" fill="#C1554B"/>
+    <text x="226" y="98" font-size="11" fill="#C1554B">e⁻</text>
+    <line x1="219" y1="106" x2="243" y2="130" stroke="#5FB8AA" stroke-width="1.8"/>
+    <path d="M243 130 L233 126 L239 120 Z" fill="#5FB8AA"/>
+    <text x="247" y="138" font-size="11" fill="#5FB8AA">v</text>
+
+    <line x1="305" y1="20" x2="305" y2="250" stroke="#B9AF92" stroke-width="1" stroke-dasharray="4 4"/>
+    <text x="325" y="58" font-size="11" fill="#57666D">Orbita estacionaria:</text>
+    <text x="325" y="88" font-size="13" fill="#B97817">L = m v r = n ℏ</text>
+    <text x="325" y="112" font-size="11" fill="#57666D">n = 1, 2, 3, ...</text>
+    <text x="325" y="148" font-size="11" fill="#57666D">raio cresce com n² :</text>
+    <text x="325" y="172" font-size="11" fill="#1C2B33">r₁ : r₂ : r₃  =  1 : 4 : 9</text>
+    <text x="325" y="208" font-size="11" fill="#57666D">na orbita o eletron</text>
+    <text x="325" y="228" font-size="11" fill="#57666D">nao irradia</text>
+  </svg>
+  <p class="diagram-caption">As órbitas permitidas, com \(r_n = a_0 n^{2}\) — repare que \(n=3\) já está nove vezes mais longe que \(n=1\). O que seleciona cada uma é o momento angular travado em múltiplos de \(\hbar\).</p>
+  </div>
+
   <div class="why"><strong>De onde vem a regra \(L=n\hbar\)?</strong> Bohr a postulou. Onze anos depois, De Broglie deu o motivo: se o elétron tem comprimento de onda \(\lambda = h/p\), a órbita só é estável se um número inteiro de comprimentos de onda couber na circunferência — uma onda estacionária fechada. Isto é, \(2\pi r = n\lambda = nh/p\), o que rearranjado dá exatamente \(pr = n\hbar\). A quantização do momento angular <em>é</em> uma condição de onda estacionária.</div>
 
-  <div class="derive"><span class="derive-title">Dedução — raio, velocidade e energia das órbitas</span>
-  <p>Duas equações, duas incógnitas (\(r\) e \(v\)). Uma é física clássica, a outra é o postulado.</p>
+  <p>Os dois postulados bastam para calcular tudo. São duas equações e duas incógnitas (\(r\) e \(v\)): uma vem da física clássica, a outra é o postulado. Delas saem, em cadeia, o raio, a velocidade e a energia de cada órbita.</p>
+
+  <p><strong>Primeiro o raio.</strong> Combinar dinâmica com quantização elimina \(v\) e deixa \(r\) sozinho.</p>
+
+  <div class="derive"><span class="derive-title">Dedução 1 — o raio \(r_n = a_0n^{2}\)</span>
   <ol>
     <li><strong>Equação 1 — dinâmica.</strong> A atração de Coulomb entre o próton e o elétron faz o papel da força centrípeta:
       \[ \frac{mv^{2}}{r} = \frac{1}{4\pi\epsilon_0}\frac{e^{2}}{r^{2}} \qquad\Longrightarrow\qquad mv^{2} = \frac{e^{2}}{4\pi\epsilon_0 r} \tag{1} \]</li>
@@ -4517,11 +5172,25 @@ const TOPICS = [
     <li>Cortando um \(r\) e isolando:
       \[ r_n = \frac{4\pi\epsilon_0\hbar^{2}}{me^{2}}\,n^{2} = a_0\,n^{2}, \qquad a_0 = 5{,}29\times10^{-11}\ \text{m} \]
       O <strong>raio de Bohr</strong> \(a_0\) é o raio da órbita \(n=1\). Note o \(n^{2}\): as órbitas se afastam rapidamente.</li>
-    <li><strong>Volte para achar \(v\)</strong> usando (2):
-      \[ v_n = \frac{n\hbar}{m\,a_0n^{2}} = \frac{e^{2}}{4\pi\epsilon_0\hbar}\cdot\frac{1}{n} = \frac{v_1}{n} \]
-      com \(v_1 = \alpha c \approx 2{,}19\times10^{6}\) m/s, onde \(\alpha = \dfrac{e^{2}}{4\pi\epsilon_0\hbar c} \approx \dfrac{1}{137}\) é a constante de estrutura fina.
+  </ol>
+  </div>
+
+  <p><strong>Depois a velocidade.</strong> Com \(r_n\) conhecido, ela é imediata — o postulado já liga \(v\) a \(r\).</p>
+
+  <div class="derive"><span class="derive-title">Dedução 2 — a velocidade \(v_n = v_1/n\)</span>
+  <ol>
+    <li>Volte à equação (2) e substitua \(r = a_0n^{2}\):
+      \[ v_n = \frac{n\hbar}{m\,a_0n^{2}} = \frac{e^{2}}{4\pi\epsilon_0\hbar}\cdot\frac{1}{n} = \frac{v_1}{n} \]</li>
+    <li>O valor de referência é \(v_1 = \alpha c \approx 2{,}19\times10^{6}\) m/s, onde \(\alpha = \dfrac{e^{2}}{4\pi\epsilon_0\hbar c} \approx \dfrac{1}{137}\) é a constante de estrutura fina.
       <span class="flag">\(v_1/c = 1/137 = 0{,}0073\): o elétron do estado fundamental é <strong>não relativístico</strong>, e por isso o modelo funciona tão bem para o hidrogênio.</span></li>
-    <li><strong>Energia.</strong> A cinética sai de (1): \(K = \tfrac12 mv^{2} = \dfrac{e^{2}}{8\pi\epsilon_0 r}\). A potencial de Coulomb é \(U = -\dfrac{e^{2}}{4\pi\epsilon_0 r}\) (negativa, ligada). Somando:
+  </ol>
+  </div>
+
+  <p><strong>Por fim a energia.</strong> É ela que interessa de verdade, porque é a diferença de energias que o fóton carrega — ou seja, é daqui que o espectro vai sair.</p>
+
+  <div class="derive"><span class="derive-title">Dedução 3 — a energia \(E_n = -13{,}6\ \text{eV}/n^{2}\)</span>
+  <ol>
+    <li><strong>Some cinética e potencial.</strong> A cinética sai de (1): \(K = \tfrac12 mv^{2} = \dfrac{e^{2}}{8\pi\epsilon_0 r}\). A potencial de Coulomb é \(U = -\dfrac{e^{2}}{4\pi\epsilon_0 r}\) (negativa, ligada). Somando:
       \[ E = K+U = \frac{e^{2}}{8\pi\epsilon_0 r} - \frac{e^{2}}{4\pi\epsilon_0 r} = -\frac{e^{2}}{8\pi\epsilon_0 r} = -K \]
       <span class="flag">Repare no resultado geral: \(E = -K = U/2\). Isso é o <strong>teorema do virial</strong> para força \(1/r^{2}\), e aparece igualzinho em órbitas planetárias.</span></li>
     <li>Substituindo \(r_n = a_0n^{2}\):
@@ -4532,7 +5201,8 @@ const TOPICS = [
   <div class="keyeq">
   \[ r_n = a_0 n^{2},\qquad v_n = \frac{v_1}{n},\qquad E_n = -\frac{13{,}6\ \text{eV}}{n^{2}},\qquad T_n = T_1\,n^{3} \]
   </div>
-  <p>com \(a_0 = 5{,}29\times10^{-11}\) m, \(v_1 = 2{,}19\times10^{6}\) m/s e \(T_1 = 2\pi a_0/v_1 = 1{,}52\times10^{-16}\) s. O período sai de \(T = 2\pi r/v \propto n^{2}/(1/n) = n^{3}\) — é a <strong>terceira lei de Kepler</strong> reaparecendo, já que \(T^{2}\propto r^{3}\).</p>
+  <p>com \(a_0 = 5{,}29\times10^{-11}\) m, \(v_1 = 2{,}19\times10^{6}\) m/s e \(T_1 = 2\pi a_0/v_1 = 1{,}52\times10^{-16}\) s.</p>
+  <p>O período sai de \(T = 2\pi r/v \propto n^{2}/(1/n) = n^{3}\) — é a <strong>terceira lei de Kepler</strong> reaparecendo, já que \(T^{2}\propto r^{3}\).</p>
   <div class="why">Um jeito bonito de ver o \(13{,}6\) eV: \(E_1 = -\tfrac12\alpha^{2}m_ec^{2} = -\tfrac12(1/137)^{2}(511\,000\ \text{eV}) = -13{,}6\) eV. A energia de ligação do átomo é a energia de repouso do elétron reduzida por \(\alpha^{2}/2\) — praticamente todo o "tamanho" da química está escondido nessa razão.</div>
 
   <h3>Escalonamento: carga nuclear e massa</h3>
@@ -4542,6 +5212,47 @@ const TOPICS = [
   \[ E_n = -Z^{2}\,\frac{13{,}6\ \text{eV}}{n^{2}}, \qquad r_n = \frac{n^{2}a_0}{Z}, \qquad v_n = \frac{Z v_1}{n} \]
   </div>
   <p>Ou seja: núcleo mais carregado puxa mais, o átomo <strong>encolhe</strong> (\(1/Z\)) e fica <strong>muito</strong> mais ligado (\(Z^{2}\)). Serve para He\(^{+}\) (\(Z=2\)), Li\(^{2+}\) (\(Z=3\)), Be\(^{3+}\) (\(Z=4\)).</p>
+  <div class="diagram">
+  <svg viewBox="0 0 560 250" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace">
+    <text x="60" y="22" font-size="12" fill="#B97817">r ∝ 1/Z : a orbita encolhe</text>
+    <circle cx="130" cy="125" r="72" fill="none" stroke="#C1554B" stroke-width="2"/>
+    <circle cx="130" cy="125" r="36" fill="none" stroke="#5FB8AA" stroke-width="2"/>
+    <circle cx="130" cy="125" r="6" fill="#1C2B33"/>
+    <line x1="130" y1="125" x2="202" y2="125" stroke="#C1554B" stroke-width="1.2" stroke-dasharray="4 4"/>
+    <line x1="130" y1="125" x2="94" y2="125" stroke="#5FB8AA" stroke-width="1.2" stroke-dasharray="4 4"/>
+    <circle cx="202" cy="125" r="5" fill="#C1554B"/>
+    <circle cx="94" cy="125" r="5" fill="#5FB8AA"/>
+    <text x="158" y="117" font-size="11" fill="#C1554B">a₀</text>
+    <text x="96" y="117" font-size="11" fill="#5FB8AA">a₀/2</text>
+    <text x="58" y="218" font-size="11" fill="#C1554B">Z = 1 : hidrogenio</text>
+    <text x="58" y="236" font-size="11" fill="#5FB8AA">Z = 2 : He⁺</text>
+
+    <line x1="280" y1="15" x2="280" y2="245" stroke="#B9AF92" stroke-width="1" stroke-dasharray="4 4"/>
+
+    <text x="330" y="22" font-size="12" fill="#B97817">E ∝ −Z² : os niveis afundam</text>
+    <line x1="290" y1="45" x2="545" y2="45" stroke="#8CA1A6" stroke-width="1" stroke-dasharray="4 4"/>
+    <text x="290" y="40" font-size="11" fill="#57666D">E = 0</text>
+    <line x1="330" y1="55" x2="400" y2="55" stroke="#C1554B" stroke-width="2"/>
+    <line x1="330" y1="85" x2="400" y2="85" stroke="#C1554B" stroke-width="2.5"/>
+    <text x="293" y="59" font-size="11" fill="#57666D">−3,4</text>
+    <text x="287" y="89" font-size="11" fill="#57666D">−13,6</text>
+    <text x="404" y="59" font-size="11" fill="#57666D">n=2</text>
+    <text x="404" y="89" font-size="11" fill="#57666D">n=1</text>
+    <line x1="450" y1="85" x2="520" y2="85" stroke="#5FB8AA" stroke-width="2"/>
+    <line x1="450" y1="205" x2="520" y2="205" stroke="#5FB8AA" stroke-width="2.5"/>
+    <text x="524" y="89" font-size="11" fill="#57666D">−13,6</text>
+    <text x="524" y="209" font-size="11" fill="#57666D">−54,4</text>
+    <text x="426" y="89" font-size="11" fill="#57666D">n=2</text>
+    <text x="426" y="209" font-size="11" fill="#57666D">n=1</text>
+    <line x1="415" y1="102" x2="415" y2="190" stroke="#E8A33D" stroke-width="2"/>
+    <path d="M415 197 L411 188 L419 188 Z" fill="#E8A33D"/>
+    <text x="420" y="150" font-size="11" fill="#B97817">×Z²</text>
+    <text x="325" y="240" font-size="11" fill="#C1554B">Z = 1  (H)</text>
+    <text x="445" y="240" font-size="11" fill="#5FB8AA">Z = 2  (He⁺)</text>
+  </svg>
+  <p class="diagram-caption">Trocando \(e^{2}\to Ze^{2}\), o núcleo puxa mais forte: as órbitas encolhem com \(1/Z\) e os níveis afundam com \(Z^{2}\). Repare que o \(n=2\) do He\(^{+}\) cai exatamente sobre o \(n=1\) do hidrogênio.</p>
+  </div>
+
   <p><strong>Massa reduzida.</strong> Na dedução acima supusemos o núcleo <em>parado</em>. Na verdade os dois giram em torno do centro de massa comum, e a correção exata é trocar \(m_e\) pela <strong>massa reduzida</strong>:</p>
   <div class="keyeq">
   \[ \mu = \frac{m_1m_2}{m_1+m_2} \]
@@ -4635,13 +5346,40 @@ const TOPICS = [
   </div>
 
   <h3>Constantes e atalhos</h3>
-  <ul>
-    <li>\(a_0 = 5{,}29\times10^{-11}\) m \(\;\cdot\;\) \(v_1 = 2{,}19\times10^{6}\) m/s \(\;\cdot\;\) \(T_1 = 1{,}52\times10^{-16}\) s</li>
-    <li>\(E_1 = -13{,}6\) eV \(\;\cdot\;\) \(E_2 = -3{,}40\) eV \(\;\cdot\;\) \(E_3 = -1{,}51\) eV \(\;\cdot\;\) \(E_4 = -0{,}85\) eV</li>
-    <li>\(R = 1{,}097\times10^{7}\) m\(^{-1}\) \(\;\cdot\;\) \(\alpha = 1/137\) \(\;\cdot\;\) \(\hbar = 1{,}055\times10^{-34}\) J·s</li>
-    <li>Linhas úteis: \(2\to1\): 122 nm \(\;\cdot\;\) \(3\to1\): 103 nm \(\;\cdot\;\) \(3\to2\): 656 nm</li>
-    <li>\(m_e = 9{,}109\times10^{-31}\) kg \(\;\cdot\;\) \(m_p = 1{,}673\times10^{-27}\) kg \(\;\cdot\;\) \(m_p/m_e = 1836\)</li>
-  </ul>
+  <table class="consts">
+    <thead><tr><th>Grandeza</th><th>Valor</th><th>O que é</th></tr></thead>
+    <tbody>
+      <tr><td>\(a_0\)</td><td>\(5{,}29\times10^{-11}\) m</td><td>raio de Bohr — órbita \(n=1\) do hidrogênio</td></tr>
+      <tr><td>\(v_1\)</td><td>\(2{,}19\times10^{6}\) m/s</td><td>velocidade do elétron em \(n=1\)</td></tr>
+      <tr><td>\(T_1\)</td><td>\(1{,}52\times10^{-16}\) s</td><td>período orbital em \(n=1\)</td></tr>
+      <tr><td>\(R\)</td><td>\(1{,}097\times10^{7}\) m\(^{-1}\)</td><td>constante de Rydberg</td></tr>
+      <tr><td>\(\alpha\)</td><td>\(1/137\)</td><td>constante de estrutura fina</td></tr>
+      <tr><td>\(\hbar\)</td><td>\(1{,}055\times10^{-34}\) J·s</td><td>\(h/2\pi\) — quantização do momento angular</td></tr>
+      <tr><td>\(m_e\)</td><td>\(9{,}109\times10^{-31}\) kg</td><td>massa do elétron</td></tr>
+      <tr><td>\(m_p\)</td><td>\(1{,}673\times10^{-27}\) kg</td><td>massa do próton (\(m_p/m_e = 1836\))</td></tr>
+    </tbody>
+  </table>
+
+  <p><strong>Níveis do hidrogênio</strong> — os quatro primeiros valem decorar:</p>
+  <table class="consts">
+    <thead><tr><th>Nível</th><th>Energia</th></tr></thead>
+    <tbody>
+      <tr><td>\(E_1\)</td><td>\(-13{,}6\) eV</td></tr>
+      <tr><td>\(E_2\)</td><td>\(-3{,}40\) eV</td></tr>
+      <tr><td>\(E_3\)</td><td>\(-1{,}51\) eV</td></tr>
+      <tr><td>\(E_4\)</td><td>\(-0{,}85\) eV</td></tr>
+    </tbody>
+  </table>
+
+  <p><strong>Linhas úteis</strong> — se um desses comprimentos de onda aparecer no enunciado, você já sabe a transição:</p>
+  <table class="consts">
+    <thead><tr><th>Transição</th><th>\(\lambda\)</th></tr></thead>
+    <tbody>
+      <tr><td>\(2\to1\)</td><td>122 nm</td></tr>
+      <tr><td>\(3\to1\)</td><td>103 nm</td></tr>
+      <tr><td>\(3\to2\)</td><td>656 nm</td></tr>
+    </tbody>
+  </table>
   `,
   exercises:[
     {tag:'lista', src:'Lista 2', num:'38.18',
@@ -4850,6 +5588,47 @@ const TOPICS = [
   </div>
   <p>Vale para <strong>qualquer</strong> partícula com momento \(p\): elétron, próton, partícula alfa, bola de tênis. Não é uma analogia — é uma propriedade física real, e foi confirmada experimentalmente três anos depois.</p>
 
+  <div class="diagram">
+  <svg viewBox="0 0 560 250" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace">
+    <text x="60" y="26" font-size="12.5" fill="#B97817">λ = h/p</text>
+    <text x="120" y="26" font-size="11" fill="#57666D">vale para tudo que tem momento</text>
+
+    <rect x="464" y="136" width="14" height="28" fill="#B9AF92"/>
+    <line x1="60" y1="150" x2="508" y2="150" stroke="#1C2B33" stroke-width="1.5"/>
+    <path d="M516 150 L506 145 L506 155 Z" fill="#1C2B33"/>
+    <text x="498" y="142" font-size="11" fill="#57666D">λ (m)</text>
+    <line x1="60" y1="150" x2="60" y2="157" stroke="#1C2B33" stroke-width="1"/>
+    <line x1="129" y1="150" x2="129" y2="157" stroke="#1C2B33" stroke-width="1"/>
+    <line x1="197" y1="150" x2="197" y2="157" stroke="#1C2B33" stroke-width="1"/>
+    <line x1="265" y1="150" x2="265" y2="157" stroke="#1C2B33" stroke-width="1"/>
+    <line x1="334" y1="150" x2="334" y2="157" stroke="#1C2B33" stroke-width="1"/>
+    <line x1="402" y1="150" x2="402" y2="157" stroke="#1C2B33" stroke-width="1"/>
+    <line x1="471" y1="150" x2="471" y2="157" stroke="#1C2B33" stroke-width="1"/>
+    <text x="44" y="170" font-size="11" fill="#57666D">10⁻³⁴</text>
+    <text x="113" y="170" font-size="11" fill="#57666D">10⁻³⁰</text>
+    <text x="181" y="170" font-size="11" fill="#57666D">10⁻²⁶</text>
+    <text x="249" y="170" font-size="11" fill="#57666D">10⁻²²</text>
+    <text x="318" y="170" font-size="11" fill="#57666D">10⁻¹⁸</text>
+    <text x="386" y="170" font-size="11" fill="#57666D">10⁻¹⁴</text>
+    <text x="455" y="170" font-size="11" fill="#57666D">10⁻¹⁰</text>
+    <text x="395" y="186" font-size="11" fill="#57666D">atomos num cristal: 1 Å</text>
+
+    <line x1="70" y1="131" x2="70" y2="148" stroke="#5FB8AA" stroke-width="1.5"/>
+    <circle cx="70" cy="124" r="6" fill="#5FB8AA"/>
+    <text x="28" y="90" font-size="11" fill="#57666D">bola de tenis (57 g, 30 m/s)</text>
+    <text x="28" y="105" font-size="11" fill="#5FB8AA">λ ≈ 4×10⁻³⁴ m — nunca difrata</text>
+
+    <line x1="472" y1="131" x2="472" y2="148" stroke="#C1554B" stroke-width="1.5"/>
+    <circle cx="472" cy="124" r="6" fill="#C1554B"/>
+    <text x="360" y="90" font-size="11" fill="#57666D">eletron de 100 eV</text>
+    <text x="300" y="105" font-size="11" fill="#C1554B">λ ≈ 1,2 Å — difrata em cristal</text>
+
+    <text x="60" y="215" font-size="11" fill="#57666D">difracao so aparece quando λ e da ordem do obstaculo</text>
+    <text x="60" y="234" font-size="11" fill="#57666D">por isso o eletron difrata e a bola de tenis nao</text>
+  </svg>
+  <p class="diagram-caption">A escala de \(\lambda = h/p\) é logarítmica. O elétron de \(100\) eV cai bem em cima do espaçamento atômico — por isso difrata num cristal; a bola de tênis fica vinte e quatro ordens de grandeza abaixo de qualquer obstáculo existente.</p>
+  </div>
+
   <div class="derive"><span class="derive-title">Dedução — \(\lambda\) em função da energia cinética</span>
   <p>Nas listas, o dado quase nunca é \(p\); é \(K\) (em eV) ou a tensão de aceleração \(V\). Vale a pena montar a ponte de uma vez.</p>
   <ol>
@@ -4880,6 +5659,56 @@ const TOPICS = [
 
   <h3>Por que acreditar: difração de elétrons</h3>
   <p>A prova decisiva veio em 1927 com Davisson e Germer: um feixe de elétrons refletido num cristal de níquel produziu <strong>máximos e mínimos em ângulos bem definidos</strong> — um padrão de difração, comportamento exclusivo de ondas. Os planos de átomos do cristal fazem o papel da rede de difração, com espaçamento \(d\) da ordem de \(0{,}1\) nm, que é exatamente a escala de \(\lambda\) para elétrons de algumas dezenas de eV.</p>
+  <div class="diagram">
+  <svg viewBox="0 0 560 270" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace">
+    <line x1="40" y1="155" x2="320" y2="155" stroke="#B9AF92" stroke-width="1.5"/>
+    <line x1="40" y1="195" x2="320" y2="195" stroke="#B9AF92" stroke-width="1.5"/>
+    <line x1="40" y1="235" x2="320" y2="235" stroke="#B9AF92" stroke-width="1.5"/>
+    <circle cx="50" cy="155" r="4" fill="#B9AF92"/><circle cx="90" cy="155" r="4" fill="#B9AF92"/><circle cx="130" cy="155" r="4" fill="#B9AF92"/><circle cx="170" cy="155" r="4" fill="#B9AF92"/><circle cx="210" cy="155" r="4" fill="#B9AF92"/><circle cx="250" cy="155" r="4" fill="#B9AF92"/><circle cx="290" cy="155" r="4" fill="#B9AF92"/>
+    <circle cx="50" cy="195" r="4" fill="#B9AF92"/><circle cx="90" cy="195" r="4" fill="#B9AF92"/><circle cx="130" cy="195" r="4" fill="#B9AF92"/><circle cx="170" cy="195" r="4" fill="#B9AF92"/><circle cx="210" cy="195" r="4" fill="#B9AF92"/><circle cx="250" cy="195" r="4" fill="#B9AF92"/><circle cx="290" cy="195" r="4" fill="#B9AF92"/>
+    <circle cx="50" cy="235" r="4" fill="#B9AF92"/><circle cx="90" cy="235" r="4" fill="#B9AF92"/><circle cx="130" cy="235" r="4" fill="#B9AF92"/><circle cx="170" cy="235" r="4" fill="#B9AF92"/><circle cx="210" cy="235" r="4" fill="#B9AF92"/><circle cx="250" cy="235" r="4" fill="#B9AF92"/><circle cx="290" cy="235" r="4" fill="#B9AF92"/>
+
+    <line x1="30" y1="95" x2="170" y2="155" stroke="#C1554B" stroke-width="1.8"/>
+    <path d="M114 131 L103 131 L107 123 Z" fill="#C1554B"/>
+    <line x1="170" y1="155" x2="310" y2="95" stroke="#C1554B" stroke-width="1.8"/>
+    <path d="M296 101 L289 109 L285 101 Z" fill="#C1554B"/>
+    <line x1="30" y1="135" x2="170" y2="195" stroke="#C1554B" stroke-width="1.8"/>
+    <path d="M114 171 L103 171 L107 163 Z" fill="#C1554B"/>
+    <line x1="170" y1="195" x2="310" y2="135" stroke="#C1554B" stroke-width="1.8"/>
+    <path d="M296 141 L289 149 L285 141 Z" fill="#C1554B"/>
+
+    <line x1="170" y1="155" x2="156" y2="189" stroke="#8CA1A6" stroke-width="1" stroke-dasharray="4 4"/>
+    <line x1="170" y1="155" x2="184" y2="189" stroke="#8CA1A6" stroke-width="1" stroke-dasharray="4 4"/>
+    <line x1="156" y1="189" x2="170" y2="195" stroke="#E8A33D" stroke-width="3"/>
+    <line x1="170" y1="195" x2="184" y2="189" stroke="#E8A33D" stroke-width="3"/>
+    <line x1="190" y1="209" x2="180" y2="198" stroke="#E8A33D" stroke-width="1"/>
+    <text x="192" y="216" font-size="11" fill="#B97817">caminho extra</text>
+
+    <path d="M142 143 A30 30 0 0 0 140 155" fill="none" stroke="#57666D" stroke-width="1"/>
+    <text x="126" y="152" font-size="11" fill="#57666D">θ</text>
+    <line x1="290" y1="155" x2="290" y2="195" stroke="#57666D" stroke-width="1"/>
+    <path d="M290 155 L287 163 L293 163 Z" fill="#57666D"/>
+    <path d="M290 195 L287 187 L293 187 Z" fill="#57666D"/>
+    <text x="296" y="179" font-size="11" fill="#57666D">d</text>
+    <text x="28" y="85" font-size="11" fill="#C1554B">feixe de eletrons</text>
+    <rect x="312" y="86" width="14" height="58" fill="#5FB8AA"/>
+    <text x="250" y="80" font-size="11" fill="#5FB8AA">detector</text>
+    <text x="170" y="45" font-size="13" fill="#B97817">2d sen θ = m λ</text>
+    <text x="40" y="255" font-size="11" fill="#57666D">planos atomicos do cristal</text>
+
+    <line x1="344" y1="20" x2="344" y2="250" stroke="#B9AF92" stroke-width="1" stroke-dasharray="4 4"/>
+    <text x="352" y="32" font-size="11" fill="#57666D">intensidade medida</text>
+    <line x1="375" y1="55" x2="375" y2="230" stroke="#1C2B33" stroke-width="1.2"/>
+    <line x1="375" y1="230" x2="545" y2="230" stroke="#1C2B33" stroke-width="1.2"/>
+    <text x="360" y="60" font-size="11" fill="#57666D">I</text>
+    <line x1="462" y1="80" x2="462" y2="230" stroke="#E8A33D" stroke-width="1" stroke-dasharray="4 4"/>
+    <path d="M378 222 L395 222 L410 222 L420 221 L430 221 L437 216 L442 202 L447 175 L452 134 L457 94 L462 77 L467 94 L472 134 L477 175 L482 202 L487 216 L492 219 L497 218 L502 214 L507 207 L511 199 L515 196 L520 199 L524 207 L529 214 L533 218 L538 221" fill="none" stroke="#5FB8AA" stroke-width="2"/>
+    <text x="437" y="248" font-size="11" fill="#B97817">θ Bragg</text>
+    <text x="498" y="248" font-size="11" fill="#57666D">angulo</text>
+  </svg>
+  <p class="diagram-caption">Davisson–Germer: o feixe reflete em planos sucessivos separados por \(d\). O trecho em âmbar é a diferença de caminho \(2d\sin\theta\) — quando ela vale um número inteiro de \(\lambda\), as duas ondas chegam em fase e o detector registra o pico.</p>
+  </div>
+
   <p>A condição dos máximos é a mesma da difração óptica. Para átomos espaçados de \(d\) numa <em>superfície</em>, com incidência perpendicular:</p>
   <div class="keyeq">
   \[ d\sin\theta = m\lambda, \qquad m = 1,2,3,\dots \]
@@ -4935,11 +5764,60 @@ const TOPICS = [
   <p>onde \(h/mc = 2{,}426\) pm é o comprimento de onda Compton — que reaparece aqui como a <strong>escala natural</strong> que separa os dois regimes: \(\lambda \gg h/mc\) é não relativístico, \(\lambda \ll h/mc\) é ultrarrelativístico.</p>
 
   <h3>O princípio da incerteza</h3>
-  <p>Se a partícula é uma onda, a pergunta "onde ela está?" perde o sentido absoluto. Uma onda perfeitamente monocromática (momento exato, \(\Delta p = 0\)) é infinitamente estendida no espaço (\(\Delta x = \infty\)). Para localizar a partícula é preciso somar muitos comprimentos de onda diferentes num pacote — e aí o momento deixa de ser definido. Os dois não são limitações do aparelho: <strong>é uma propriedade de qualquer coisa que seja onda</strong>.</p>
+  <p>Se a partícula é uma onda, a pergunta "onde ela está?" perde o sentido absoluto. Veja os dois extremos:</p>
+  <ul>
+    <li>Uma onda perfeitamente monocromática tem momento exato (\(\Delta p = 0\)) — e é infinitamente estendida no espaço (\(\Delta x = \infty\)).</li>
+    <li>Para localizar a partícula é preciso somar muitos comprimentos de onda diferentes num pacote — e aí o momento deixa de ser definido.</li>
+  </ul>
+  <p>Nenhum dos dois é limitação do aparelho: <strong>é uma propriedade de qualquer coisa que seja onda</strong>.</p>
   <div class="keyeq">
   \[ \Delta x\,\Delta p_x \ \ge\ \frac{h}{4\pi} = \frac{\hbar}{2} \]
   </div>
   <p>Relações idênticas valem para \(y,p_y\) e \(z,p_z\) — mas <strong>não</strong> entre eixos diferentes: \(x\) e \(p_y\) podem ser conhecidos simultaneamente com precisão arbitrária.</p>
+
+  <div class="diagram">
+  <svg viewBox="0 0 560 265" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace">
+    <text x="222" y="16" font-size="12.5" fill="#B97817">Δx · Δp ≥ ℏ/2</text>
+    <line x1="280" y1="26" x2="280" y2="258" stroke="#B9AF92" stroke-width="1" stroke-dasharray="4 4"/>
+
+    <text x="40" y="40" font-size="11" fill="#C1554B">particula bem localizada</text>
+    <text x="40" y="62" font-size="11" fill="#57666D">posicao</text>
+    <line x1="35" y1="112" x2="255" y2="112" stroke="#1C2B33" stroke-width="1.2"/>
+    <text x="260" y="116" font-size="11" fill="#57666D">x</text>
+    <path d="M35 112 L109 111 L112 111 L115 110 L118 108 L121 105 L124 100 L127 94 L130 87 L133 79 L136 70 L139 64 L142 59 L145 57 L148 59 L151 64 L154 70 L157 79 L160 87 L163 94 L166 100 L169 105 L172 108 L175 110 L178 111 L181 111 L255 112" fill="none" stroke="#C1554B" stroke-width="2"/>
+    <line x1="133" y1="122" x2="157" y2="122" stroke="#E8A33D" stroke-width="1.8"/>
+    <path d="M133 122 L140 119 L140 125 Z" fill="#E8A33D"/>
+    <path d="M157 122 L150 119 L150 125 Z" fill="#E8A33D"/>
+    <text x="112" y="136" font-size="11" fill="#B97817">Δx pequeno</text>
+
+    <text x="40" y="182" font-size="11" fill="#57666D">momento</text>
+    <line x1="35" y1="232" x2="255" y2="232" stroke="#1C2B33" stroke-width="1.2"/>
+    <text x="260" y="236" font-size="11" fill="#57666D">p</text>
+    <path d="M35 232 L37 232 L46 231 L55 230 L64 229 L73 227 L82 224 L91 220 L100 216 L109 210 L118 205 L127 200 L136 197 L145 196 L154 197 L163 200 L172 205 L181 210 L190 216 L199 220 L208 224 L217 227 L226 229 L235 230 L244 231 L253 232 L255 232" fill="none" stroke="#C1554B" stroke-width="2"/>
+    <line x1="109" y1="242" x2="181" y2="242" stroke="#E8A33D" stroke-width="1.8"/>
+    <path d="M109 242 L116 239 L116 245 Z" fill="#E8A33D"/>
+    <path d="M181 242 L174 239 L174 245 Z" fill="#E8A33D"/>
+    <text x="116" y="256" font-size="11" fill="#B97817">Δp grande</text>
+
+    <text x="310" y="40" font-size="11" fill="#5FB8AA">particula espalhada</text>
+    <line x1="305" y1="112" x2="525" y2="112" stroke="#1C2B33" stroke-width="1.2"/>
+    <text x="530" y="116" font-size="11" fill="#57666D">x</text>
+    <path d="M305 112 L307 112 L316 111 L325 110 L334 109 L343 107 L352 104 L361 100 L370 96 L379 90 L388 85 L397 80 L406 77 L415 76 L424 77 L433 80 L442 85 L451 90 L460 96 L469 100 L478 104 L487 107 L496 109 L505 110 L514 111 L523 112 L525 112" fill="none" stroke="#5FB8AA" stroke-width="2"/>
+    <line x1="379" y1="122" x2="451" y2="122" stroke="#E8A33D" stroke-width="1.8"/>
+    <path d="M379 122 L386 119 L386 125 Z" fill="#E8A33D"/>
+    <path d="M451 122 L444 119 L444 125 Z" fill="#E8A33D"/>
+    <text x="386" y="136" font-size="11" fill="#B97817">Δx grande</text>
+
+    <line x1="305" y1="232" x2="525" y2="232" stroke="#1C2B33" stroke-width="1.2"/>
+    <text x="530" y="236" font-size="11" fill="#57666D">p</text>
+    <path d="M305 232 L379 231 L382 231 L385 230 L388 228 L391 225 L394 220 L397 214 L400 207 L403 199 L406 190 L409 184 L412 179 L415 177 L418 179 L421 184 L424 190 L427 199 L430 207 L433 214 L436 220 L439 225 L442 228 L445 230 L448 231 L451 231 L525 232" fill="none" stroke="#5FB8AA" stroke-width="2"/>
+    <line x1="403" y1="242" x2="427" y2="242" stroke="#E8A33D" stroke-width="1.8"/>
+    <path d="M403 242 L410 239 L410 245 Z" fill="#E8A33D"/>
+    <path d="M427 242 L420 239 L420 245 Z" fill="#E8A33D"/>
+    <text x="382" y="256" font-size="11" fill="#B97817">Δp pequeno</text>
+  </svg>
+  <p class="diagram-caption">O mesmo estado visto em posição (acima) e em momento (abaixo). Estreitar o pacote em \(x\) obriga a somar muitos momentos diferentes, alargando o pacote em \(p\) — e vice-versa. O produto \(\Delta x\,\Delta p\) nunca desce abaixo de \(\hbar/2\).</p>
+  </div>
 
   <div class="derive"><span class="derive-title">De onde vem — o argumento da fenda única</span>
   <p>Não é uma demonstração rigorosa, mas mostra que o resultado é inevitável, e usa só o que você já sabe de difração.</p>
@@ -4962,7 +5840,8 @@ const TOPICS = [
   <div class="keyeq">
   \[ \Delta E\,\Delta t \ \gtrsim\ \frac{h}{4\pi} \]
   </div>
-  <p>Ela tem uma aplicação direta em física de partículas: um estado instável que vive um tempo \(\tau\) não pode ter energia de repouso perfeitamente definida. Medindo a <em>largura</em> \(\Delta E\) do pico de massa, estima-se a vida média — é assim que se mede o tempo de vida de partículas que decaem em \(10^{-25}\) s, tempo curto demais para qualquer cronômetro.</p>
+  <p>Ela tem uma aplicação direta em física de partículas: um estado instável que vive um tempo \(\tau\) não pode ter energia de repouso perfeitamente definida.</p>
+  <p>Medindo a <em>largura</em> \(\Delta E\) do pico de massa, estima-se a vida média. É assim que se mede o tempo de vida de partículas que decaem em \(10^{-25}\) s — curto demais para qualquer cronômetro.</p>
   <p class="flag">Convenções: a rigor, o piso de Heisenberg é \(\hbar/2 = h/4\pi\). Em física de partículas, porém, define-se a vida média pela largura de decaimento como \(\tau = \hbar/\Gamma\), sem o fator 2. As duas estimativas diferem por um fator 2 — em problemas que pedem "estime", ambas são aceitáveis; declare qual você usou.</p>
 
   <div class="derive"><span class="derive-title">Aplicação — por que o átomo não colapsa</span>
@@ -4976,7 +5855,8 @@ const TOPICS = [
       \[ r_{\min} = \frac{4\pi\epsilon_0\hbar^{2}}{me^{2}} = a_0 = 5{,}29\times10^{-11}\ \text{m} \]</li>
     <li>E o valor da energia nesse ponto é exatamente \(-13{,}6\) eV.</li>
   </ol>
-  <p>Ou seja: <strong>o tamanho do átomo é fixado pelo princípio da incerteza</strong>. Comprimir o elétron mais que \(a_0\) custa mais energia cinética do que se ganha em atração — o colapso é energeticamente proibido. A matéria é estável porque a mecânica quântica não deixa nada ficar parado num ponto.</p>
+  <p>Ou seja: <strong>o tamanho do átomo é fixado pelo princípio da incerteza</strong>. Comprimir o elétron mais que \(a_0\) custa mais energia cinética do que se ganha em atração — o colapso é energeticamente proibido.</p>
+  <p>A matéria é estável porque a mecânica quântica não deixa nada ficar parado num ponto.</p>
   </div>
 
   <div class="tips"><span class="tips-title">Na prova</span>
@@ -4991,14 +5871,22 @@ const TOPICS = [
   </div>
 
   <h3>Constantes e atalhos</h3>
-  <ul>
-    <li>\(h = 6{,}626\times10^{-34}\) J·s \(\;\cdot\;\) \(\hbar = 1{,}055\times10^{-34}\) J·s \(\;\cdot\;\) \(h/4\pi = 5{,}27\times10^{-35}\) J·s</li>
-    <li>Elétron não relativístico: \(\lambda = \dfrac{1{,}226\ \text{nm}}{\sqrt{K_{[\text{eV}]}}}\)</li>
-    <li>\(h/m_ec = 2{,}426\) pm (fronteira entre regime clássico e relativístico para \(\lambda\))</li>
-    <li>\(a_0 = 5{,}29\times10^{-11}\) m \(\;\cdot\;\) \(p_1 = m_ev_1 = 2{,}0\times10^{-24}\) kg·m/s (órbita \(n=1\))</li>
-    <li>\(m_e = 9{,}11\times10^{-31}\) kg \(\;\cdot\;\) \(m_p = 1{,}673\times10^{-27}\) kg \(\;\cdot\;\) \(m_\alpha = 6{,}64\times10^{-27}\) kg</li>
-    <li>Espaçamento atômico típico em cristais: \(\approx0{,}1\)–\(0{,}3\) nm</li>
-  </ul>
+  <table class="consts">
+    <thead><tr><th>Grandeza</th><th>Valor</th><th>Quando usar</th></tr></thead>
+    <tbody>
+      <tr><td>\(h\)</td><td>\(6{,}626\times10^{-34}\) J·s</td><td>\(\lambda = h/p\)</td></tr>
+      <tr><td>\(\hbar\)</td><td>\(1{,}055\times10^{-34}\) J·s</td><td>\(h/2\pi\)</td></tr>
+      <tr><td>\(h/4\pi\)</td><td>\(5{,}27\times10^{-35}\) J·s</td><td>piso do princípio da incerteza</td></tr>
+      <tr><td>\(h/m_ec\)</td><td>\(2{,}426\) pm</td><td>fronteira entre regime clássico e relativístico para \(\lambda\)</td></tr>
+      <tr><td>\(a_0\)</td><td>\(5{,}29\times10^{-11}\) m</td><td>escala de comparação para \(\Delta x\) atômico</td></tr>
+      <tr><td>\(p_1 = m_ev_1\)</td><td>\(2{,}0\times10^{-24}\) kg·m/s</td><td>momento do elétron na órbita \(n=1\)</td></tr>
+      <tr><td>\(m_e\)</td><td>\(9{,}11\times10^{-31}\) kg</td><td>massa do elétron</td></tr>
+      <tr><td>\(m_p\)</td><td>\(1{,}673\times10^{-27}\) kg</td><td>massa do próton</td></tr>
+      <tr><td>\(m_\alpha\)</td><td>\(6{,}64\times10^{-27}\) kg</td><td>massa da partícula \(\alpha\)</td></tr>
+      <tr><td>Espaçamento atômico</td><td>\(\approx0{,}1\)–\(0{,}3\) nm</td><td>valor típico em cristais — difração de elétrons</td></tr>
+    </tbody>
+  </table>
+  <p class="flag">Atalho para elétron não relativístico: \(\lambda = \dfrac{1{,}226\ \text{nm}}{\sqrt{K_{[\text{eV}]}}}\), com \(K\) em elétron-volts.</p>
   `,
   exercises:[
     {tag:'lista', src:'Lista 2', num:'39.6',
@@ -5269,11 +6157,69 @@ const TOPICS = [
 ];
 
 /* ---------------------------------------------------------- RENDER ---------------------------------------------------------- */
+
+/* Divide o HTML de teoria em blocos, um por <h3>.
+   Cada bloco vira um card .subtopic próprio, com número e id estáveis. */
+function splitTheory(html){
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  const groups = [];
+  let current = null;
+  Array.from(tmp.childNodes).forEach(node=>{
+    if(node.nodeType === 1 && node.tagName === 'H3'){
+      current = {heading:node, nodes:[]};
+      groups.push(current);
+    }else{
+      if(!current){
+        // conteúdo solto antes do primeiro h3 — vira um bloco de abertura sem título
+        current = {heading:null, nodes:[]};
+        groups.push(current);
+      }
+      current.nodes.push(node);
+    }
+  });
+  // descarta blocos que só têm espaço em branco
+  return groups.filter(g=>{
+    if(g.heading) return true;
+    return g.nodes.some(n=> n.nodeType === 1 || (n.textContent||'').trim() !== '');
+  });
+}
+
+/* Rótulo curto para a subnav: sem numeração, sem LaTeX, cortado no travessão. */
+function navLabel(h3, fallback){
+  if(!h3) return fallback;
+  let t = (h3.textContent || '')
+    .replace(/\\\([\s\S]*?\\\)/g, '')
+    .replace(/\\\[[\s\S]*?\\\]/g, '')
+    .split(/\s+[—–]\s+/)[0]
+    .replace(/^\s*\d+[.)]\s*/, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if(t.length > 30) t = t.slice(0, 29).replace(/[\s,.;:]+$/, '') + '…';
+  return t || fallback;
+}
+
+/* Mantém o chip ativo visível na barra rolável, sem mexer no scroll da página. */
+function ensureChipVisible(btn){
+  const box = btn.closest('.page-subnav .wrap');
+  if(!box) return;
+  const left = btn.offsetLeft;
+  const right = left + btn.offsetWidth;
+  if(left < box.scrollLeft){
+    box.scrollTo({left: Math.max(0, left - 16), behavior:'smooth'});
+  }else if(right > box.scrollLeft + box.clientWidth){
+    box.scrollTo({left: right - box.clientWidth + 16, behavior:'smooth'});
+  }
+}
+
 function renderAll(){
   const nav = document.getElementById('navlist');
   const container = document.getElementById('topics-container');
+  const allSubtopics = [];
 
-  TOPICS.forEach(topic=>{
+  TOPICS.forEach((topic, ti)=>{
+    const topicNum = ti + 1;
+
     // nav item
     const li = document.createElement('li');
     const a = document.createElement('button');
@@ -5296,25 +6242,83 @@ function renderAll(){
     const banner = document.createElement('div');
     banner.className = 'topic-banner';
     banner.innerHTML = `
-      <div class="icon-wrap">${ICONS[topic.icon]}</div>
-      <div>
-        <h2>${topic.label}</h2>
-        <div class="count">${topic.exercises.length} exercícios · ${topic.exercises.filter(e=>e.exam).length} de prova</div>
+      <div class="wrap">
+        <div class="icon-wrap">${ICONS[topic.icon]}</div>
+        <div>
+          <span class="topic-num">Tópico ${String(topicNum).padStart(2,'0')}</span>
+          <h2>${topic.label}</h2>
+          <div class="count">${topic.exercises.length} exercícios · ${topic.exercises.filter(e=>e.exam).length} de prova</div>
+        </div>
       </div>`;
     section.appendChild(banner);
+
+    // ---- teoria dividida em cards + subnav ----
+    const groups = splitTheory(topic.theory);
+
+    const subnav = document.createElement('nav');
+    subnav.className = 'page-subnav';
+    const subnavWrap = document.createElement('div');
+    subnavWrap.className = 'wrap';
+    const psnLinks = document.createElement('div');
+    psnLinks.className = 'psn-links';
+    subnavWrap.appendChild(psnLinks);
+    subnav.appendChild(subnavWrap);
+    section.appendChild(subnav);
 
     const body = document.createElement('div');
     body.className = 'topic-body';
 
-    const theoryDiv = document.createElement('div');
-    theoryDiv.className = 'theory';
-    theoryDiv.innerHTML = topic.theory;
-    body.appendChild(theoryDiv);
+    const stack = document.createElement('div');
+    stack.className = 'theory-stack wrap';
+
+    groups.forEach((g, gi)=>{
+      const subId = `${topic.id}-s${gi+1}`;
+
+      const article = document.createElement('article');
+      article.className = 'subtopic';
+      article.id = subId;
+
+      if(g.heading){
+        // o número agora mora na tarja; tira o "1." duplicado do título
+        g.heading.innerHTML = g.heading.innerHTML.replace(/^\s*\d+[.)]\s*/, '');
+        const head = document.createElement('div');
+        head.className = 'st-head';
+        const num = document.createElement('span');
+        num.className = 'st-num';
+        num.textContent = `${topicNum}.${gi+1}`;
+        head.appendChild(num);
+        head.appendChild(g.heading);
+        article.appendChild(head);
+      }
+
+      const stBody = document.createElement('div');
+      stBody.className = 'st-body';
+      g.nodes.forEach(n=>stBody.appendChild(n));
+      article.appendChild(stBody);
+      stack.appendChild(article);
+
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.dataset.target = subId;
+      chip.textContent = navLabel(g.heading, 'Abertura');
+      chip.addEventListener('click', ()=>{
+        const t = document.getElementById(subId);
+        if(t) t.scrollIntoView({behavior:'smooth', block:'start'});
+      });
+      psnLinks.appendChild(chip);
+
+      allSubtopics.push(article);
+    });
+
+    body.appendChild(stack);
+
+    const exWrap = document.createElement('div');
+    exWrap.className = 'wrap';
 
     const exlabel = document.createElement('div');
     exlabel.className = 'exlist-label';
     exlabel.textContent = 'Exercícios — listas primeiro, provas por último';
-    body.appendChild(exlabel);
+    exWrap.appendChild(exlabel);
 
     topic.exercises.forEach(ex=>{
       const card = document.createElement('div');
@@ -5348,22 +6352,28 @@ function renderAll(){
 
       const panel = document.createElement('div');
       panel.className = 'res-panel';
+      const resWrap = document.createElement('div');
+      resWrap.className = 'res-wrap';
       const inner = document.createElement('div');
       inner.className = 'res-inner';
       inner.innerHTML = ex.resolution;
-      panel.appendChild(inner);
+      resWrap.appendChild(inner);
+      panel.appendChild(resWrap);
 
+      btn.setAttribute('aria-expanded', 'false');
       btn.addEventListener('click', ()=>{
         const isOpen = panel.classList.toggle('open');
         btn.classList.toggle('open', isOpen);
+        btn.setAttribute('aria-expanded', String(isOpen));
         btn.innerHTML = (isOpen ? 'Ocultar' : 'Resolução') + ' <svg viewBox="0 0 20 20" fill="currentColor"><path d="M5 7l5 6 5-6z"/></svg>';
       });
 
       card.appendChild(btn);
       card.appendChild(panel);
-      body.appendChild(card);
+      exWrap.appendChild(card);
     });
 
+    body.appendChild(exWrap);
     section.appendChild(body);
     container.appendChild(section);
   });
@@ -5379,7 +6389,16 @@ function renderAll(){
     });
   }
 
-  // active nav highlight
+  // rodapé da sidebar com números reais
+  const totalEx = TOPICS.reduce((n,t)=>n + t.exercises.length, 0);
+  const totalProva = TOPICS.reduce((n,t)=>n + t.exercises.filter(e=>e.exam).length, 0);
+  const foot = document.querySelector('.sidebar-foot');
+  if(foot){
+    foot.innerHTML = `${TOPICS.length} tópicos · ${allSubtopics.length} seções<br>`
+      + `${totalEx} exercícios (${totalProva} de prova)<br>Listas 1–2 · P1 2023–2025`;
+  }
+
+  // active nav highlight (tópico)
   const navLinks = Array.from(document.querySelectorAll('.navlist button.navlink'));
   const sections = TOPICS.map(t=>document.getElementById(t.id));
   const obs = new IntersectionObserver((entries)=>{
@@ -5393,6 +6412,30 @@ function renderAll(){
   }, {rootMargin:'-10% 0px -70% 0px', threshold:0});
   sections.forEach(s=>obs.observe(s));
   if(navLinks[0]) navLinks[0].classList.add('active');
+
+  // scrollspy da subnav (subtópico)
+  const subnavH = parseInt(getComputedStyle(document.documentElement)
+    .getPropertyValue('--subnav-h'), 10) || 50;
+  const chips = Array.from(document.querySelectorAll('.psn-links button'));
+  const chipFor = id => chips.find(c=>c.dataset.target === id);
+
+  const subObs = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(!entry.isIntersecting) return;
+      const chip = chipFor(entry.target.id);
+      if(!chip) return;
+      const group = chip.parentElement;
+      Array.from(group.children).forEach(c=>c.classList.remove('active'));
+      chip.classList.add('active');
+      ensureChipVisible(chip);
+    });
+  }, {rootMargin:`-${subnavH + 12}px 0px -60% 0px`, threshold:0});
+  allSubtopics.forEach(s=>subObs.observe(s));
+
+  // primeiro chip de cada subnav já nasce ativo
+  document.querySelectorAll('.psn-links').forEach(g=>{
+    if(g.firstElementChild) g.firstElementChild.classList.add('active');
+  });
 }
 
 document.addEventListener('DOMContentLoaded', renderAll);
