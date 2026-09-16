@@ -503,8 +503,44 @@
     padding:var(--s7) 20px var(--s8) 20px;
   }
 
+  /* ---------- módulo de provas ---------- */
+  .year-head{
+    display:flex; align-items:baseline; gap:var(--s4); flex-wrap:wrap;
+    padding-top:var(--s6); margin:0 0 var(--s4) 0;
+    border-top:1px solid rgba(255,255,255,0.08);
+  }
+  .exlist-label.bare{border-top:none; padding-top:0;}
+  .year-head.first{border-top:none; padding-top:var(--s3);}
+  .year-head .yr{
+    font-family:'Fraunces', serif; font-weight:700;
+    font-size:2.1rem; color:#F3EFE3; line-height:1;
+    letter-spacing:-0.01em;
+  }
+  .year-head .yr-meta{
+    font-family:'IBM Plex Mono', monospace; font-size:0.75rem;
+    letter-spacing:0.08em; text-transform:uppercase; color:#7FA3A0;
+    line-height:1.5;
+  }
+  .badge.topico{background:#DCEDEA; color:var(--teal-deep);}
+  .formulario{
+    background:var(--paper); border:1px solid var(--paper-line);
+    border-left:4px solid var(--teal-deep);
+    border-radius:12px; padding:var(--s5); margin-top:var(--s3);
+  }
+  .formulario h4{
+    font-family:'IBM Plex Mono', monospace; font-size:0.74rem;
+    letter-spacing:0.1em; text-transform:uppercase; color:var(--teal-deep);
+    margin:var(--s5) 0 var(--s2) 0; font-weight:600;
+  }
+  .formulario h4:first-child{margin-top:0;}
+  .formulario p{margin:var(--s2) 0;}
+  .formulario .fnote{font-size:0.9rem; color:var(--ink-soft); font-style:italic;}
+  .fgrid{display:grid; grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); gap:0 var(--s5);}
+
   @media (max-width: 880px){
     :root{--gutter:20px; --subnav-h:46px;}
+    .year-head .yr{font-size:1.65rem;}
+    .formulario{padding:var(--s4);}
     body{font-size:16.5px;}
     .app{flex-direction:column;}
     .sidebar{position:relative; width:100%; height:auto; flex:none;}
@@ -535,7 +571,7 @@
   <aside class="sidebar">
     <div class="brand"><span>ESCOLA POLITÉCNICA · USP</span>Física IV — Guia</div>
     <ul class="navlist" id="navlist"></ul>
-    <div class="sidebar-foot">6 tópicos<br>≈90 exercícios<br>Listas 1–2 · P1 2023–2025</div>
+    <div class="sidebar-foot">6 tópicos<br>≈90 exercícios<br>Listas 1–2 · P1 2022–2025</div>
   </aside>
 
   <main>
@@ -543,11 +579,11 @@
       <div class="wrap">
         <div class="eyebrow">Física IV · 4323204</div>
         <h1>Ondas, Relatividade<br>e Física Quântica</h1>
-        <p class="lede">Todo o conteúdo das Listas 1 e 2 e das três provas P1 (2023, 2024 e 2025), organizado por tópico. Cada exercício termina com um botão <strong>Resolução</strong> — clique para revelar a resposta. As questões de prova aparecem sempre por último em cada tópico.</p>
+        <p class="lede">Todo o conteúdo das Listas 1 e 2 e das quatro provas P1 (2022, 2023, 2024 e 2025), organizado por tópico. Cada exercício termina com um botão <strong>Resolução</strong> — clique para revelar a resposta. As questões de prova aparecem por último em cada tópico e, no fim do guia, o módulo <strong>Provas P1</strong> remonta cada prova inteira na ordem original, com o formulário oficial.</p>
         <div class="sources">
           <span class="source-chip">Lista 1 — Interferência, Difração, Relatividade</span>
           <span class="source-chip">Lista 2 — Relatividade, Fótons, Bohr, Ondas de matéria</span>
-          <span class="source-chip">P1 2023 · P1 2024 · P1 2025</span>
+          <span class="source-chip">P1 2022 · 2023 · 2024 · 2025</span>
         </div>
       </div>
     </header>
@@ -606,6 +642,13 @@ const ICONS = {
     <circle cx="72" cy="50" r="3.5" fill="currentColor" stroke="none"/>
     <circle cx="84" cy="50" r="3.5" fill="currentColor" stroke="none"/>
     <circle cx="94" cy="50" r="3.5" fill="currentColor" stroke="none"/>
+  </svg>`,
+  exam: r`<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 12h34l22 22v54a4 4 0 0 1-4 4H22a4 4 0 0 1-4-4V16a4 4 0 0 1 4-4z" opacity="0.5"/>
+    <path d="M56 12v22h22" opacity="0.5"/>
+    <line x1="32" y1="48" x2="58" y2="48"/>
+    <line x1="32" y1="62" x2="48" y2="62"/>
+    <path d="M54 74l9 9 17-19" stroke-width="6"/>
   </svg>`
 };
 
@@ -1338,6 +1381,57 @@ const TOPICS = [
       <p>Repare que \(441\) e \(551\text{ nm}\) não são exatamente "complementares" no sentido de somar branco, porque o filme só deixa passar um punhado de ordens no visível. Ainda assim, é a mesma física que faz uma mancha de óleo mudar de cor conforme a espessura e o ângulo de observação.</p>
       <p>Conferindo pelos números: \(1102/441 = 2{,}5\) (semi-inteiro \(\Rightarrow\) reflexão construtiva ✓) e \(1102/551 = 2{,}0\) (inteiro \(\Rightarrow\) reflexão destrutiva, logo transmissão construtiva ✓).</p>
       <p><strong>Resposta: (a) \(441\text{ nm}\) (azul-violeta); (b) \(551\text{ nm}\) (verde).</strong></p>`},
+
+    {tag:'prova', exam:true, src:'P1 · 2022', num:'Questão 1',
+      statement:r`Uma película de espessura \(t\) e índice \(n_p=1{,}2\) é depositada sobre uma superfície de vidro de índice \(n_v=1{,}3\). Luz de comprimento de onda \(\lambda\) (no ar, \(n\approx1\)) incide normalmente sobre a película. (a) Calcule o comprimento de onda da luz na película e no vidro. (b) Qual a menor espessura \(t\) para que o raio refletido pela película interfira <u>destrutivamente</u> com o raio refletido pelo vidro, para \(\lambda=600\text{ nm}\)? (c) Se \(t=600\text{ nm}\), quais \(\lambda\) apresentam interferência <u>construtiva</u> no visível (400–700 nm)?`,
+      resolution:r`<span class="tag">Solução oficial</span>
+      <p><strong>Por que esta questão é uma pegadinha.</strong> Filme fino é o assunto em que mais gente erra por decorar a fórmula em vez de contar as reflexões. Aqui os índices são <strong>crescentes</strong>: \(1 < n_p=1{,}2 < n_v=1{,}3\). Isso muda tudo em relação ao caso "clássico" de filme sobre um meio menos denso. Faça sempre o mesmo ritual: <em>desenhe os dois raios, marque quem ganha \(\pi\), some os caminhos</em>.</p>
+
+      <p><strong>(a) Comprimentos de onda nos meios</strong></p>
+      <p>Ao passar para um meio de índice \(n\), a frequência <em>não muda</em> (quem a impõe é a fonte), mas a velocidade cai para \(v=c/n\). Como \(\lambda = v/f\):</p>
+      <div class="keyeq">\[ \lambda_p = \frac{\lambda}{n_p} = \frac{\lambda}{1{,}2}, \qquad \lambda_v = \frac{\lambda}{n_v} = \frac{\lambda}{1{,}3} \]</div>
+      <p>Para \(\lambda=600\text{ nm}\): \(\lambda_p = 500\text{ nm}\) e \(\lambda_v \approx 462\text{ nm}\). A luz "encurta" ao entrar no material — é isso que faz um caminho geométrico pequeno valer muitos comprimentos de onda.</p>
+
+      <p><strong>(b) Espessura mínima para interferência destrutiva</strong></p>
+      <div class="derive"><span class="derive-title">Dedução — contando as reflexões uma a uma</span>
+      <ol>
+        <li><strong>Raio 1</strong> reflete na interface <em>ar → película</em>. Vai de \(n=1\) para \(n_p=1{,}2\): reflexão em meio <strong>mais</strong> refringente, logo ganha o salto de fase de \(\pi\).
+        \[ \phi_1 = \pi \]</li>
+        <li><strong>Raio 2</strong> entra na película, atravessa \(t\), reflete na interface <em>película → vidro</em> e volta atravessando \(t\) de novo. Vai de \(n_p=1{,}2\) para \(n_v=1{,}3\): também é reflexão em meio mais refringente, então <strong>também</strong> ganha \(\pi\). Além disso acumula a fase de percurso \(2t\) <em>dentro da película</em>, onde o número de onda é \(k_p = 2\pi/\lambda_p = 2\pi n_p/\lambda\):
+        \[ \phi_2 = \pi + \frac{2\pi}{\lambda/n_p}\,(2t) \]</li>
+        <li>Subtraia. <strong>Os dois \(\pi\) se cancelam</strong> — este é o coração da questão:
+        \[ \Delta\phi = \phi_2 - \phi_1 = \frac{4\pi n_p t}{\lambda} \]</li>
+      </ol>
+      </div>
+      <p class="flag">Guarde a consequência: como as duas reflexões sofrem o mesmo salto, <strong>não existe o meio comprimento de onda extra</strong>. As condições ficam "invertidas" em relação ao filme de sabão no ar (onde só a primeira reflexão inverte). Aqui: <em>construtiva</em> quando \(2n_pt = m\lambda\), <em>destrutiva</em> quando \(2n_pt = \left(m+\tfrac12\right)\lambda\).</p>
+      <p><em>Impor destrutiva.</em> Cancelamento total pede \(\Delta\phi\) ímpar de \(\pi\):</p>
+      <p>\[ \Delta\phi = (2m+1)\pi,\quad m=0,1,2,\dots \;\Longrightarrow\; \frac{4\pi n_p t}{\lambda} = (2m+1)\pi \;\Longrightarrow\; t = \frac{(2m+1)\lambda}{4n_p} \]</p>
+      <p><em>Menor espessura.</em> \(m=0\):</p>
+      <p>\[ t_{\min} = \frac{\lambda}{4n_p} = \frac{600\text{ nm}}{4(1{,}2)} = \frac{600}{4{,}8} \]</p>
+      <div class="keyeq">\[ t_{\min} = 125\text{ nm} \]</div>
+      <p><strong>Sanity check.</strong> \(t_{\min}=\lambda_p/4 = 500/4 = 125\text{ nm}\) ✓ — um <em>quarto de onda dentro do material</em>. Faz sentido: a ida e volta somam meia onda, que é exatamente a defasagem que cancela quando não há salto líquido de \(\pi\).</p>
+
+      <p><strong>(c) Comprimentos de onda construtivos no visível, com \(t=600\text{ nm}\)</strong></p>
+      <p><em>Impor construtiva:</em> \(\Delta\phi = 2\pi m\), com \(m=1,2,3,\dots\)</p>
+      <p>\[ \frac{4\pi n_p t}{\lambda} = 2\pi m \;\Longrightarrow\; \lambda = \frac{2 n_p t}{m} = \frac{2(1{,}2)(600\text{ nm})}{m} = \frac{1440\text{ nm}}{m} \]</p>
+      <p>Varra \(m\) e veja quem cai na janela 400–700 nm:</p>
+      <table class="consts">
+        <tr><th>\(m\)</th><th>1</th><th>2</th><th>3</th><th>4</th></tr>
+        <tr><td>\(\lambda = 1440/m\) (nm)</td><td>1440</td><td>720</td><td>480</td><td>360</td></tr>
+        <tr><td>visível?</td><td>não (IV)</td><td>não (por 20 nm)</td><td><strong>sim</strong></td><td>não (UV)</td></tr>
+      </table>
+      <div class="keyeq">\[ \lambda = 480\text{ nm} \quad(\text{azul}) \]</div>
+      <p><strong>Sanity check.</strong> O \(m=2\) dá 720 nm e fica de fora <em>por pouco</em> — é o tipo de valor que a banca escolhe de propósito para ver se você checa o intervalo em vez de despejar a lista. E o espaçamento entre ordens consecutivas encurta conforme \(m\) cresce (1440, 720, 480, 360): por isso só uma cabe no visível, apesar de haver infinitas soluções.</p>
+
+      <div class="tips"><span class="tips-title">Na prova</span>
+      <ul>
+        <li><strong>Nunca decore "a fórmula do filme fino".</strong> Conte as reflexões: cada uma que vai para um meio de índice <em>maior</em> ganha \(\pi\). Dois saltos \(\Rightarrow\) se cancelam; um salto só \(\Rightarrow\) sobra o \(\lambda/2\) extra.</li>
+        <li>O caminho extra é \(2n_p t\) (<em>ida e volta</em>, dentro do filme). O fator 2 e o \(n_p\) andam sempre juntos.</li>
+        <li>Este arranjo (\(1<n_p<n_v\)) é o da <strong>camada antirreflexo</strong> de lentes: o quarto de onda \(t=\lambda/(4n_p)\) <em>apaga</em> a reflexão. Se a questão pedisse "revestimento que minimiza o reflexo", a resposta seria a mesma conta do item (b).</li>
+        <li>Em (c), sempre monte a tabelinha de \(m\) e teste a janela. Responder "1440, 720, 480, 360 nm" sem filtrar custa a questão.</li>
+        <li>O índice do vidro \(n_v\) só entrou no item (a) e para decidir o <em>sinal</em> do segundo salto. Ele não aparece na condição de interferência — quem conta é \(n_p\), o meio onde o caminho extra é percorrido.</li>
+      </ul>
+      </div>`},
 
     {tag:'prova', exam:true, src:'P1 · 2023', num:'Questão 1',
       statement:r`No experimento de Young, duas fontes idênticas e coerentes, separadas por \(d\), produzem franjas num anteparo a \(D\gg d\). Em fase, \(I=I_0\cos^2(\phi/2)\). (a) Se as fontes emitirem em oposição de fase (\(\Delta=\pi\)), há interferência construtiva ou destrutiva no centro? (b) Escreva \(I(\phi)\) nesse caso. (c) Com as fontes em fase, mas com dois comprimentos de onda \(\lambda_1,\lambda_2\) tais que \(\lambda_2/\lambda_1=4/3\): qual o primeiro máximo de \(\lambda_1\) (a partir do central) que coincide com um mínimo de \(\lambda_2\)?`,
@@ -2376,6 +2470,56 @@ const TOPICS = [
         <li>Padronize tudo em metros <em>antes</em> de dividir. Misturar km com m em \(\theta=1{,}22\lambda/D\) é o erro que mais custa nota aqui.</li>
         <li>\(\theta_{\min}\) depende só do instrumento (\(\lambda\) e \(D_{\text{ap}}\)); o alvo entra só no fator \(L\). Calcule \(\theta_{\min}\) uma vez e reaproveite, como no item (c).</li>
         <li>Se o problema pedir "maior distância", isole \(L\); se pedir "menor detalhe", isole \(s\). É a mesma equação lida em duas direções.</li>
+      </ul>
+      </div>`},
+
+    {tag:'prova', exam:true, src:'P1 · 2022', num:'Questão 2',
+      statement:r`Uma onda plana de \(\lambda=500\text{ nm}\) incide em um anteparo com duas fendas de largura \(a\) separadas por \(d\); a tela está a \(L=2\text{ m}\). O gráfico de intensidade medido na tela em função de \(\theta\) mostra um grupo central de 11 franjas cujo envelope se anula em \(\theta=0{,}002\text{ rad}\) (a franja de ordem 6 está ausente). Use \(\operatorname{sen}\theta\approx\tan\theta\approx\theta\). (a) A relação entre \(d\) e \(a\). (b) A largura \(a\) em milímetros. (c) A distância \(d\) em milímetros.`,
+      resolution:r`<span class="tag">Solução oficial</span>
+      <p><strong>O que a questão realmente testa.</strong> Não é álgebra — é <em>leitura de gráfico</em>. Toda a informação está em dois números que você extrai da figura: <strong>onde o envelope morre</strong> e <strong>quantas franjas cabem dentro dele</strong>. Com esses dois, os três itens caem em três linhas.</p>
+
+      <div class="derive"><span class="derive-title">Como ler o gráfico (faça isso antes de escrever qualquer equação)</span>
+      <ol>
+        <li><strong>Ache o zero do envelope.</strong> Percorra o gráfico do centro para fora: os picos vão diminuindo (1 · 0,91 · 0,68 · 0,41 · 0,17 · 0,04) e a curva encosta no eixo e <em>fica</em> lá. Esse ponto é o <strong>primeiro mínimo de difração</strong>. Na figura ele está sobre a linha tracejada de \(\theta = 0{,}002\text{ rad}\). Depois dele começa um lobo secundário, bem mais baixo.</li>
+        <li><strong>Conte as franjas do lobo central.</strong> São 11 picos (um central e 5 de cada lado). Numerando a partir do centro, o pico mais externo visível é \(m=5\) — ou seja, a franja \(m=6\) <em>deveria</em> estar exatamente em \(\theta=0{,}002\), mas foi apagada pelo envelope. É uma <strong>ordem faltante</strong>.</li>
+        <li><strong>Traduza.</strong> "Máximo de interferência \(m=6\) no mesmo ângulo do mínimo de difração \(m'=1\)" — é tudo o que você precisa.</li>
+      </ol>
+      </div>
+
+      <p><strong>(a) Relação entre \(d\) e \(a\)</strong></p>
+      <p>Escreva as duas condições <em>no mesmo ângulo</em> \(\theta\) e divida:</p>
+      <p>\[
+      \begin{aligned}
+      \text{máx. de interferência } m=6:&\quad d\operatorname{sen}\theta = 6\lambda\\
+      \text{mín. de difração } m'=1:&\quad a\operatorname{sen}\theta = 1\cdot\lambda
+      \end{aligned}
+      \qquad\Longrightarrow\qquad \frac{d}{a} = \frac{6\lambda}{\lambda}
+      \]</p>
+      <div class="keyeq">\[ \frac{d}{a} = 6 \]</div>
+      <p><em>Regra geral que vale a pena guardar:</em> se a ordem faltante é a \(N\)-ésima, então \(d/a = N\), e o lobo central contém \(2N-1\) franjas. Aqui \(N=6\) e \(2(6)-1=11\) ✓ — exatamente o que se conta na figura. Isso é uma <strong>autoconferência grátis</strong>: se você contar as franjas e o número não fechar com o \(d/a\) que achou, releu o gráfico errado.</p>
+
+      <p><strong>(b) Largura \(a\) das fendas</strong></p>
+      <p>Use só a condição de difração, no ângulo lido no gráfico. Com \(\beta/2 = \pi a\operatorname{sen}\theta/\lambda = \pi\) (primeiro zero da sinc):</p>
+      <p>\[ a = \frac{\lambda}{\theta_1} = \frac{500\times10^{-9}\text{ m}}{0{,}002\text{ rad}} = 2{,}5\times10^{-4}\text{ m} \]</p>
+      <div class="keyeq">\[ a = 0{,}25\text{ mm} \]</div>
+
+      <p><strong>(c) Separação \(d\) entre as fendas</strong></p>
+      <p>Duas rotas, ambas de uma linha:</p>
+      <p><em>Rota 1 — direto do item (a):</em> \(d = 6a = 6(0{,}25\text{ mm})\).</p>
+      <p><em>Rota 2 — pela condição de interferência</em> (\(\phi/2 = 6\pi\), logo \(d\operatorname{sen}\theta = 6\lambda\)):</p>
+      <p>\[ d = \frac{6\lambda}{\theta} = \frac{6(500\times10^{-9}\text{ m})}{0{,}002\text{ rad}} = 1{,}5\times10^{-3}\text{ m} \]</p>
+      <div class="keyeq">\[ d = 1{,}5\text{ mm} \]</div>
+
+      <p><strong>Sanity check pelo espaçamento das franjas.</strong> Se \(d=1{,}5\text{ mm}\), franjas vizinhas distam \(\Delta\theta = \lambda/d = 500\times10^{-9}/1{,}5\times10^{-3} = 3{,}33\times10^{-4}\text{ rad}\). Do centro até \(\theta=0{,}002\) cabem \(0{,}002 / 3{,}33\times10^{-4} = 6{,}0\) espaçamentos — ou seja, a sexta franja cai <em>bem em cima</em> do zero do envelope, como a figura mostra. ✓ Tudo fecha.</p>
+      <p class="flag">Repare que <strong>\(L=2\text{ m}\) não foi usado em nenhum item</strong>. O gráfico é dado em \(\theta\), e todas as condições são angulares — \(L\) só entraria se a questão pedisse posições \(y\) em centímetros na tela (aí \(y = L\theta\); por exemplo, o lobo central teria meia-largura \(y = 2\times0{,}002 = 4\text{ mm}\)). Dado supérfluo é comum em prova: não force o uso.</p>
+
+      <div class="tips"><span class="tips-title">Na prova</span>
+      <ul>
+        <li>Em questão com gráfico, <strong>anote primeiro os dois ou três ângulos notáveis</strong> (zeros do envelope, posição de picos) antes de qualquer conta. Metade dos erros vem de ler a linha tracejada errada.</li>
+        <li>Não confunda os zeros: o envelope se anula e a curva <em>fica</em> perto de zero; os mínimos de interferência entre franjas são zeros isolados, com pico logo em seguida.</li>
+        <li>\(a\) sai do <em>envelope</em> (largura do lobo central); \(d\) sai do <em>espaçamento entre franjas</em>. Fenda mais estreita \(\Rightarrow\) envelope mais largo; fendas mais afastadas \(\Rightarrow\) franjas mais juntas. Se seu resultado der \(d<a\), inverteu.</li>
+        <li>Conferência de 5 segundos: número de franjas no lobo central \(= 2(d/a)-1\).</li>
+        <li>Cuidado com unidades: \(\lambda\) em nm (\(10^{-9}\)) e \(a,d\) em mm (\(10^{-3}\)). Aqui \(a=\lambda/\theta\) dá metros — converta no fim.</li>
       </ul>
       </div>`},
 
@@ -4048,6 +4192,89 @@ const TOPICS = [
       </div>
 
       <p><strong>Resposta:</strong> (a) \(P=8{,}33\times10^{-6}\ \text{Pa}\approx8{,}2\times10^{-11}\ \text{atm}\); (b) \(P=1{,}67\times10^{-5}\ \text{Pa}\); (c) \(dp/dV=I/c^{2}\approx2{,}78\times10^{-14}\ \text{kg/(m}^{2}\!\cdot\text{s)}\).</p>`},
+    {tag:'prova', exam:true, src:'P1 · 2022', num:'Questão 3',
+      statement:r`Uma espaçonave tem velocidade \(0{,}5c\,\hat\imath\) em relação à Terra e passa pelo planeta em \(t=0\) (referencial terrestre). Nesse instante ela dispara um míssil de comprimento próprio \(L_0\) com velocidade \(0{,}5c\,\hat\imath\) <em>em relação à espaçonave</em>. Depois de se afastar, o míssil emite um pulso luminoso de frequência \(f_0\) no referencial do míssil. Determine: (a) a velocidade do míssil para um observador na Terra; (b) o comprimento do míssil para um observador na Terra; (c) a frequência do pulso medida na Terra.`,
+      resolution:r`<span class="tag">Solução oficial</span>
+      <p><strong>Montagem.</strong> Três referenciais em fila: Terra (\(S\)), espaçonave (\(S'\), com \(u=0{,}5c\)) e míssil. O erro clássico desta questão é usar \(0{,}5c\) nos itens (b) e (c) — mas a contração e o Doppler são <em>sempre</em> avaliados com a velocidade relativa ao <strong>observador que mede</strong>, e a Terra vê o míssil a \(0{,}8c\), não a \(0{,}5c\). Resolva (a) primeiro e use esse número no resto.</p>
+
+      <p><strong>(a) Velocidade do míssil vista da Terra</strong></p>
+      <p>Somar \(0{,}5c+0{,}5c=c\) seria galileano e daria luz — errado. Use a adição relativística, com \(v'_x=0{,}5c\) (míssil em relação à nave) e \(u=0{,}5c\) (nave em relação à Terra):</p>
+      <p>\[ v_x = \frac{v'_x + u}{1 + \dfrac{v'_x u}{c^{2}}} = \frac{0{,}5c + 0{,}5c}{1 + \dfrac{(0{,}5c)(0{,}5c)}{c^{2}}} = \frac{c}{1 + 0{,}25} = \frac{c}{1{,}25} \]</p>
+      <div class="keyeq">\[ v_x = 0{,}8\,c \]</div>
+      <p><strong>Sanity check:</strong> \(0{,}8c < c\) ✓, e é <em>menor</em> que a soma ingênua \(1{,}0c\) — o denominador \(1+v'u/c^2\) existe justamente para segurar o resultado abaixo de \(c\). Repare também que \(0{,}8c\) é maior que qualquer uma das duas parcelas, como tem que ser.</p>
+
+      <p><strong>(b) Comprimento do míssil na Terra</strong></p>
+      <p>\(L_0\) é o comprimento <em>próprio</em> (medido no referencial onde o míssil está parado). Qualquer outro observador mede menos, pelo fator \(1/\gamma\) avaliado <strong>na velocidade relativa entre o míssil e esse observador</strong> — que é \(0{,}8c\):</p>
+      <p>\[ L = L_0\sqrt{1 - \frac{v_x^{2}}{c^{2}}} = L_0\sqrt{1 - (0{,}8)^{2}} = L_0\sqrt{1-0{,}64} = L_0\sqrt{0{,}36} \]</p>
+      <div class="keyeq">\[ L = 0{,}6\,L_0 \]</div>
+      <p class="flag">Por que \(0{,}8c\) e não \(0{,}5c\)? Porque \(0{,}5c\) é a velocidade do míssil <em>em relação à nave</em>. Quem mede o comprimento aqui é a Terra. Se a pergunta fosse "qual o comprimento do míssil para um tripulante da nave?", aí sim usaríamos \(0{,}5c\), e daria \(L_0\sqrt{1-0{,}25} \approx 0{,}87L_0\).</p>
+      <p><em>Atalho numérico:</em> \(\beta = 0{,}8 = 4/5\) é o terno pitagórico 3-4-5 disfarçado, então \(\gamma = 5/3\) e \(1/\gamma = 3/5 = 0{,}6\). Sempre que a prova escolher \(0{,}6c\) ou \(0{,}8c\), espere frações limpas.</p>
+
+      <p><strong>(c) Frequência do pulso medida na Terra</strong></p>
+      <p><strong>Passo 1 — decidir o sinal.</strong> O míssil está se <em>afastando</em> da Terra. Fonte que se afasta \(\Rightarrow\) <strong>redshift</strong>: a frequência recebida tem de ser <em>menor</em> que \(f_0\). Decida isso <em>antes</em> de escolher a fórmula; assim a raiz certa se escolhe sozinha.</p>
+      <p><strong>Passo 2 — aplicar o Doppler relativístico longitudinal</strong>, de novo com a velocidade relativa Terra–míssil, \(v = 0{,}8c\):</p>
+      <p>\[ f = f_0\sqrt{\frac{c-v}{c+v}} = f_0\sqrt{\frac{c-0{,}8c}{c+0{,}8c}} = f_0\sqrt{\frac{0{,}2}{1{,}8}} = f_0\sqrt{\frac{1}{9}} \]</p>
+      <div class="keyeq">\[ f = \frac{f_0}{3} \]</div>
+      <p><strong>Sanity check:</strong> \(f<f_0\) ✓, coerente com o afastamento. Em comprimento de onda, \(\lambda = 3\lambda_0\) — o pulso chega três vezes mais "esticado" para o vermelho.</p>
+      <div class="why">Por que o Doppler relativístico não é o mesmo do som? No som há um meio (o ar), e importa se quem se move é a fonte ou o observador — são duas fórmulas diferentes. Para a luz não há meio: só existe a <em>velocidade relativa</em>, e a fórmula tem de ser simétrica na troca de papéis. A expressão \(\sqrt{(c-v)/(c+v)}\) é exatamente isso: trocar quem se afasta de quem equivale a trocar \(v\to -v\), que inverte a razão — como deve ser.</div>
+
+      <div class="tips"><span class="tips-title">Na prova</span>
+      <ul>
+        <li><strong>Resolva sempre o item da velocidade primeiro</strong> e carregue esse valor para os demais. Em cadeias de referenciais (Terra → nave → míssil), a tentação de reusar a velocidade errada é a principal fonte de erro.</li>
+        <li>Pergunte "quem mede?" antes de escolher \(\gamma\). Contração, dilatação e Doppler usam a velocidade relativa entre <em>o objeto</em> e <em>o observador citado no enunciado</em>.</li>
+        <li>No Doppler, decida afastando/aproximando <em>em português</em> (menor/maior frequência) e só então escreva a raiz. Isso dispensa decorar qual sinal vai em cima.</li>
+        <li>Tabelinha que salva tempo: \(\beta=0{,}6\Rightarrow\gamma=1{,}25\); \(\beta=0{,}8\Rightarrow\gamma=5/3\); no Doppler, \(\beta=0{,}6\Rightarrow f_0/2\) e \(\beta=0{,}8\Rightarrow f_0/3\).</li>
+        <li>Note que \(L_0\) e \(f_0\) são grandezas <em>próprias</em> — o subscrito zero quase sempre sinaliza "medido no referencial de repouso do objeto".</li>
+      </ul>
+      </div>
+      <p><strong>Resposta:</strong> (a) \(v_x=0{,}8c\); (b) \(L=0{,}6L_0\); (c) \(f=f_0/3\).</p>`},
+
+    {tag:'prova', exam:true, src:'P1 · 2022', num:'Questão 4',
+      statement:r`Uma partícula de massa de repouso \(m_0\) viaja com velocidade \(0{,}6c\) e sofre colisão <em>inelástica</em> com uma partícula idêntica em repouso. O resultado é uma única partícula de velocidade \(V\) e massa de repouso \(M_0\). (a) Escreva a equação de conservação da energia. (b) Escreva a equação de conservação do momento linear. (c) Calcule \(V\) e \(M_0\).`,
+      resolution:r`<span class="tag">Solução oficial</span>
+      <p><strong>A ideia central.</strong> Em colisão relativística, o que se conserva é <strong>energia total</strong> e <strong>momento</strong> — nunca a massa de repouso. Numa colisão perfeitamente inelástica, boa parte da energia cinética inicial vira <em>massa</em>: espere \(M_0 > 2m_0\) no fim. Se der menos, você errou.</p>
+      <p><strong>Passo 0 — o \(\gamma\) da partícula incidente.</strong> Com \(v=0{,}6c\):</p>
+      <p>\[ \gamma = \frac{1}{\sqrt{1-(0{,}6)^{2}}} = \frac{1}{\sqrt{0{,}64}} = \frac{1}{0{,}8} = \frac{5}{4} \]</p>
+
+      <p><strong>(a) Conservação da energia</strong></p>
+      <p>Energia total de cada partícula: \(E=\gamma m_0c^{2}\). Antes, uma se move (\(\gamma=5/4\)) e a outra está parada (\(\gamma=1\), energia de repouso \(m_0c^2\)). Depois, uma só, com \(\gamma_V\):</p>
+      <p>\[ \frac{m_0c^{2}}{\sqrt{1-v^{2}/c^{2}}} + m_0c^{2} = \frac{M_0c^{2}}{\sqrt{1-V^{2}/c^{2}}} \]</p>
+      <p>Substituindo \(v=0{,}6c\): \(\tfrac54 m_0c^2 + m_0c^2 = \tfrac94 m_0 c^2\), logo</p>
+      <div class="keyeq">\[ \frac{9m_0}{4} = \frac{M_0}{\sqrt{1-V^{2}/c^{2}}} \qquad (\text{I}) \]</div>
+
+      <p><strong>(b) Conservação do momento</strong></p>
+      <p>Momento relativístico: \(p=\gamma m_0 v\). Só a primeira partícula tem momento inicial:</p>
+      <p>\[ \frac{m_0 v}{\sqrt{1-v^{2}/c^{2}}} = \frac{M_0 V}{\sqrt{1-V^{2}/c^{2}}} \]</p>
+      <p>Com \(v=0{,}6c\): \(\tfrac54 m_0 (0{,}6c) = \tfrac34 m_0 c\), logo</p>
+      <div class="keyeq">\[ \frac{3m_0c}{4} = \frac{M_0 V}{\sqrt{1-V^{2}/c^{2}}} \qquad (\text{II}) \]</div>
+
+      <p><strong>(c) Resolver o sistema</strong></p>
+      <p><strong>Passo 1 — a divisão mágica.</strong> Divida (II) por (I). O fator \(M_0/\sqrt{1-V^2/c^2}\) — que é o incômodo do problema — cancela inteiro, e sobra só \(V\):</p>
+      <p>\[ \frac{3m_0c/4}{9m_0/4} = \frac{M_0V/\sqrt{1-V^{2}/c^{2}}}{M_0/\sqrt{1-V^{2}/c^{2}}} = V \;\Longrightarrow\; V = \frac{3c}{9} \]</p>
+      <div class="keyeq">\[ V = \frac{c}{3} \]</div>
+      <p class="flag">Essa razão \(pc/E = \beta\) é geral e vale a pena memorizar: <strong>dividir a equação do momento pela da energia dá diretamente a velocidade</strong>, sem passar por \(\gamma\). Funciona em qualquer colisão relativística.</p>
+
+      <p><strong>Passo 2 — voltar em (I) para achar \(M_0\).</strong> Com \(V=c/3\): \(1-V^2/c^2 = 1-\tfrac19 = \tfrac89\), então \(\sqrt{1-V^2/c^2} = \dfrac{2\sqrt2}{3}\).</p>
+      <p>\[ M_0 = \frac{9m_0}{4}\sqrt{1-\frac{V^{2}}{c^{2}}} = \frac{9m_0}{4}\cdot\frac{2\sqrt2}{3} = \frac{3\sqrt2}{2}m_0 \]</p>
+      <div class="keyeq">\[ M_0 = \frac{3m_0}{\sqrt2} = \frac{3\sqrt2}{2}m_0 \approx 2{,}12\,m_0 \]</div>
+
+      <p><strong>Sanity check — e a física do resultado.</strong> \(M_0 \approx 2{,}12\,m_0 > 2m_0\): a massa de repouso <em>aumentou</em>. O excedente \(0{,}12\,m_0c^{2}\) é a energia cinética que deixou de ser movimento e virou massa (calor, excitação interna, novas partículas). Essa é a assinatura de toda colisão inelástica relativística — e é o mecanismo pelo qual aceleradores criam partículas mais pesadas do que as que colidem.</p>
+      <div class="why"><strong>Conferência independente, pelo invariante.</strong> A quantidade \(E^{2}-(pc)^{2}\) é a mesma em qualquer referencial e vale \((M_0c^2)^2\) para a partícula final. Com \(E = \tfrac94 m_0c^{2}\) e \(pc = \tfrac34 m_0c^{2}\):
+      \[ (M_0c^{2})^{2} = \left(\frac94\right)^{2}(m_0c^{2})^{2} - \left(\frac34\right)^{2}(m_0c^{2})^{2} = \frac{81-9}{16}(m_0c^{2})^{2} = \frac{72}{16}(m_0c^{2})^{2} \]
+      \[ M_0 = \sqrt{\frac{9}{2}}\,m_0 = \frac{3}{\sqrt2}m_0 \quad\checkmark \]
+      Mesmo resultado, sem nem precisar calcular \(V\). Se a prova só pedir \(M_0\), esta é a rota curta.</div>
+
+      <div class="tips"><span class="tips-title">Na prova</span>
+      <ul>
+        <li>Monte sempre as duas equações com \(E=\gamma m_0c^2\) e \(p=\gamma m_0 v\), e só depois substitua números. Itens (a) e (b) valem ponto sozinhos, mesmo sem resolver (c).</li>
+        <li><strong>(II) ÷ (I) \(= V/c^2\cdot c^2 = V\).</strong> É o atalho que transforma um sistema feio em uma linha.</li>
+        <li>A energia cinética inicial é \(K=(\gamma-1)m_0c^2 = \tfrac14 m_0c^2\). Nem toda ela vira massa: parte fica como energia cinética do corpo final, que continua se movendo (o momento tem de se conservar).</li>
+        <li>Erro clássico: escrever \(m_0 + m_0 = M_0\). <strong>Massa de repouso não se conserva.</strong> O que se conserva é o quadrivetor energia-momento.</li>
+        <li>Frações úteis aqui: \(\beta=0{,}6\Rightarrow\gamma=\tfrac54\), \(\gamma\beta = \tfrac34\). Elas fazem (I) e (II) saírem com denominador 4.</li>
+      </ul>
+      </div>
+      <p><strong>Resposta:</strong> (a) \(\tfrac{9m_0}{4}=\tfrac{M_0}{\sqrt{1-V^2/c^2}}\); (b) \(\tfrac{3m_0c}{4}=\tfrac{M_0V}{\sqrt{1-V^2/c^2}}\); (c) \(V=c/3\) e \(M_0=3m_0/\sqrt2\approx2{,}12\,m_0\).</p>`},
+
     {tag:'prova', exam:true, src:'P1 · 2023', num:'Questão 3',
       statement:r`Uma estrela está a \(16\) anos-luz da Terra. Um foguete parte em direção à estrela com \(v=4c/5\) (\(\gamma=5/3\)). (a) Para um ocupante do foguete, qual a duração da viagem? (b) Ao chegar, o foguete emite um sinal luminoso para a Terra; para um observador terrestre, quanto tempo passa entre a partida do foguete e a chegada do sinal? (c) Um cronômetro acionado na Terra na partida — o que ele marca quando o foguete chega à estrela? (d) Se o piloto pudesse ver esse cronômetro, que leitura ele veria no instante da chegada?`,
       resolution:r`<span class="tag">Solução oficial</span>
@@ -6212,6 +6439,236 @@ function ensureChipVisible(btn){
   }
 }
 
+/* ---------------------------------------------------------- MÓDULO DE PROVAS ----------------------------------------------------------
+   Não duplica conteúdo: varre TOPICS, recolhe tudo que tem exam:true e
+   remonta as provas na ordem original (Questão 1, 2, 3...). Editar uma
+   resolução no tópico atualiza automaticamente o módulo. */
+
+const PROVA_MODULO = { id:'provas', icon:'exam', label:'Provas P1 · resolvidas' };
+
+const PROVA_NOTAS = {
+  '2025': 'aplicada em 11 de setembro de 2025',
+  '2024': 'gabarito oficial da disciplina',
+  '2023': 'gabarito oficial da disciplina',
+  '2022': 'aplicada em 6 de outubro de 2022'
+};
+
+const FORMULARIO = r`
+<h4>Constantes</h4>
+<p>\(c = 3\times10^{8}\ \text{m/s}\) · \(1\ \text{nm} = 10^{-9}\ \text{m}\)</p>
+
+<h4>Transformações de Lorentz</h4>
+<div class="fgrid">
+<p>\[ \begin{cases} x' = \gamma\left(x - ut\right)\\ y' = y\\ z' = z\\ t' = \gamma\left(t - \dfrac{ux}{c^{2}}\right) \end{cases} \]</p>
+<p>\[ \begin{cases} v'_x = \dfrac{v_x - u}{1 - uv_x/c^{2}}\\[6pt] v'_y = \dfrac{v_y\sqrt{1-u^{2}/c^{2}}}{1 - uv_x/c^{2}}\\[6pt] v'_z = \dfrac{v_z\sqrt{1-u^{2}/c^{2}}}{1 - uv_x/c^{2}} \end{cases} \]</p>
+</div>
+<p>\[ \begin{cases} v_x = \dfrac{v'_x + u}{1 + uv'_x/c^{2}},\qquad v_y = \dfrac{v'_y\sqrt{1-u^{2}/c^{2}}}{1 + uv'_x/c^{2}},\qquad v_z = \dfrac{v'_z\sqrt{1-u^{2}/c^{2}}}{1 + uv'_x/c^{2}} \end{cases} \]</p>
+<p class="fnote">O referencial \(S'\) se move em relação a \(S\) com velocidade \(\vec u = u\,\hat\imath\).</p>
+
+<h4>Dilatação, contração e fator \(\gamma\)</h4>
+<p>\[ \gamma \equiv \frac{1}{\sqrt{1-u^{2}/c^{2}}},\qquad \ell = \ell_0\sqrt{1-u^{2}/c^{2}},\qquad T = \frac{T_0}{\sqrt{1-u^{2}/c^{2}}} \]</p>
+
+<h4>Intervalo invariante</h4>
+<p>\[ c^{2}\Delta t^{2}-\Delta x^{2}-\Delta y^{2}-\Delta z^{2} \;=\; c^{2}\Delta t'^{2}-\Delta x'^{2}-\Delta y'^{2}-\Delta z'^{2} \]</p>
+
+<h4>Doppler e dinâmica relativística</h4>
+<p>\[ \lambda' = \lambda\sqrt{\frac{c+v}{c-v}} \quad\text{ou}\quad \lambda' = \lambda\sqrt{\frac{c-v}{c+v}},\qquad \lambda = c/f \]</p>
+<p>\[ E = \gamma m_0 c^{2},\qquad \vec p = \gamma m_0 \vec v,\qquad K = (\gamma-1)m_0c^{2} \]</p>
+<p class="fnote">Este bloco veio no formulário de 2022, mas <strong>não</strong> no de 2025 — que cobrou relatividade sem dinâmica. Trate Doppler e \(E=\gamma m_0c^2\) como coisa para saber de cabeça: você pode não recebê-los impressos.</p>
+
+<h4>Interferência e difração</h4>
+<p>\[ I = I_0\left[\frac{\operatorname{sen}(\beta/2)}{\beta/2}\right]^{2},\qquad I = I_0\cos^{2}(\phi/2)\left[\frac{\operatorname{sen}(\beta/2)}{\beta/2}\right]^{2} \]</p>
+<p>\[ \phi = \frac{2\pi d\,\operatorname{sen}\theta}{\lambda},\qquad \beta = \frac{2\pi a\,\operatorname{sen}\theta}{\lambda},\qquad 2d\,\operatorname{sen}\theta = m\lambda,\qquad \theta_{\text{mín}} \approx \frac{\lambda}{a} \]</p>
+<p class="fnote">União dos formulários entregues nas P1 de 2022 e 2025. Repare no que <em>nunca</em> aparece: nada de \(1{,}22\lambda/D\), nada de filme fino nem de salto de fase na reflexão, nada de \(\left(m-\tfrac12\right)\) para mínimos de interferência, nada de critério de Rayleigh. Isso você precisa saber de cabeça.</p>
+`;
+
+/* Ordena "Questão 1 (I)" antes de "Questão 1 (II)" antes de "Questão 2". */
+function ordemQuestao(num){
+  const m = /Quest[ãa]o\s*(\d+)/i.exec(num || '');
+  return [m ? parseInt(m[1], 10) : 99, (num || '')];
+}
+
+function coletarProvas(){
+  const porAno = new Map();
+  TOPICS.forEach(topic=>{
+    topic.exercises.forEach(ex=>{
+      if(!ex.exam) return;
+      const ano = (ex.src.match(/(\d{4})/) || [])[1] || '—';
+      if(!porAno.has(ano)) porAno.set(ano, []);
+      porAno.get(ano).push({ex, topicLabel: topic.label});
+    });
+  });
+  // anos mais recentes primeiro; dentro do ano, ordem da prova
+  return Array.from(porAno.entries())
+    .sort((a,b)=> b[0].localeCompare(a[0]))
+    .map(([ano, itens])=>{
+      itens.sort((p,q)=>{
+        const [np, sp] = ordemQuestao(p.ex.num);
+        const [nq, sq] = ordemQuestao(q.ex.num);
+        return np !== nq ? np - nq : sp.localeCompare(sq);
+      });
+      return {ano, itens};
+    });
+}
+
+/* Monta a seção inteira. Devolve {section, navBtn, anchors}. */
+function renderExamModule(){
+  const provas = coletarProvas();
+  const total = provas.reduce((n,p)=>n + p.itens.length, 0);
+  const anchors = [];
+
+  const section = document.createElement('section');
+  section.className = 'topic';
+  section.id = PROVA_MODULO.id;
+
+  const banner = document.createElement('div');
+  banner.className = 'topic-banner';
+  banner.innerHTML = `
+    <div class="wrap">
+      <div class="icon-wrap">${ICONS[PROVA_MODULO.icon]}</div>
+      <div>
+        <span class="topic-num">Módulo de revisão</span>
+        <h2>Provas P1 — resolvidas</h2>
+        <div class="count">${provas.length} provas · ${total} questões · na ordem original</div>
+      </div>
+    </div>`;
+  section.appendChild(banner);
+
+  // subnav: um chip por ano + formulário
+  const subnav = document.createElement('nav');
+  subnav.className = 'page-subnav';
+  const subnavWrap = document.createElement('div');
+  subnavWrap.className = 'wrap';
+  const psnLinks = document.createElement('div');
+  psnLinks.className = 'psn-links';
+  subnavWrap.appendChild(psnLinks);
+  subnav.appendChild(subnavWrap);
+  section.appendChild(subnav);
+
+  const addChip = (targetId, label)=>{
+    const chip = document.createElement('button');
+    chip.type = 'button';
+    chip.dataset.target = targetId;
+    chip.textContent = label;
+    chip.addEventListener('click', ()=>{
+      const t = document.getElementById(targetId);
+      if(t) t.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+    psnLinks.appendChild(chip);
+  };
+
+  const body = document.createElement('div');
+  body.className = 'topic-body';
+  const wrap = document.createElement('div');
+  wrap.className = 'wrap';
+
+  const intro = document.createElement('div');
+  intro.className = 'exlist-label bare';
+  intro.textContent = 'Cada prova na íntegra — mesmas resoluções dos tópicos, remontadas na ordem em que caíram';
+  wrap.appendChild(intro);
+
+  provas.forEach(({ano, itens}, i)=>{
+    const anchorId = `provas-${ano}`;
+    const topicos = Array.from(new Set(itens.map(i=>i.topicLabel)));
+
+    const head = document.createElement('div');
+    head.className = 'year-head' + (i === 0 ? ' first' : '');
+    head.id = anchorId;
+    head.innerHTML = `
+      <span class="yr">P1 · ${ano}</span>
+      <span class="yr-meta">${itens.length} questões · ${topicos.join(' · ')}<br>${PROVA_NOTAS[ano] || ''}</span>`;
+    wrap.appendChild(head);
+    anchors.push(head);
+    addChip(anchorId, `P1 ${ano}`);
+
+    itens.forEach(({ex, topicLabel})=>{
+      wrap.appendChild(makeExerciseCard(ex, topicLabel));
+    });
+  });
+
+  // formulário oficial
+  const fHead = document.createElement('div');
+  fHead.className = 'year-head';
+  fHead.id = 'provas-formulario';
+  fHead.innerHTML = `
+    <span class="yr">Formulário</span>
+    <span class="yr-meta">o que vem impresso junto com a prova</span>`;
+  wrap.appendChild(fHead);
+  anchors.push(fHead);
+  addChip('provas-formulario', 'Formulário');
+
+  const fBox = document.createElement('div');
+  fBox.className = 'formulario';
+  fBox.innerHTML = FORMULARIO;
+  wrap.appendChild(fBox);
+
+  body.appendChild(wrap);
+  section.appendChild(body);
+
+  return {section, anchors};
+}
+
+/* Monta um card de exercício. `topicLabel` só é passado no módulo de provas,
+   onde vale a pena dizer de que tópico a questão veio. */
+function makeExerciseCard(ex, topicLabel){
+  const card = document.createElement('div');
+  card.className = 'exercise' + (ex.exam ? ' exam' : '');
+
+  const head = document.createElement('div');
+  head.className = 'ex-head';
+
+  const badges = document.createElement('div');
+  badges.className = 'ex-badges';
+  const b1 = document.createElement('span');
+  b1.className = 'badge ' + (ex.exam ? 'prova' : 'lista');
+  b1.textContent = ex.exam ? 'PROVA · ' + ex.src.replace('P1 · ','') : ex.src;
+  badges.appendChild(b1);
+  const b2 = document.createElement('span');
+  b2.className = 'badge num';
+  b2.textContent = ex.num;
+  badges.appendChild(b2);
+  if(topicLabel){
+    const b3 = document.createElement('span');
+    b3.className = 'badge topico';
+    b3.textContent = topicLabel;
+    badges.appendChild(b3);
+  }
+  head.appendChild(badges);
+
+  const stmt = document.createElement('div');
+  stmt.className = 'ex-statement';
+  stmt.innerHTML = '<p>'+ex.statement+'</p>';
+  head.appendChild(stmt);
+
+  card.appendChild(head);
+
+  const btn = document.createElement('button');
+  btn.className = 'res-toggle';
+  btn.innerHTML = 'Resolução <svg viewBox="0 0 20 20" fill="currentColor"><path d="M5 7l5 6 5-6z"/></svg>';
+
+  const panel = document.createElement('div');
+  panel.className = 'res-panel';
+  const resWrap = document.createElement('div');
+  resWrap.className = 'res-wrap';
+  const inner = document.createElement('div');
+  inner.className = 'res-inner';
+  inner.innerHTML = ex.resolution;
+  resWrap.appendChild(inner);
+  panel.appendChild(resWrap);
+
+  btn.setAttribute('aria-expanded', 'false');
+  btn.addEventListener('click', ()=>{
+    const isOpen = panel.classList.toggle('open');
+    btn.classList.toggle('open', isOpen);
+    btn.setAttribute('aria-expanded', String(isOpen));
+    btn.innerHTML = (isOpen ? 'Ocultar' : 'Resolução') + ' <svg viewBox="0 0 20 20" fill="currentColor"><path d="M5 7l5 6 5-6z"/></svg>';
+  });
+
+  card.appendChild(btn);
+  card.appendChild(panel);
+  return card;
+}
+
 function renderAll(){
   const nav = document.getElementById('navlist');
   const container = document.getElementById('topics-container');
@@ -6321,62 +6778,30 @@ function renderAll(){
     exWrap.appendChild(exlabel);
 
     topic.exercises.forEach(ex=>{
-      const card = document.createElement('div');
-      card.className = 'exercise' + (ex.exam ? ' exam' : '');
-
-      const head = document.createElement('div');
-      head.className = 'ex-head';
-
-      const badges = document.createElement('div');
-      badges.className = 'ex-badges';
-      const b1 = document.createElement('span');
-      b1.className = 'badge ' + (ex.exam ? 'prova' : 'lista');
-      b1.textContent = ex.exam ? 'PROVA · ' + ex.src.replace('P1 · ','') : ex.src;
-      badges.appendChild(b1);
-      const b2 = document.createElement('span');
-      b2.className = 'badge num';
-      b2.textContent = ex.num;
-      badges.appendChild(b2);
-      head.appendChild(badges);
-
-      const stmt = document.createElement('div');
-      stmt.className = 'ex-statement';
-      stmt.innerHTML = '<p>'+ex.statement+'</p>';
-      head.appendChild(stmt);
-
-      card.appendChild(head);
-
-      const btn = document.createElement('button');
-      btn.className = 'res-toggle';
-      btn.innerHTML = 'Resolução <svg viewBox="0 0 20 20" fill="currentColor"><path d="M5 7l5 6 5-6z"/></svg>';
-
-      const panel = document.createElement('div');
-      panel.className = 'res-panel';
-      const resWrap = document.createElement('div');
-      resWrap.className = 'res-wrap';
-      const inner = document.createElement('div');
-      inner.className = 'res-inner';
-      inner.innerHTML = ex.resolution;
-      resWrap.appendChild(inner);
-      panel.appendChild(resWrap);
-
-      btn.setAttribute('aria-expanded', 'false');
-      btn.addEventListener('click', ()=>{
-        const isOpen = panel.classList.toggle('open');
-        btn.classList.toggle('open', isOpen);
-        btn.setAttribute('aria-expanded', String(isOpen));
-        btn.innerHTML = (isOpen ? 'Ocultar' : 'Resolução') + ' <svg viewBox="0 0 20 20" fill="currentColor"><path d="M5 7l5 6 5-6z"/></svg>';
-      });
-
-      card.appendChild(btn);
-      card.appendChild(panel);
-      exWrap.appendChild(card);
+      exWrap.appendChild(makeExerciseCard(ex));
     });
 
     body.appendChild(exWrap);
     section.appendChild(body);
     container.appendChild(section);
   });
+
+  // ---- módulo de provas, depois de todos os tópicos ----
+  const provasLi = document.createElement('li');
+  const provasBtn = document.createElement('button');
+  provasBtn.type = 'button';
+  provasBtn.className = 'navlink';
+  provasBtn.dataset.target = PROVA_MODULO.id;
+  provasBtn.innerHTML = ICONS[PROVA_MODULO.icon] + '<span>'+PROVA_MODULO.label+'</span>';
+  provasBtn.addEventListener('click', ()=>{
+    const t = document.getElementById(PROVA_MODULO.id);
+    if(t) t.scrollIntoView({behavior:'smooth', block:'start'});
+  });
+  provasLi.appendChild(provasBtn);
+  nav.appendChild(provasLi);
+
+  const {section: provasSection, anchors: provasAnchors} = renderExamModule();
+  container.appendChild(provasSection);
 
   // math rendering
   if(window.renderMathInElement){
@@ -6395,12 +6820,14 @@ function renderAll(){
   const foot = document.querySelector('.sidebar-foot');
   if(foot){
     foot.innerHTML = `${TOPICS.length} tópicos · ${allSubtopics.length} seções<br>`
-      + `${totalEx} exercícios (${totalProva} de prova)<br>Listas 1–2 · P1 2023–2025`;
+      + `${totalEx} exercícios (${totalProva} de prova)<br>`
+      + `Listas 1–2 · módulo P1 2022–2025`;
   }
 
   // active nav highlight (tópico)
   const navLinks = Array.from(document.querySelectorAll('.navlist button.navlink'));
-  const sections = TOPICS.map(t=>document.getElementById(t.id));
+  const sections = TOPICS.map(t=>document.getElementById(t.id))
+    .concat([document.getElementById(PROVA_MODULO.id)]);
   const obs = new IntersectionObserver((entries)=>{
     entries.forEach(entry=>{
       if(entry.isIntersecting){
@@ -6430,7 +6857,7 @@ function renderAll(){
       ensureChipVisible(chip);
     });
   }, {rootMargin:`-${subnavH + 12}px 0px -60% 0px`, threshold:0});
-  allSubtopics.forEach(s=>subObs.observe(s));
+  allSubtopics.concat(provasAnchors).forEach(s=>subObs.observe(s));
 
   // primeiro chip de cada subnav já nasce ativo
   document.querySelectorAll('.psn-links').forEach(g=>{
