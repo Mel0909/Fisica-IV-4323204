@@ -537,17 +537,29 @@
     line-height:1.5;
   }
   .badge.topico{background:#DCEDEA; color:var(--teal-deep);}
-  .badge.autoral{background:#E7E1F5; color:#4B3B87;}
-  .exercise.autoral{border-left-color:#7A63C7;}
-  .year-head.sim .yr{color:#C9B8F0;}
-  .aviso-autoral{
+  .year-head.lac .yr{color:#C9B8F0;}
+  .lac-sec{margin:var(--s5) 0 var(--s3) 0;}
+  .lac-sec .lac-tit{
+    font-family:'Fraunces', serif; font-size:1.18rem; font-weight:600;
+    color:#F0EBE0; margin-right:var(--s3);
+  }
+  .lac-sec .lac-top{
+    font-family:'IBM Plex Mono', monospace; font-size:0.7rem;
+    letter-spacing:0.09em; text-transform:uppercase; color:var(--teal);
+  }
+  .lac-sec .lac-nota{
+    margin:var(--s2) 0 var(--s3) 0; color:#AFC0C4;
+    font-size:0.93rem; line-height:1.6;
+  }
+  .lac-sec .lac-nota strong{color:#E4DCC9;}
+  .aviso-lacuna{
     background:rgba(122,99,199,0.12);
     border:1px solid rgba(201,184,240,0.35);
     border-radius:12px; padding:var(--s4) var(--s5);
     margin:0 0 var(--s4) 0;
     color:#D8CCF3; font-size:0.93rem; line-height:1.6;
   }
-  .aviso-autoral strong{color:#EFE8FF;}
+  .aviso-lacuna strong{color:#EFE8FF;}
   .formulario{
     background:var(--paper); border:1px solid var(--paper-line);
     border-left:4px solid var(--teal-deep);
@@ -2515,142 +2527,6 @@ const TOPICS = [
       </ul>
       </div>`},
 
-    {tag:'autoral', exam:true, autoral:true, src:'Simulado · lacunas', num:'Questão 1 (2,5)',
-      statement:r`Uma fenda simples de largura \(a\) é iluminada por luz de comprimento de onda \(\lambda\). Defina \(\beta = 2\pi a\operatorname{sen}\theta/\lambda\). (a) (1,0) <strong>Deduza</strong>, pelo método do arco de fasores, que \(I(\beta)=I_0\left[\dfrac{\operatorname{sen}(\beta/2)}{\beta/2}\right]^2\), justificando por que a amplitude resultante é a <em>corda</em> do arco e não o arco. (b) (0,75) Estime a intensidade do primeiro máximo secundário supondo que ele ocorra no ponto médio entre os dois primeiros zeros, isto é, \(\beta/2 = 3\pi/2\). (c) (0,75) Mostre que a condição <em>exata</em> de máximo secundário é \(\tan(\beta/2)=\beta/2\) e, sabendo que a primeira raiz não nula é \(\beta/2 = 4{,}4934\text{ rad}\), calcule o erro cometido em (b).`,
-      resolution:r`<span class="tag">Questão autoral</span>
-      <p><strong>Por que esta questão existe.</strong> A fórmula da sinc vem pronta no formulário, então as P1 de 2022–2025 só cobraram aplicação. Mas a <em>dedução</em> é uma das mais bonitas do curso e é exatamente o tipo de item que vale 1,0 ponto "de graça" para quem a treinou — e zero para quem só decorou o resultado.</p>
-
-      <p><strong>(a) Dedução pelo arco de fasores</strong></p>
-      <div class="derive"><span class="derive-title">Dedução — da poligonal ao arco, e do arco à corda</span>
-      <ol>
-        <li><strong>Discretize.</strong> Divida a fenda em \(N\) faixas de largura \(a/N\). Cada faixa é uma fonte secundária (Huygens) e contribui com um fasor de módulo \(\Delta E = E_0/N\) — todas idênticas, então dividem igualmente a amplitude. No fim tomamos \(N\to\infty\).</li>
-        <li><strong>Defasagem entre vizinhas.</strong> Faixas consecutivas distam \(a/N\), logo têm diferença de caminho \((a/N)\operatorname{sen}\theta\):
-        \[ \Delta\varphi = \frac{2\pi}{\lambda}\cdot\frac{a\operatorname{sen}\theta}{N} = \frac{\beta}{N} \]
-        Repare o que \(\beta\) significa: é a defasagem <em>total</em> entre o raio que sai do topo e o que sai da base da fenda. É o único parâmetro do problema.</li>
-        <li><strong>Some graficamente.</strong> Os \(N\) fasores têm o mesmo módulo e cada um está girado de \(\Delta\varphi\) em relação ao anterior. Postos ponta a ponta formam uma poligonal de lados iguais e ângulos externos iguais — uma poligonal <em>inscrita num arco de círculo</em>. Com \(N\to\infty\) os lados encolhem e a poligonal vira o arco.</li>
-        <li><strong>Comprimento do arco.</strong> É \(N\cdot\Delta E = E_0\), sempre — independentemente de \(\theta\). Esse é o vínculo que normaliza tudo: o que muda com o ângulo <em>não</em> é o comprimento do arco, é o quanto ele está enrolado.</li>
-        <li><strong>Ângulo do arco.</strong> Percorrendo os \(N\) fasores, a direção gira \(N\Delta\varphi = \beta\) no total. Então o arco subtende ângulo central \(\beta\). Com \(R\) o raio, "arco = raio × ângulo":
-        \[ E_0 = R\beta \;\Longrightarrow\; R = \frac{E_0}{\beta} \]</li>
-        <li><strong>A amplitude é a CORDA.</strong> Aqui está o ponto que o item pede para justificar. A soma vetorial de uma cadeia de fasores é o vetor que liga o <em>início da cadeia ao seu fim</em> — não o caminho percorrido. O caminho é o arco; o vetor resultante é a corda que fecha suas duas pontas. Num círculo de raio \(R\), a corda que subtende ângulo central \(\beta\) vale (triângulo isósceles partido ao meio pela apótema, com \(\beta/2\) em cada metade):
-        \[ E = 2R\operatorname{sen}\!\left(\frac{\beta}{2}\right) \]</li>
-        <li><strong>Substitua e leia.</strong>
-        \[ E = 2\cdot\frac{E_0}{\beta}\operatorname{sen}\!\left(\frac{\beta}{2}\right) = E_0\,\frac{\operatorname{sen}(\beta/2)}{\beta/2} \]
-        e como \(I\propto E^2\), com \(I_0\) o valor em \(\theta=0\):
-        \[ \boxed{\;I = I_0\left[\frac{\operatorname{sen}(\beta/2)}{\beta/2}\right]^{2}\;} \]</li>
-      </ol>
-      </div>
-      <div class="why">A leitura geométrica que vale a pena levar para a prova: \(\dfrac{\operatorname{sen}(\beta/2)}{\beta/2} = \dfrac{2R\operatorname{sen}(\beta/2)}{R\beta} = \dfrac{\text{corda}}{\text{arco}}\). A função sinc <em>é</em> a razão corda/arco. Em \(\beta\to0\) o arco é quase reto e corda/arco \(\to1\) (máximo central). Quando o arco fecha um círculo inteiro (\(\beta=2\pi\)), as pontas se encontram, a corda é zero — e esse é o primeiro mínimo de difração. Nenhuma conta necessária.</div>
-
-      <p><strong>(b) Estimativa do primeiro máximo secundário</strong></p>
-      <p>Zeros em \(\beta/2 = \pi, 2\pi, 3\pi,\dots\). O primeiro máximo secundário fica entre \(\pi\) e \(2\pi\); a estimativa usual é o ponto médio, \(\beta/2 = 3\pi/2\), onde \(\operatorname{sen}(\beta/2) = -1\):</p>
-      <p>\[ \frac{I}{I_0} = \left[\frac{-1}{3\pi/2}\right]^{2} = \left(\frac{2}{3\pi}\right)^{2} = \frac{4}{9\pi^{2}} \]</p>
-      <div class="keyeq">\[ \frac{I}{I_0} = \frac{4}{9\pi^{2}} \approx 0{,}0450 = 4{,}50\% \]</div>
-      <p>Ou seja: o primeiro máximo secundário tem <strong>menos de 5%</strong> da intensidade do central. É por isso que, num padrão real, praticamente toda a luz está no lobo central.</p>
-
-      <p><strong>(c) Condição exata e erro da estimativa</strong></p>
-      <p><em>Derivar e igualar a zero.</em> Escreva \(u=\beta/2\) e maximize \(\left(\dfrac{\operatorname{sen}u}{u}\right)^{2}\). Basta anular a derivada de \(\operatorname{sen}u/u\):</p>
-      <p>\[ \frac{d}{du}\!\left(\frac{\operatorname{sen}u}{u}\right) = \frac{u\cos u - \operatorname{sen}u}{u^{2}} = 0 \;\Longrightarrow\; u\cos u = \operatorname{sen}u \]</p>
-      <p>Dividindo por \(\cos u\) (não nulo nas raízes):</p>
-      <div class="keyeq">\[ \tan u = u, \qquad u = \frac{\beta}{2} \]</div>
-      <p><em>Avaliar na raiz.</em> Com \(u = 4{,}4934\) — note que \(4{,}4934 = 1{,}4303\pi\), e <strong>não</strong> \(1{,}5\pi\):</p>
-      <p>\[ \frac{I}{I_0} = \left(\frac{\operatorname{sen} 4{,}4934}{4{,}4934}\right)^{2} = \left(\frac{-0{,}97659}{4{,}4934}\right)^{2} = 0{,}04719 \]</p>
-      <p><em>Erro.</em></p>
-      <p>\[ \frac{0{,}04503}{0{,}04719} - 1 = -0{,}046 \]</p>
-      <p>Ou seja: a estimativa do ponto médio <strong>subestima</strong> o máximo secundário em cerca de <strong>4,6%</strong>.</p>
-      <p><strong>Leitura.</strong> A aproximação erra pouco e sempre para baixo, porque o máximo verdadeiro está <em>antes</em> do ponto médio (\(1{,}43\pi\), não \(1{,}50\pi\)). Faz sentido: passando de \(1{,}43\pi\) para \(1{,}50\pi\), o numerador \(\operatorname{sen}u\) ganha pouquíssimo (já está perto de \(-1\)), mas o denominador \(u\) continua crescendo — e é ele quem manda. Pelo mesmo motivo, os máximos seguintes despencam: \(1{,}62\%\) e \(0{,}83\%\) nas estimativas de \(5\pi/2\) e \(7\pi/2\).</p>
-
-      <div class="tips"><span class="tips-title">Na prova</span>
-      <ul>
-        <li>Se pedirem a dedução, os pontos estão em <strong>quatro</strong> afirmações: (i) o arco tem comprimento \(E_0\) fixo; (ii) o arco subtende ângulo \(\beta\); (iii) \(R=E_0/\beta\); (iv) a resultante é a corda \(2R\operatorname{sen}(\beta/2)\). Escreva as quatro explicitamente.</li>
-        <li>Confundir corda com arco é o erro que zera o item. A soma de vetores em cadeia vai sempre "do primeiro rabo à última ponta".</li>
-        <li>Guarde \(4/(9\pi^2)\approx4{,}5\%\) de cabeça — aparece como "que fração da intensidade central?" com frequência, e a estimativa do ponto médio costuma ser aceita.</li>
-        <li>\(\tan u = u\) não tem solução fechada. Se a prova pedir a posição exata, ela <em>tem</em> que fornecer a raiz numérica (como aqui). Se não forneceu, ela quer a estimativa do ponto médio.</li>
-        <li>Cuidado com a convenção: alguns textos chamam de \(\beta\) o que aqui é \(\beta/2\). Confira a definição do enunciado antes de substituir.</li>
-      </ul>
-      </div>`},
-
-    {tag:'autoral', exam:true, autoral:true, src:'Simulado · lacunas', num:'Questão 2 (2,5)',
-      statement:r`Uma rede de difração com 600 fendas/mm é usada para separar o dubleto do sódio, \(\lambda_1 = 589{,}0\text{ nm}\) e \(\lambda_2 = 589{,}6\text{ nm}\), em incidência normal. (a) (0,5) Determine a constante \(d\) da rede e o número de ordens principais observáveis. (b) (1,0) Calcule o ângulo do máximo de primeira ordem de \(\lambda_1\) e a separação angular entre as duas raias nessa ordem. (c) (1,0) Qual a largura mínima do feixe incidente para que o dubleto seja resolvido em \(m=1\)? Um feixe de 3,0 mm é suficiente?`,
-      resolution:r`<span class="tag">Questão autoral</span>
-      <p><strong>Por que esta questão existe.</strong> Rede de difração e poder de resolução ocupam uma seção inteira do guia e não caíram em nenhuma das quatro P1. É conteúdo autocontido, de conta curta, e o dubleto do sódio é <em>o</em> exemplo canônico — se a rede cair, a chance de ser exatamente este problema é alta.</p>
-
-      <p><strong>(a) Constante da rede e ordens observáveis</strong></p>
-      <p>"600 fendas por mm" significa que cada fenda ocupa \(1/600\) de milímetro:</p>
-      <p>\[ d = \frac{1\text{ mm}}{600} = 1{,}667\times10^{-3}\text{ mm} = 1666{,}7\text{ nm} \approx 1{,}67\ \mu\text{m} \]</p>
-      <p>Ordens existem enquanto \(\operatorname{sen}\theta = m\lambda/d \le 1\):</p>
-      <p>\[ m \le \frac{d}{\lambda} = \frac{1666{,}7}{589{,}0} = 2{,}83 \;\Longrightarrow\; m_{\max} = 2 \]</p>
-      <div class="keyeq">\[ d \approx 1667\text{ nm}; \qquad \text{ordens } m = 0,\,1,\,2 \quad(\text{duas de cada lado do centro}) \]</div>
-      <p class="flag">Trabalhar em <strong>nanômetros</strong> o tempo todo elimina as potências de dez e todo o risco de erro de unidade. Converta só na resposta final.</p>
-
-      <p><strong>(b) Ângulo da primeira ordem e separação das raias</strong></p>
-      <p><em>Ângulo.</em> De \(d\operatorname{sen}\theta = m\lambda\) com \(m=1\):</p>
-      <p>\[ \operatorname{sen}\theta = \frac{589{,}0}{1666{,}7} = 0{,}35340 \;\Longrightarrow\; \theta = 20{,}70^\circ \]</p>
-      <p><em>Separação angular.</em> Diferencie \(d\operatorname{sen}\theta = m\lambda\) com \(d\) e \(m\) fixos, obtendo \(d\cos\theta\,\delta\theta = m\,\delta\lambda\):</p>
-      <p>\[ \delta\theta = \frac{m\,\Delta\lambda}{d\cos\theta} = \frac{1\times 0{,}6}{1666{,}7\times\cos 20{,}70^\circ} = \frac{0{,}6}{1666{,}7\times 0{,}9355} \]</p>
-      <div class="keyeq">\[ \delta\theta = 3{,}85\times10^{-4}\text{ rad} \approx 1{,}3' \ (\text{minuto de arco}) \]</div>
-      <p><strong>Sanity check:</strong> as duas raias diferem em 0,1% do comprimento de onda, então a separação tem de ser minúscula — e é: pouco mais de um minuto de arco. Nenhum prisma comum separa isso; é para esse tipo de tarefa que a rede existe.</p>
-
-      <p><strong>(c) Largura mínima do feixe</strong></p>
-      <p><strong>Passo 1 — quanto poder de resolução é preciso.</strong> Por definição \(R = \lambda/\Delta\lambda\), com \(\lambda\) o comprimento de onda médio do par:</p>
-      <p>\[ R_{\text{necessário}} = \frac{589{,}3}{0{,}6} = 982 \]</p>
-      <p><strong>Passo 2 — quanto a rede oferece.</strong> \(R = Nm\), onde \(N\) é o número de fendas <em>efetivamente iluminadas</em>. Em \(m=1\):</p>
-      <p>\[ Nm \ge R_{\text{necessário}} \;\Longrightarrow\; N \ge 982 \;\Longrightarrow\; N_{\min} = 983\text{ fendas} \]</p>
-      <p><strong>Passo 3 — converter fendas em largura.</strong> \(N\) fendas ocupam \(w = Nd\):</p>
-      <p>\[ w_{\min} = 983 \times 1666{,}7\text{ nm} = 1{,}638\times10^{6}\text{ nm} \]</p>
-      <div class="keyeq">\[ w_{\min} \approx 1{,}64\text{ mm} \]</div>
-      <p><em>E o feixe de 3,0 mm?</em> Ele ilumina \(N = 3{,}0\text{ mm}\times 600\text{ fendas/mm} = 1800\) fendas, dando \(R = 1800\) — quase o dobro do necessário.</p>
-      <p><strong>Sim, resolve, com folga de 1,8×.</strong> E em \(m=2\) a folga dobraria de novo (\(R = 3600\)), porque \(R\) é proporcional à ordem.</p>
-
-      <div class="tips"><span class="tips-title">Na prova</span>
-      <ul>
-        <li><strong>\(N\) é o número de fendas iluminadas, não o total gravado na rede.</strong> Essa é a pegadinha central do tema. Se o enunciado der a largura \(w\) do feixe, use \(N = w/d\); se não der nada, use o total.</li>
-        <li>Conversão que sempre aparece: "\(k\) fendas por mm" \(\Rightarrow d = 1/k\) mm. Com 600 fendas/mm, \(d = 1{,}67\ \mu\text{m}\).</li>
-        <li>\(R = Nm\) não depende de \(d\) nem do ângulo — o \(d\cos\theta\) cancela na dedução. Não tente "melhorar" a fórmula metendo o ângulo nela.</li>
-        <li>Número de ordens: \(m_{\max} = \lfloor d/\lambda\rfloor\). Rede muito fina (\(d\) pequeno) espalha bem mas oferece poucas ordens — é um <em>trade-off</em>, não um defeito.</li>
-        <li>Em separação de raias próximas, <strong>não arredonde os senos</strong>: a diferença está na 4ª casa. Use direto a fórmula diferencial \(\delta\theta = m\Delta\lambda/(d\cos\theta)\) em vez de calcular dois ângulos e subtrair.</li>
-      </ul>
-      </div>`},
-
-    {tag:'autoral', exam:true, autoral:true, src:'Simulado · lacunas', num:'Questão 3 (2,5)',
-      statement:r`Um cristal cúbico simples tem aresta \(a = 0{,}400\text{ nm}\) e é analisado com raios X de \(\lambda = 0{,}150\text{ nm}\). (a) (0,75) Para a família de planos paralelos às faces do cubo, calcule o ângulo de Bragg de primeira ordem e o número de ordens observáveis. (b) (1,0) Repita para a família de planos diagonais, cujo espaçamento é \(d = a/\sqrt2\). Compare os dois resultados e explique a tendência. (c) (0,75) Qual é o maior comprimento de onda capaz de produzir alguma reflexão de Bragg na família de planos do item (a)? Por que existe esse limite?`,
-      resolution:r`<span class="tag">Questão autoral</span>
-      <p><strong>Por que esta questão existe.</strong> Bragg é uma seção inteira do guia sem nenhuma questão de prova nos quatro anos. É um dos temas mais "cobráveis" que existem: uma única fórmula, contas de dez segundos, e duas pegadinhas clássicas (o ângulo rasante e o fator 2) que separam quem entendeu de quem decorou.</p>
-      <p class="flag"><strong>Antes de qualquer conta, fixe a convenção.</strong> Em Bragg, \(\theta\) é medido <em>a partir do plano atômico</em> (ângulo rasante), e não a partir da normal como no resto da óptica. Usar a normal faz todos os resultados saírem errados.</p>
-
-      <p><strong>(a) Planos paralelos às faces</strong></p>
-      <p>Para a família \((100)\), o espaçamento entre planos vizinhos é a própria aresta: \(d = a = 0{,}400\text{ nm}\).</p>
-      <p><em>Primeira ordem.</em> De \(2d\operatorname{sen}\theta = m\lambda\) com \(m=1\):</p>
-      <p>\[ \operatorname{sen}\theta = \frac{\lambda}{2d} = \frac{0{,}150}{2(0{,}400)} = \frac{0{,}150}{0{,}800} = 0{,}1875 \;\Longrightarrow\; \theta_1 = 10{,}81^\circ \]</p>
-      <p><em>Número de ordens.</em> A condição \(\operatorname{sen}\theta \le 1\) exige \(m\lambda \le 2d\):</p>
-      <p>\[ m \le \frac{2d}{\lambda} = \frac{0{,}800}{0{,}150} = 5{,}33 \;\Longrightarrow\; m = 1,2,3,4,5 \]</p>
-      <div class="keyeq">\[ \theta_1 = 10{,}8^\circ; \qquad 5\text{ ordens observáveis} \]</div>
-      <p><em>Atalho:</em> guarde o coeficiente \(\lambda/2d = 0{,}1875\) e multiplique por \(m\) até passar de 1. Dá \(0{,}1875;\ 0{,}375;\ 0{,}5625;\ 0{,}750;\ 0{,}9375;\ 1{,}125\) — a sexta estoura, confirmando \(m_{\max}=5\).</p>
-
-      <p><strong>(b) Planos diagonais</strong></p>
-      <p>Agora \(d = a/\sqrt2 = 0{,}400/1{,}4142 = 0{,}2828\text{ nm}\).</p>
-      <p>\[ \operatorname{sen}\theta = \frac{0{,}150}{2(0{,}2828)} = \frac{0{,}150}{0{,}5657} = 0{,}2652 \;\Longrightarrow\; \theta_1 = 15{,}38^\circ \]</p>
-      <p>\[ m \le \frac{2d}{\lambda} = \frac{0{,}5657}{0{,}150} = 3{,}77 \;\Longrightarrow\; m = 1,2,3 \]</p>
-      <div class="keyeq">\[ \theta_1 = 15{,}4^\circ; \qquad 3\text{ ordens observáveis} \]</div>
-      <p><strong>A tendência, e por que ela faz sentido.</strong> Planos mais <em>juntos</em> (\(d\) menor) difratam em ângulos <em>maiores</em> e admitem <em>menos</em> ordens. Os dois efeitos são a mesma relação inversa \(\operatorname{sen}\theta \propto 1/d\) vista de dois jeitos: se cada ordem já exige um ângulo maior, o teto \(\operatorname{sen}\theta=1\) chega antes. É a mesma lógica da rede de difração do item anterior — rede mais fina espalha mais e oferece menos ordens.</p>
-      <p>É exatamente isso que torna a difração de raios X <em>útil</em>: cada família de planos assina o seu próprio conjunto de ângulos, e o padrão completo revela a geometria do cristal. Para referência, a família \((111)\) tem \(d = a/\sqrt3 = 0{,}2309\text{ nm}\), dando \(\theta_1 = 18{,}95^\circ\) e também 3 ordens.</p>
-
-      <p><strong>(c) Comprimento de onda máximo</strong></p>
-      <p>A reflexão de ordem mais baixa possível é \(m=1\), e mesmo ela exige \(\operatorname{sen}\theta \le 1\):</p>
-      <p>\[ \operatorname{sen}\theta = \frac{\lambda}{2d} \le 1 \;\Longrightarrow\; \lambda \le 2d \]</p>
-      <div class="keyeq">\[ \lambda_{\max} = 2d = 2a = 0{,}800\text{ nm} \]</div>
-      <p><strong>Por que existe o limite.</strong> \(2d\) é a <em>maior</em> diferença de caminho que dois planos vizinhos conseguem produzir — ela ocorre em incidência rasante máxima, \(\theta = 90^\circ\). Se \(\lambda\) for maior que isso, não há geometria capaz de acumular um comprimento de onda inteiro de atraso, e nenhuma interferência construtiva acontece em ângulo nenhum.</p>
-      <p>Essa é a razão física de se usar <em>raios X</em> e não luz visível para estudar cristais: com \(d\sim0{,}2\)–\(0{,}4\text{ nm}\), o teto \(\lambda_{\max}\) fica abaixo de 1 nm. Luz visível (400–700 nm) está três ordens de grandeza acima do limite — um cristal é simplesmente invisível para ela como rede de difração.</p>
-
-      <div class="tips"><span class="tips-title">Na prova</span>
-      <ul>
-        <li><strong>As duas pegadinhas:</strong> o ângulo é medido do <em>plano</em> (rasante), e o fator é \(2d\operatorname{sen}\theta\), não \(d\operatorname{sen}\theta\). Escreva a convenção na folha antes de começar.</li>
-        <li>Espaçamentos num cubo de aresta \(a\): faces \((100)\Rightarrow d=a\); diagonais \((110)\Rightarrow d=a/\sqrt2\approx0{,}707a\); \((111)\Rightarrow d=a/\sqrt3\approx0{,}577a\).</li>
-        <li>Número de ordens: \(m_{\max}=\lfloor 2d/\lambda\rfloor\). Repare no 2 — é o mesmo que aparece na lei, e esquecê-lo corta o número de ordens pela metade.</li>
-        <li>Calcule \(\lambda/2d\) uma vez só e vá multiplicando por \(m\). Evita repetir a divisão e facilita achar onde a lista estoura.</li>
-        <li>Confusão comum: em Bragg, \(d\) é a distância entre <em>planos atômicos</em>, que só coincide com a aresta \(a\) para a família paralela às faces. Leia qual família o enunciado pede.</li>
-      </ul>
-      </div>`},
-
     {tag:'prova', exam:true, src:'P1 · 2022', num:'Questão 2', figs:["2022-q2"],
       statement:r`Uma onda plana de \(\lambda=500\text{ nm}\) incide em um anteparo com duas fendas de largura \(a\) separadas por \(d\); a tela está a \(L=2\text{ m}\). O gráfico de intensidade medido na tela em função de \(\theta\) mostra um grupo central de 11 franjas cujo envelope se anula em \(\theta=0{,}002\text{ rad}\) (a franja de ordem 6 está ausente). Use \(\operatorname{sen}\theta\approx\tan\theta\approx\theta\). (a) A relação entre \(d\) e \(a\). (b) A largura \(a\) em milímetros. (c) A distância \(d\) em milímetros.`,
       resolution:r`<span class="tag">Solução oficial</span>
@@ -4370,69 +4246,6 @@ const TOPICS = [
       </div>
 
       <p><strong>Resposta:</strong> (a) \(P=8{,}33\times10^{-6}\ \text{Pa}\approx8{,}2\times10^{-11}\ \text{atm}\); (b) \(P=1{,}67\times10^{-5}\ \text{Pa}\); (c) \(dp/dV=I/c^{2}\approx2{,}78\times10^{-14}\ \text{kg/(m}^{2}\!\cdot\text{s)}\).</p>`},
-    {tag:'autoral', exam:true, autoral:true, src:'Simulado · lacunas', num:'Questão 4 (2,5)',
-      statement:r`<strong>(I)</strong> No referencial \(S\) da Terra, três eventos: \(E_1\) em \((x=0,\ t=0)\); \(E_2\) em \((x=6\text{ a.l.},\ t=4\text{ anos})\); \(E_3\) em \((x=2\text{ a.l.},\ t=4\text{ anos})\). (a) (0,5) Classifique os pares \(E_1E_2\) e \(E_1E_3\) quanto ao tipo de intervalo e diga quais podem ter ligação causal. (b) (0,75) Para o par tipo-espaço, ache a velocidade do referencial em que os dois eventos são simultâneos e a distância própria entre eles. <strong>(II)</strong> Uma vela solar perfeitamente refletora de área \(A = 1000\text{ m}^2\) e massa total \(5{,}0\text{ kg}\) recebe radiação de intensidade \(I = 1400\text{ W/m}^2\) em incidência normal. (c) (0,5) <strong>Deduza</strong> a pressão de radiação sobre a vela e calcule seu valor. (d) (0,75) Calcule a força e a aceleração, e determine quanto a pressão cairia se a vela refletisse apenas 90% da radiação, absorvendo o resto.`,
-      resolution:r`<span class="tag">Questão autoral</span>
-      <p><strong>Por que esta questão existe.</strong> Duas seções órfãs do tópico de relatividade. O intervalo invariante aparece até no formulário de 2025, mas nenhuma questão o exigiu; pressão de radiação nunca foi cobrada em nenhum dos quatro anos. Juntei as duas no formato "(I) e (II)" que as P1 de 2023 e 2024 já usaram.</p>
-
-      <p><strong>(I.a) Classificação dos pares</strong></p>
-      <p><em>Truque de unidades:</em> com tempo em anos e distância em anos-luz, \(c=1\) e o invariante vira \(\Delta s^2 = \Delta t^2 - \Delta x^2\), sem nenhuma potência de dez.</p>
-      <table class="consts">
-        <tr><th>par</th><th>\(\Delta x\)</th><th>\(\Delta t\)</th><th>\(\Delta s^2 = \Delta t^2-\Delta x^2\)</th><th>tipo</th><th>ligação causal?</th></tr>
-        <tr><td>\(E_1E_2\)</td><td>6 a.l.</td><td>4 anos</td><td>\(16-36 = -20\)</td><td>tipo-espaço</td><td><strong>impossível</strong></td></tr>
-        <tr><td>\(E_1E_3\)</td><td>2 a.l.</td><td>4 anos</td><td>\(16-4 = +12\)</td><td>tipo-tempo</td><td><strong>possível</strong></td></tr>
-      </table>
-      <p><strong>Leitura física.</strong> Para \(E_1E_2\), a luz precisaria de 6 anos para vencer 6 anos-luz, mas só há 4 anos disponíveis — nada, nem um sinal luminoso, chega a tempo. Os dois eventos estão <em>fora</em> do cone de luz um do outro: nenhum pode ter causado o outro, e a ordem temporal entre eles depende do referencial. Já em \(E_1E_3\), 2 anos-luz em 4 anos pede apenas \(v = 0{,}5c\): há tempo de sobra, o par está dentro do cone de luz, e a ordem temporal é absoluta — todo referencial concorda que \(E_1\) veio antes.</p>
-
-      <p><strong>(I.b) Referencial de simultaneidade e distância própria</strong></p>
-      <p>O par tipo-espaço é \(E_1E_2\). Existe um referencial onde eles são simultâneos justamente porque \(\Delta s^2<0\) — essa é a equivalência que o invariante entrega de graça.</p>
-      <p><strong>Passo 1 — impor \(\Delta t' = 0\).</strong> Da transformação de Lorentz do tempo:</p>
-      <p>\[ \Delta t' = \gamma\left(\Delta t - \frac{u\,\Delta x}{c^{2}}\right) = 0 \;\Longrightarrow\; \frac{u}{c} = \frac{c\,\Delta t}{\Delta x} = \frac{4}{6} \]</p>
-      <div class="keyeq">\[ u = \frac{2}{3}c \approx 0{,}667c \]</div>
-      <p><strong>Passo 2 — distância própria.</strong> Nesse referencial \(\Delta t'=0\), então o invariante dá diretamente a separação espacial:</p>
-      <p>\[ \Delta s^{2} = -\Delta x'^{2} = -20 \;\Longrightarrow\; \Delta x_{\text{próp}} = \sqrt{\Delta x^{2}-c^{2}\Delta t^{2}} = \sqrt{36-16} = \sqrt{20} \]</p>
-      <div class="keyeq">\[ \Delta x_{\text{próp}} = 2\sqrt5 \approx 4{,}47\text{ anos-luz} \]</div>
-      <p><strong>Sanity check duplo.</strong> Primeiro: \(u = 0{,}667c < c\) ✓ — e isso <em>tinha</em> que dar, porque para um par tipo-espaço \(|c\Delta t| < |\Delta x|\) garante \(u<c\). Se você achar \(u>c\), classificou o par errado. Segundo: \(4{,}47 < 6\) a.l., ou seja, a distância própria é a <em>menor</em> separação espacial possível entre esses dois eventos, atingida exatamente no referencial que os torna simultâneos.</p>
-      <p class="flag">Para o par tipo-tempo \(E_1E_3\), a conta espelhada seria: existe referencial onde eles ocorrem no <em>mesmo lugar</em>, viajando a \(u = \Delta x/\Delta t = 0{,}5c\), e nele o intervalo de tempo é o tempo próprio \(\Delta\tau = \sqrt{12} = 2\sqrt3 \approx 3{,}46\) anos — o <em>menor</em> tempo possível entre os dois.</p>
-
-      <p><strong>(II.c) Dedução e valor da pressão de radiação</strong></p>
-      <div class="derive"><span class="derive-title">Dedução — \(P = 2I/c\) para reflexão total</span>
-      <ol>
-        <li>Num intervalo \(\Delta t\), a energia que atinge a área \(A\) é \(U = I A\,\Delta t\) (definição de intensidade: potência por área).</li>
-        <li>Radiação carrega momento na razão \(p = U/c\). Isso vale para o feixe inteiro sem precisar saber a frequência nem o número de fótons, porque \(p/E = 1/c\) é o mesmo para todos eles:
-        \[ p_{\text{tot}} = \frac{IA\,\Delta t}{c} \]</li>
-        <li>Na <em>reflexão</em>, o feixe chega com \(+p\) e volta com \(-p\). A variação de momento da radiação é \(-2p\), logo a vela recebe \(+2p\) — o dobro do caso absorvedor.</li>
-        <li>Segunda lei e depois divide pela área:
-        \[ F = \frac{\Delta p}{\Delta t} = \frac{2IA}{c} \;\Longrightarrow\; P = \frac{F}{A} = \frac{2I}{c} \]</li>
-      </ol>
-      </div>
-      <p>\[ P = \frac{2(1400)}{3\times10^{8}} = 9{,}33\times10^{-6}\text{ Pa} \]</p>
-      <div class="keyeq">\[ P_{\text{ref}} = \frac{2I}{c} = 9{,}33\times10^{-6}\text{ Pa} \]</div>
-      <p><strong>Ordem de grandeza.</strong> Isso é \(9{,}2\times10^{-11}\) atm — cem bilhões de vezes menos que a pressão atmosférica. Se a sua resposta não for minúscula, há erro de conta.</p>
-      <div class="why">O resultado é contraintuitivo: o <em>refletor</em> sofre o dobro da pressão do absorvedor, embora o absorvedor "fique" com toda a energia. O que produz força não é energia recebida, é <em>variação</em> de momento — e inverter o sentido é uma variação maior do que apenas parar. É a mesma física de uma bola que quica numa parede empurrar mais que uma bola de massa que gruda nela.</div>
-
-      <p><strong>(II.d) Força, aceleração e vela imperfeita</strong></p>
-      <p><em>Força.</em> \[ F = PA = (9{,}33\times10^{-6})(1000) = 9{,}33\times10^{-3}\text{ N} \]</p>
-      <p><em>Aceleração.</em> \[ a = \frac{F}{m} = \frac{9{,}33\times10^{-3}}{5{,}0} = 1{,}87\times10^{-3}\text{ m/s}^{2} \]</p>
-      <p>Parece desprezível, mas é <em>contínua e gratuita</em>: mantida por 6 dias ela acumula \(\Delta v \approx 1\text{ km/s}\); por um ano, cerca de 59 km/s. É esse acúmulo, e não a força instantânea, que torna a vela solar viável.</p>
-      <p><em>Vela 90% refletora.</em> Para uma superfície mista, com fração \(w\) <strong>absorvida</strong>, some as duas contribuições:</p>
-      <p>\[ P = \underbrace{\frac{wI}{c}}_{\text{absorvida}} + \underbrace{\frac{2(1-w)I}{c}}_{\text{refletida}} = \frac{(2-w)I}{c} \]</p>
-      <p>Refletir 90% significa absorver \(w = 0{,}10\):</p>
-      <p>\[ P = \frac{(2-0{,}10)(1400)}{3\times10^{8}} = \frac{1{,}9 \times 1400}{3\times10^{8}} = 8{,}87\times10^{-6}\text{ Pa} \]</p>
-      <div class="keyeq">\[ P = 8{,}87\times10^{-6}\text{ Pa} \quad(\text{95\% do valor ideal — queda de apenas 5\%}) \]</div>
-      <p><strong>Leitura.</strong> Perder 10% de refletividade custa só 5% de empuxo, porque a parte absorvida não some: ela ainda entrega \(I/c\), metade do que entregaria se refletisse. A penalidade é sempre metade da imperfeição.</p>
-
-      <div class="tips"><span class="tips-title">Na prova</span>
-      <ul>
-        <li><strong>Invariante como atalho de decisão:</strong> "existe referencial onde ocorrem no mesmo lugar?" \(\Leftrightarrow\) tipo-tempo (\(\Delta s^2>0\)). "Onde são simultâneos?" \(\Leftrightarrow\) tipo-espaço (\(\Delta s^2<0\)). Classifique primeiro, responda depois.</li>
-        <li>Use \(c=1\) (anos e anos-luz, ou metros e metros de luz). A conta fica aritmética e o sinal de \(\Delta s^2\) salta à vista.</li>
-        <li>A velocidade que torna dois eventos simultâneos é \(u/c = c\Delta t/\Delta x\); a que os põe no mesmo lugar é \(u/c = \Delta x/(c\Delta t)\). São <strong>recíprocas</strong> — e só uma das duas dá \(u<c\), justamente a que corresponde ao tipo certo.</li>
-        <li>Em pressão de radiação, o fator 2 vale só para reflexão especular total. Na fórmula \(P=(2-w)I/c\), <strong>\(w\) é a fração absorvida</strong>: "reflete 90%" quer dizer \(w=0{,}1\), não \(0{,}9\). Erro clássico.</li>
-        <li>Se pedirem força, não pare na pressão: \(F = PA\). E para aceleração, \(a = PA/m\).</li>
-      </ul>
-      </div>
-      <p><strong>Respostas:</strong> (a) \(E_1E_2\) tipo-espaço (sem ligação causal), \(E_1E_3\) tipo-tempo (ligação possível); (b) \(u = 2c/3\) e \(\Delta x_{\text{próp}} = 2\sqrt5 \approx 4{,}47\) a.l.; (c) \(P = 2I/c = 9{,}33\times10^{-6}\) Pa; (d) \(F = 9{,}33\times10^{-3}\) N, \(a = 1{,}87\times10^{-3}\) m/s², e \(8{,}87\times10^{-6}\) Pa com 90% de reflexão.</p>`},
-
     {tag:'prova', exam:true, src:'P1 · 2022', num:'Questão 3', figs:["2022-q3"],
       statement:r`Uma espaçonave tem velocidade \(0{,}5c\,\hat\imath\) em relação à Terra e passa pelo planeta em \(t=0\) (referencial terrestre). Nesse instante ela dispara um míssil de comprimento próprio \(L_0\) com velocidade \(0{,}5c\,\hat\imath\) <em>em relação à espaçonave</em>. Depois de se afastar, o míssil emite um pulso luminoso de frequência \(f_0\) no referencial do míssil. Determine: (a) a velocidade do míssil para um observador na Terra; (b) o comprimento do míssil para um observador na Terra; (c) a frequência do pulso medida na Terra.`,
       resolution:r`<span class="tag">Solução oficial</span>
@@ -6687,6 +6500,27 @@ function ensureChipVisible(btn){
 
 const PROVA_MODULO = { id:'provas', icon:'exam', label:'Provas P1 · resolvidas' };
 
+/* As 5 seções de teoria que nenhuma P1 de 2022–2025 cobrou, e os exercícios
+   das próprias listas que treinam cada uma. Referência por número: o card é
+   puxado de TOPICS, não duplicado. */
+const LACUNAS = [
+  {sec:'Fenda simples pelo arco de fasores', topico:'Difração',
+   nums:['36.18','36.53'],
+   nota:r`As listas pedem a <em>aplicação</em> da sinc (calcular \(\beta\) e \(I\) em ângulos dados, achar a largura a meia altura). A <strong>dedução</strong> pelo arco de fasores, que é o que a teoria marca como "a prova costuma pedir", não aparece em exercício nenhum — treine-a direto pela seção 2.3 do guia.`},
+  {sec:'Rede de difração e poder de resolução', topico:'Difração',
+   nums:['36.36'],
+   nota:r`Dubleto próximo, número mínimo de fendas e separação angular — o pacote completo do tema, em segunda ordem.`},
+  {sec:'Difração de raios X — lei de Bragg', topico:'Difração',
+   nums:['36.62'],
+   nota:r`Cristal cúbico de NaCl, com as duas famílias de planos (paralelos à face e separados por \(a/\sqrt2\)). É o exercício canônico de Bragg.`},
+  {sec:'Intervalo invariante e causalidade', topico:'Relatividade',
+   nums:['37.65'],
+   nota:r`Demonstra as duas equivalências de cabeça do tema: tipo-tempo \(\Leftrightarrow\) existe referencial onde os eventos coincidem no espaço; tipo-espaço \(\Leftrightarrow\) existe referencial onde são simultâneos. Item (c) é numérico.`},
+  {sec:'Pressão de radiação', topico:'Relatividade',
+   nums:['32.28','32.46'],
+   nota:r`A 32.28 dá absorvedor × refletor e densidade de momento; a 32.46 deduz \(P=(2-w)I/c\) e cobra o caso misto. Cuidado: \(w\) é a fração <strong>absorvida</strong>.`},
+];
+
 const PROVA_NOTAS = {
   '2025': 'aplicada em 11 de setembro de 2025',
   '2024': 'gabarito oficial da disciplina',
@@ -6734,18 +6568,14 @@ function coletarProvas(){
   TOPICS.forEach(topic=>{
     topic.exercises.forEach(ex=>{
       if(!ex.exam) return;
-      const ano = ex.autoral ? 'SIM' : ((ex.src.match(/(\d{4})/) || [])[1] || '—');
+      const ano = (ex.src.match(/(\d{4})/) || [])[1] || '—';
       if(!porAno.has(ano)) porAno.set(ano, []);
       porAno.get(ano).push({ex, topicLabel: topic.label});
     });
   });
   // anos mais recentes primeiro; dentro do ano, ordem da prova
   return Array.from(porAno.entries())
-    .sort((a,b)=>{
-      if(a[0] === 'SIM') return 1;   // simulado sempre no fim
-      if(b[0] === 'SIM') return -1;
-      return b[0].localeCompare(a[0]);
-    })
+    .sort((a,b)=> b[0].localeCompare(a[0]))
     .map(([ano, itens])=>{
       itens.sort((p,q)=>{
         const [np, sp] = ordemQuestao(p.ex.num);
@@ -6813,35 +6643,60 @@ function renderExamModule(){
   wrap.appendChild(intro);
 
   provas.forEach(({ano, itens}, i)=>{
-    const anchorId = ano === 'SIM' ? 'provas-simulado' : `provas-${ano}`;
+    const anchorId = `provas-${ano}`;
     const topicos = Array.from(new Set(itens.map(i=>i.topicLabel)));
 
-    const sim = (ano === 'SIM');
     const head = document.createElement('div');
-    head.className = 'year-head' + (i === 0 ? ' first' : '') + (sim ? ' sim' : '');
+    head.className = 'year-head' + (i === 0 ? ' first' : '');
     head.id = anchorId;
-    head.innerHTML = sim
-      ? `<span class="yr">Simulado</span>
-         <span class="yr-meta">${itens.length} questões autorais · 10,0 pontos<br>as 5 seções que nunca caíram numa P1</span>`
-      : `<span class="yr">P1 · ${ano}</span>
-         <span class="yr-meta">${itens.length} questões · ${topicos.join(' · ')}<br>${PROVA_NOTAS[ano] || ''}</span>`;
+    head.innerHTML = `
+      <span class="yr">P1 · ${ano}</span>
+      <span class="yr-meta">${itens.length} questões · ${topicos.join(' · ')}<br>${PROVA_NOTAS[ano] || ''}</span>`;
     wrap.appendChild(head);
     anchors.push(head);
-    addChip(anchorId, sim ? 'Simulado' : `P1 ${ano}`);
-
-    if(sim){
-      const aviso = document.createElement('div');
-      aviso.className = 'aviso-autoral';
-      aviso.innerHTML = '<strong>Estas quatro questões não são oficiais.</strong> '
-        + 'Eu as escrevi para cobrir as cinco seções de teoria do guia que nenhuma P1 de 2022 a 2025 cobrou: '
-        + 'dedução por fasores, rede de difração, lei de Bragg, intervalo invariante e pressão de radiação. '
-        + 'Por isso a distribuição não imita a P1 real — três das quatro questões são de difração, '
-        + 'porque é lá que estão as maiores lacunas.';
-      wrap.appendChild(aviso);
-    }
+    addChip(anchorId, `P1 ${ano}`);
 
     itens.forEach(({ex, topicLabel})=>{
       wrap.appendChild(makeExerciseCard(ex, topicLabel));
+    });
+  });
+
+  // ---- lacunas: seções nunca cobradas, treinadas pelos exercícios da lista ----
+  const lHead = document.createElement('div');
+  lHead.className = 'year-head lac';
+  lHead.id = 'provas-lacunas';
+  const totalLac = LACUNAS.reduce((n,g)=>n + g.nums.length, 0);
+  lHead.innerHTML = `
+    <span class="yr">Lacunas</span>
+    <span class="yr-meta">${LACUNAS.length} seções que nenhuma P1 cobrou · ${totalLac} exercícios das listas</span>`;
+  wrap.appendChild(lHead);
+  anchors.push(lHead);
+  addChip('provas-lacunas', 'Lacunas');
+
+  const aviso = document.createElement('div');
+  aviso.className = 'aviso-lacuna';
+  aviso.innerHTML = '<strong>Nenhum exercício novo aqui.</strong> '
+    + 'Estas cinco seções da teoria não foram cobradas em nenhuma P1 de 2022 a 2025 — mas o professor '
+    + 'as passou nas Listas 1 e 2. Reuni abaixo os exercícios das próprias listas que treinam cada uma, '
+    + 'para você revisar com material da disciplina em vez de questão inventada. '
+    + 'São os mesmos cards que já estão nos tópicos.';
+  wrap.appendChild(aviso);
+
+  const porNum = new Map();
+  TOPICS.forEach(t=>t.exercises.forEach(ex=>{
+    if(!porNum.has(ex.num)) porNum.set(ex.num, {ex, topico:t.label});
+  }));
+
+  LACUNAS.forEach(grupo=>{
+    const gh = document.createElement('div');
+    gh.className = 'lac-sec';
+    gh.innerHTML = `<span class="lac-tit">${grupo.sec}</span>`
+      + `<span class="lac-top">${grupo.topico}</span>`
+      + `<p class="lac-nota">${grupo.nota}</p>`;
+    wrap.appendChild(gh);
+    grupo.nums.forEach(n=>{
+      const achado = porNum.get(n);
+      if(achado) wrap.appendChild(makeExerciseCard(achado.ex, achado.topico));
     });
   });
 
@@ -6871,7 +6726,7 @@ function renderExamModule(){
    onde vale a pena dizer de que tópico a questão veio. */
 function makeExerciseCard(ex, topicLabel){
   const card = document.createElement('div');
-  card.className = 'exercise' + (ex.exam ? ' exam' : '') + (ex.autoral ? ' autoral' : '');
+  card.className = 'exercise' + (ex.exam ? ' exam' : '');
 
   const head = document.createElement('div');
   head.className = 'ex-head';
@@ -6879,9 +6734,8 @@ function makeExerciseCard(ex, topicLabel){
   const badges = document.createElement('div');
   badges.className = 'ex-badges';
   const b1 = document.createElement('span');
-  b1.className = 'badge ' + (ex.autoral ? 'autoral' : ex.exam ? 'prova' : 'lista');
-  b1.textContent = ex.autoral ? 'AUTORAL · SIMULADO'
-                 : ex.exam ? 'PROVA · ' + ex.src.replace('P1 · ','') : ex.src;
+  b1.className = 'badge ' + (ex.exam ? 'prova' : 'lista');
+  b1.textContent = ex.exam ? 'PROVA · ' + ex.src.replace('P1 · ','') : ex.src;
   badges.appendChild(b1);
   const b2 = document.createElement('span');
   b2.className = 'badge num';
@@ -7099,13 +6953,11 @@ function renderAll(){
 
   // rodapé da sidebar com números reais
   const totalEx = TOPICS.reduce((n,t)=>n + t.exercises.length, 0);
-  const totalProva = TOPICS.reduce((n,t)=>n + t.exercises.filter(e=>e.exam && !e.autoral).length, 0);
-  const totalAutoral = TOPICS.reduce((n,t)=>n + t.exercises.filter(e=>e.autoral).length, 0);
+  const totalProva = TOPICS.reduce((n,t)=>n + t.exercises.filter(e=>e.exam).length, 0);
   const foot = document.querySelector('.sidebar-foot');
   if(foot){
     foot.innerHTML = `${TOPICS.length} tópicos · ${allSubtopics.length} seções<br>`
-      + `${totalEx} exercícios<br>`
-      + `${totalProva} de prova · ${totalAutoral} autorais<br>`
+      + `${totalEx} exercícios (${totalProva} de prova)<br>`
       + `Listas 1–2 · P1 2022–2025`;
   }
 
